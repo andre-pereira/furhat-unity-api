@@ -1,0 +1,20 @@
+{
+  "name": "com.apereira.furhat-unity-api",
+  "version": "1.0.0",
+  "displayName": "Furhat Unity External API",
+  "description": "A cross-platform bridge for the Furhat Realtime API via WebSockets.",
+  "unity": "6000.0",
+  "author": {
+    "name": "Your Name"
+  },
+  "samples": [
+    {
+      "displayName": "Furhat Test Interface",
+      "description": "A 2D UI Toolkit panel to test robot movements and speech.",
+      "path": "Samples~"
+    }
+  ],
+  "dependencies": {
+  "com.unity.nuget.newtonsoft-json": "3.2.2"
+}
+}

@@ -1,0 +1,10 @@
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore Unity's generated project files (if you open this folder as a standalone workspace)
+*.csproj
+*.sln
+*.userprefs
+
+# DO NOT ignore .meta files — these are required for Unity to track your assets

@@ -1,0 +1,18 @@
+{
+    "name": "Furhat.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:cb26f21e23e64e742b04228a3e417a60"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
