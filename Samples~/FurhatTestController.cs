@@ -21,6 +21,23 @@ public class FurhatTestController : MonoBehaviour {
 
         _client = new FurhatClient();
         _client.OnMessageReceived += msg => Debug.Log($"Robot says: {msg}");
+
+
+        var audioUrlField = root.Q<TextField>("AudioUrlField");
+
+        root.Q<Button>("PlayAudioBtn").clicked += async () => 
+        {
+            string url = audioUrlField.value;
+    
+        if (string.IsNullOrWhiteSpace(url)) {
+            _statusLog.text = "Status: Audio URL cannot be empty!";
+            return;
+        }
+
+        await _client.SpeakAudio(url);
+        _statusLog.text = "Status: Sent Audio Request";
+        };
+
     }
 
     private async void OnConnectClicked() {

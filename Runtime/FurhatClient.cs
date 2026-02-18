@@ -29,7 +29,10 @@ namespace Furhat.Runtime {
 
         // --- THE EASY ONE-LINERS ---
         public async Task Speak(string text) => await Send(new SpeakRequest { Text = text });
+        public async Task SpeakAudio(string url, string label = "AUDIO") => 
+            await Send(new SpeakAudioRequest { Url = url, Text = label });
         public async Task Gesture(string name) => await Send(new GestureRequest { Name = name });
+
 
         // --- INTERNAL LOGIC ---
         private async Task Send<T>(T request) where T : FurhatRequest {

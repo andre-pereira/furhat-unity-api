@@ -10,6 +10,18 @@ namespace Furhat.Runtime {
         [JsonProperty("text")] public string Text { get; set; }
     }
 
+    public class SpeakAudioRequest : FurhatRequest {
+        public override string Type => "request.speak.audio";
+
+        // This field is REQUIRED by the robot
+        [JsonProperty("url")] 
+        public string Url { get; set; }
+
+        // Optional text for display purposes
+        [JsonProperty("text")] 
+        public string Text { get; set; } = "AUDIO";
+    }
+
     public class GestureRequest : FurhatRequest {
         public override string Type => "request.gesture"; 
         [JsonProperty("name")] public string Name { get; set; }
