@@ -1,22 +1,127 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
-    <ui:VisualElement style="padding: 20px; background-color: rgba(40, 40, 40, 0.9); border-radius: 10px; color: white;">
-        <ui:Label text="Furhat Unity Controller" style="-unity-font-style: bold; font-size: 20px; margin-bottom: 10px;" />
+    <ui:Style src="FurhatStyles.uss" />
+
+    <ui:VisualElement style="flex-grow: 1; padding: 10px; background-color: #2c3e50; color: white;">
         
-        <ui:TextField label="Robot IP" name="IpField" value="127.0.0.1" />
-        <ui:Button name="ConnectBtn" text="Connect" style="margin-top: 10px; background-color: #2c3e50; color: white;" />
-        
-        <ui:VisualElement style="margin-top: 20px; border-top-width: 1px; border-color: #555; padding-top: 10px;">
-            <ui:Label text="Text to Speech" style="-unity-font-style: bold; margin-bottom: 5px;" />
-            <ui:TextField label="Text" name="SpeechField" placeholder-text="Hello human..." />
-            <ui:Button name="SpeakBtn" text="Speak" style="margin-top: 5px; background-color: #27ae60; color: white;" />
+        <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 8px; background-color: #34495e; padding: 4px; border-radius: 3px;">
+            <ui:Label text="IP:" style="margin-right: 4px;" />
+            <ui:TextField name="IpField" value="127.0.0.1" style="width: 80px; color: black;" />
+            <ui:Button name="ConnectBtn" text="Connect" style="margin-left: 8px;" />
+            <ui:Label name="StatusLog" text="● Disconnected" style="margin-left: 12px; color: #e74c3c; -unity-font-style: bold; font-size: 11px;" />
         </ui:VisualElement>
 
-        <ui:VisualElement style="margin-top: 20px; border-top-width: 1px; border-color: #555; padding-top: 10px;">
-            <ui:Label text="Audio Playback (WAV Only)" style="-unity-font-style: bold; margin-bottom: 5px;" />
-            <ui:TextField label="Audio URL" name="AudioUrlField" value="https://www.voiptroubleshooter.com/open_speech/american/OSR_us_000_0034_8k.wav" />
-            <ui:Button name="PlayAudioBtn" text="Play Audio URL" style="margin-top: 5px; background-color: #8e44ad; color: white;" />
-        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+            
+            <ui:VisualElement style="flex-grow: 1; margin-right: 4px; background-color: #ecf0f1; padding: 5px; border-radius: 4px; color: black;">
+                <ui:Label text="REQUESTS LOG" style="-unity-font-style: bold; color: #2c3e50; border-bottom-width: 1px; font-size: 11px;" />
+                
+                <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; margin-top: 2px;">
+                    <ui:Toggle label="Speech" name="LogSpeak" value="true" class="compact-toggle" />
+                    <ui:Toggle label="Listen" name="LogListen" value="true" class="compact-toggle" />
+                    <ui:Toggle label="Gestures" name="LogGesture" value="true" class="compact-toggle" />
+                    <ui:Toggle label="Gaze" name="LogGaze" value="true" class="compact-toggle" />
+                    <ui:Toggle label="LED" name="LogLed" value="true" class="compact-toggle" />
+                </ui:VisualElement>
 
-        <ui:Label name="StatusLog" text="Status: Disconnected" style="margin-top: 20px; color: #bdc3c7; font-size: 12px;" />
+                <ui:ScrollView name="ChatScroll" style="flex-grow: 1; background-color: white; border-width: 1px; border-color: #bdc3c7; margin-top: 4px;" />
+                
+                <ui:VisualElement style="margin-top: 4px; padding: 5px; background-color: #bdc3c7; border-radius: 4px;">
+                    <ui:DropdownField name="RequestTypeSelector" label="Type" choices="Speak Text,Speak Audio,Speak Stop,Listen Start,Listen Stop,Gesture,Attend Location,LED Control" value="Speak Text" style="color: black;" />
+                    
+                    <ui:VisualElement name="InputContainer" style="margin-top: 5px;">
+                        
+                        <ui:VisualElement name="PanelSpeakText" style="display: flex;">
+                            <ui:VisualElement style="flex-direction: row;">
+                                <ui:Toggle label="Abort" name="SpeakTextAbort" class="compact-toggle" />
+                                <ui:Toggle label="Monitor Words" name="SpeakTextMonitor" class="compact-toggle" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-direction: row; margin-top: 2px;">
+                                <ui:TextField name="SpeakTextInput" placeholder-text="Speak..." style="flex-grow: 1; color: black;" />
+                                <ui:Button name="SendSpeakText" text="SEND" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+
+                        <ui:VisualElement name="PanelSpeakAudio" style="display: none;">
+                            <ui:VisualElement style="flex-direction: row;">
+                                <ui:Toggle label="Abort" name="AudioAbort" class="compact-toggle" />
+                                <ui:Toggle label="Lipsync" name="AudioLipsync" class="compact-toggle" value="true" />
+                            </ui:VisualElement>
+                            <ui:TextField label="Display Text" name="AudioDisplayText" style="color: black;" />
+                            <ui:TextField label="URL" name="AudioUrl" style="color: black;" />
+                            <ui:Button name="SendSpeakAudio" text="SEND AUDIO" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement name="PanelListenStart" style="display: none;">
+                            <ui:VisualElement style="flex-direction: row; flex-wrap: wrap;">
+                                <ui:Toggle label="Partial" name="ListenPartial" class="compact-toggle" />
+                                <ui:Toggle label="Concat" name="ListenConcat" class="compact-toggle" value="true" />
+                                <ui:Toggle label="Stop No Speech" name="ListenStopNoSpeech" class="compact-toggle" value="true" />
+                                <ui:Toggle label="Stop Robot Start" name="ListenStopRobot" class="compact-toggle" value="true" />
+                                <ui:Toggle label="Stop User End" name="ListenStopUser" class="compact-toggle" value="true" />
+                                <ui:Toggle label="Resume" name="ListenResume" class="compact-toggle" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-direction: row; margin-top: 2px;">
+                                <ui:FloatField label="No Speech (s)" name="ListenNoSpeechTime" value="8.0" style="flex-grow: 1; color: black;" />
+                                <ui:FloatField label="End Speech (s)" name="ListenEndSpeechTime" value="1.0" style="flex-grow: 1; color: black;" />
+                            </ui:VisualElement>
+                            <ui:Button name="SendListenStart" text="START LISTENING" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement name="PanelGesture" style="display: none;">
+                            <ui:VisualElement style="flex-direction: row;">
+                                <ui:TextField label="Name" name="GestureName" style="flex-grow: 1; color: black;" />
+                                <ui:Toggle label="Monitor" name="GestureMonitor" class="compact-toggle" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-direction: row; margin-top: 2px;">
+                                <ui:FloatField label="Intensity" name="GestureIntensity" value="1.0" style="flex-grow: 1; color: black;" />
+                                <ui:FloatField label="Duration" name="GestureDuration" value="1.0" style="flex-grow: 1; color: black;" />
+                            </ui:VisualElement>
+                            <ui:Button name="SendGesture" text="SEND GESTURE" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement name="PanelAttend" style="display: none;">
+                            <ui:VisualElement style="flex-direction: row; margin-top: 2px; justify-content: space-between;">
+                                <ui:FloatField label="X" name="AttendX" class="coordinate-field" />
+                                <ui:FloatField label="Y" name="AttendY" class="coordinate-field" />
+                                <ui:FloatField label="Z" name="AttendZ" class="coordinate-field" />
+                            </ui:VisualElement>
+                            <ui:DropdownField label="Speed" name="AttendSpeed" choices="xslow,slow,medium,fast,xfast" value="medium" style="color: black;" />
+                            <ui:Button name="SendAttend" text="ATTEND LOCATION" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement name="PanelLed" style="display: none;">
+                            <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 4px;">
+                                <ui:TextField label="Hex" name="LedColorHex" value="#FFFFFF" style="flex-grow: 1; color: black;" />
+                                <ui:VisualElement name="LedColorSwatch" style="width: 40px; height: 20px; margin-left: 5px; background-color: white; border-width: 1px; border-color: black;" />
+                            </ui:VisualElement>
+                            <ui:Button name="SendLed" text="SET LED COLOR" />
+                        </ui:VisualElement>
+                        
+                        <ui:VisualElement name="PanelStopOnly" style="display: none;">
+                            <ui:Button name="SendGenericStop" text="SEND STOP" />
+                        </ui:VisualElement>
+
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement style="flex-grow: 1; margin-left: 4px; background-color: #1a1a1a; padding: 5px; border-radius: 4px;">
+                <ui:Label text="RESPONSES" style="-unity-font-style: bold; color: #3498db; border-bottom-width: 1px; font-size: 11px;" />
+                
+                <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; margin-top: 2px;">
+                    <ui:Toggle label="speak.start" name="SubSpeakStart" value="true" class="compact-toggle" />
+                    <ui:Toggle label="speak.end" name="SubSpeakEnd" value="true" class="compact-toggle" />
+                    <ui:Toggle label="speak.word" name="SubWords" value="false" class="compact-toggle" />
+                    <ui:Toggle label="listen.start" name="SubListenStart" value="true" class="compact-toggle" />
+                    <ui:Toggle label="listen.end" name="SubListenEnd" value="true" class="compact-toggle" />
+                    <ui:Toggle label="hear.start" name="SubHearStart" value="true" class="compact-toggle" />
+                    <ui:Toggle label="hear.end" name="SubHearEnd" value="false" class="compact-toggle" />
+                    <ui:Toggle label="gesture.start" name="SubGestureStart" value="false" class="compact-toggle" />
+                    <ui:Toggle label="gesture.end" name="SubGestureEnd" value="true" class="compact-toggle" />
+                </ui:VisualElement>
+
+                <ui:ScrollView name="SystemScroll" style="flex-grow: 1; margin-top: 4px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

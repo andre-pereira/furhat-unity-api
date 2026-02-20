@@ -1,0 +1,69 @@
+/* Target the root of the Toggle */
+.compact-toggle {
+    margin-right: 15px !important; /* Clear gap between groups */
+    flex-direction: row !important; /* Normal row: [x] Text */
+    align-items: center !important;
+}
+
+/* Force the internal label to shrink */
+.compact-toggle .unity-toggle__label {
+    min-width: 0 !important;
+    flex-basis: auto !important;
+    margin-left: 4px !important; /* Gap between box and its text */
+    padding-left: 0 !important;
+    flex-grow: 0 !important;
+    font-size: 11px !important;
+}
+
+/* Ensure the checkbox container is visible and doesn't shrink */
+.compact-toggle .unity-toggle__input {
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important; /* Prevent disappearance */
+    min-width: 28px !important;
+    min-height: 28px !important;
+}
+
+/* Fix for the internal checkmark alignment */
+.compact-toggle .unity-toggle__checkmark {
+    margin: 0 !important;
+}
+
+.coordinate-field {
+    margin-right: 15px !important; /* Space between X, Y, and Z groups */
+    flex-direction: row !important;
+    align-items: center !important;
+    flex-grow: 0 !important; /* Don't let it stretch too much */
+}
+
+.coordinate-field .unity-label {
+    min-width: 15px !important;
+    padding-right: 4px !important;
+    flex-grow: 0 !important;
+    color: black !important;
+}
+
+/* Increased width to fit 3+ digits/decimals comfortably */
+.coordinate-field .unity-base-field__input {
+    width: 50px !important; 
+    min-width: 50px !important;
+    flex-grow: 0 !important;
+    padding: 2px !important;
+    background-color: white !important;
+    color: black !important;
+}
+
+#ChatScroll .unity-label {
+    margin-bottom: 2px;
+    padding: 2px 4px;
+}
+
+#ChatScroll {
+    background-color: #ffffff !important;
+    padding: 5px !important;
+}
+
+.log-entry-label {
+    margin-bottom: 0px !important;
+    padding: 1px 4px !important;
+    white-space: normal !important;
+}

@@ -12,6 +12,7 @@ namespace Furhat.Runtime {
         private ClientWebSocket _ws;
         private CancellationTokenSource _cts;
         private readonly ConcurrentQueue<Action> _mainThreadQueue = new ConcurrentQueue<Action>();
+        public event Action<string> OnMessageSent;
         public event Action<string> OnMessageReceived;
 
         public async Task Connect(string ip, string apiKey = null) {
@@ -27,20 +28,67 @@ namespace Furhat.Runtime {
             _ = ReceiveLoop(); 
         }
 
-        // --- THE EASY ONE-LINERS ---
-        public async Task Speak(string text) => await Send(new SpeakRequest { Text = text });
-        public async Task SpeakAudio(string url, string label = "AUDIO") => 
-            await Send(new SpeakAudioRequest { Url = url, Text = label });
-        public async Task Gesture(string name) => await Send(new GestureRequest { Name = name });
+        // --- SPEECH APIs ---
 
+        public async Task Speak(string text, bool abort = false, bool monitorWords = false) {
+            await Send(new SpeakRequest { 
+                Text = text, 
+                Abort = abort, 
+                MonitorWords = monitorWords 
+            });
+        }
+
+        public async Task SpeakAudio(string url, bool abort = false, bool lipsync = true, string label = "AUDIO") {
+            await Send(new SpeakAudioRequest { 
+                Url = url, 
+                Abort = abort, 
+                Lipsync = lipsync, 
+                Text = label 
+            });
+        }
+
+        public async Task StopSpeaking() => await Send(new StopSpeakingRequest());
+
+        // --- LISTENING APIs ---
+
+        public async Task StartListening(ListenRequest config) => await Send(config);
+
+        public async Task StopListening() => await Send(new StopListenRequest());
+
+        // --- ANIMATION & CONTROL APIs ---
+
+        public async Task Gesture(string name, float intensity = 1.0f, float duration = 1.0f, bool monitor = false) {
+            await Send(new GestureRequest { 
+                Name = name, 
+                Intensity = intensity, 
+                Duration = duration, 
+                Monitor = monitor 
+            });
+        }
+
+        public async Task Attend(float x, float y, float z, string speed = "medium") {
+            await Send(new AttendLocationRequest { 
+                X = x, 
+                Y = y, 
+                Z = z, 
+                Speed = speed 
+            });
+        }
+
+        public async Task SetLed(string hexColor) {
+            if (!hexColor.StartsWith("#")) hexColor = "#" + hexColor;
+            await Send(new LedRequest { Color = hexColor });
+        }
 
         // --- INTERNAL LOGIC ---
+
         private async Task Send<T>(T request) where T : FurhatRequest {
             string json = JsonConvert.SerializeObject(request);
+            _mainThreadQueue.Enqueue(() => OnMessageSent?.Invoke(json));
             await SendRaw(json);
         }
 
-        private async Task SendRaw(string json) { // This is the method that was missing!
+        private async Task SendRaw(string json) {
             if (_ws?.State != WebSocketState.Open) return;
             var buffer = Encoding.UTF8.GetBytes(json);
             await _ws.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, _cts.Token);
@@ -49,16 +97,23 @@ namespace Furhat.Runtime {
         private async Task ReceiveLoop() {
             var buffer = new byte[4096];
             while (_ws.State == WebSocketState.Open && !_cts.IsCancellationRequested) {
-                var result = await _ws.ReceiveAsync(new ArraySegment<byte>(buffer), _cts.Token);
-                string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                _mainThreadQueue.Enqueue(() => OnMessageReceived?.Invoke(message));
+                try {
+                    var result = await _ws.ReceiveAsync(new ArraySegment<byte>(buffer), _cts.Token);
+                    if (result.MessageType == WebSocketMessageType.Close) break;
+
+                    string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                    _mainThreadQueue.Enqueue(() => OnMessageReceived?.Invoke(message));
+                } catch { break; }
             }
         }
 
-        public void Update() { // Processes messages on Unity's main thread
+        public void Update() {
             while (_mainThreadQueue.TryDequeue(out var action)) action?.Invoke();
         }
 
-        public void Dispose() { _cts?.Cancel(); _ws?.Dispose(); }
+        public void Dispose() {
+            _cts?.Cancel();
+            _ws?.Dispose();
+        }
     }
 }
