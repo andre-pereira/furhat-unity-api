@@ -1,69 +1,90 @@
-/* Target the root of the Toggle */
+/* --- Global Toggle Layout --- */
 .compact-toggle {
-    margin-right: 15px !important; /* Clear gap between groups */
-    flex-direction: row !important; /* Normal row: [x] Text */
+    margin-right: 15px !important; /* Layout properties handle !important safely */
+    flex-direction: row !important;
     align-items: center !important;
 }
 
-/* Force the internal label to shrink */
 .compact-toggle .unity-toggle__label {
     min-width: 0 !important;
     flex-basis: auto !important;
-    margin-left: 4px !important; /* Gap between box and its text */
+    margin-left: 4px !important;
     padding-left: 0 !important;
     flex-grow: 0 !important;
     font-size: 11px !important;
 }
 
-/* Ensure the checkbox container is visible and doesn't shrink */
-.compact-toggle .unity-toggle__input {
-    flex-grow: 0 !important;
-    flex-shrink: 0 !important; /* Prevent disappearance */
-    min-width: 28px !important;
-    min-height: 28px !important;
+/* --- Panel Specific Text Colors --- */
+/* FIX: Removed !important and inherit to prevent native UpdatePanels crash */
+.req-panel .compact-toggle .unity-toggle__label {
+    color: #2c3e50;
 }
 
-/* Fix for the internal checkmark alignment */
-.compact-toggle .unity-toggle__checkmark {
-    margin: 0 !important;
+.res-panel .compact-toggle .unity-toggle__label {
+    color: #ecf0f1;
 }
 
+/* --- Interaction Fixes --- */
+.compact-toggle:focus .unity-toggle__input,
+.compact-toggle:hover .unity-toggle__input,
+.compact-toggle:active .unity-toggle__input {
+    background-color: rgba(0,0,0,0); /* Use RGBA instead of 'transparent' keyword for stability */
+}
+
+/* FIX: Removed color overrides for focus/checked states. 
+   Forcing color types during state changes is the main cause of the Color/Keyword error.
+*/
+.compact-toggle:focus .unity-toggle__label,
+.compact-toggle:checked .unity-toggle__label,
+.compact-toggle:hover .unity-toggle__label {
+    /* Empty to prevent type-casting conflicts */
+}
+
+/* --- Coordinate Fields --- */
 .coordinate-field {
-    margin-right: 15px !important; /* Space between X, Y, and Z groups */
+    margin-right: 15px !important;
     flex-direction: row !important;
     align-items: center !important;
-    flex-grow: 0 !important; /* Don't let it stretch too much */
 }
 
 .coordinate-field .unity-label {
     min-width: 15px !important;
     padding-right: 4px !important;
-    flex-grow: 0 !important;
-    color: black !important;
+    color: #000000;
 }
 
-/* Increased width to fit 3+ digits/decimals comfortably */
 .coordinate-field .unity-base-field__input {
     width: 50px !important; 
-    min-width: 50px !important;
-    flex-grow: 0 !important;
-    padding: 2px !important;
-    background-color: white !important;
-    color: black !important;
+    background-color: #ffffff;
+    color: #000000;
 }
 
-#ChatScroll .unity-label {
+/* --- Scroll Views --- */
+#RequestScroll, #SystemScroll {
+    flex-grow: 1 !important;
+    flex-basis: 0 !important;
+    min-height: 100px !important;
+    margin-top: 4px;
+}
+
+#RequestScroll { 
+    background-color: #ffffff; 
+    border-width: 1px; 
+    border-color: #bdc3c7; 
+}
+
+#SystemScroll { 
+    background-color: #1a1a1a; 
+}
+
+/* --- Log Entries --- */
+.log-entry-container {
     margin-bottom: 2px;
-    padding: 2px 4px;
+    padding: 3px;
+    border-bottom-width: 1px;
+    border-bottom-color: #dddddd;
 }
 
-#ChatScroll {
-    background-color: #ffffff !important;
-    padding: 5px !important;
-}
-
-.log-entry-label {
-    margin-bottom: 0px !important;
-    padding: 1px 4px !important;
+.log-entry-container Label {
     white-space: normal !important;
 }
