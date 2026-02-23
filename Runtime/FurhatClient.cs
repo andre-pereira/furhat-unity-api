@@ -151,7 +151,7 @@ namespace Furhat.Runtime {
                         if (result.MessageType == WebSocketMessageType.Close) break;
 
                         string msg = Encoding.UTF8.GetString(ms.ToArray());
-                        _mainThreadQueue.Enqueue(() => OnMessageReceived?.Invoke(msg));
+                        _mainThreadQueue.Enqueue(() => RouteEvent(msg));
                     }
                 } catch { break; }
             }

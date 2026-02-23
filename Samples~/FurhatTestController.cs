@@ -30,7 +30,6 @@ public class FurhatTestController : MonoBehaviour {
         _client = new FurhatClient();
         
         _client.OnMessageSent += msg => ProcessLogEntry("REQ", msg, _requestScroll);
-        
         _client.OnMessageReceived += msg => {
             try {
                 var data = JObject.Parse(msg);
