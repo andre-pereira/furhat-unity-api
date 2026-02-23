@@ -138,14 +138,21 @@ namespace Furhat.Runtime {
         }
 
         private async Task ReceiveLoop() {
-            var buffer = new byte[16384]; // Double buffer for Base64 image/audio sensor data
+            var buffer = new byte[8192];
             while (_ws.State == WebSocketState.Open && !_cts.IsCancellationRequested) {
                 try {
-                    var result = await _ws.ReceiveAsync(new ArraySegment<byte>(buffer), _cts.Token);
-                    if (result.MessageType == WebSocketMessageType.Close) break;
+                    using (var ms = new System.IO.MemoryStream()) {
+                        WebSocketReceiveResult result;
+                        do {
+                            result = await _ws.ReceiveAsync(new ArraySegment<byte>(buffer), _cts.Token);
+                            ms.Write(buffer, 0, result.Count);
+                        } while (!result.EndOfMessage); // Keep reading until the full payload arrives
 
-                    string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    _mainThreadQueue.Enqueue(() => RouteEvent(message));
+                        if (result.MessageType == WebSocketMessageType.Close) break;
+
+                        string msg = Encoding.UTF8.GetString(ms.ToArray());
+                        _mainThreadQueue.Enqueue(() => OnMessageReceived?.Invoke(msg));
+                    }
                 } catch { break; }
             }
         }

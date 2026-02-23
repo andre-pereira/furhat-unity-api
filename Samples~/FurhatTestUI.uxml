@@ -14,23 +14,25 @@
 
         <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
             
-            <ui:VisualElement class="req-panel" style="flex-grow: 1; margin-right: 4px; background-color: #ecf0f1; padding: 5px; border-radius: 4px; color: black;">
+            <ui:VisualElement class="req-panel" style="width: 50%; margin-right: 4px; background-color: #ecf0f1; padding: 5px; border-radius: 4px; color: black;">
                 <ui:Label text="REQUESTS LOG" style="-unity-font-style: bold; color: #2c3e50; border-bottom-width: 1px; font-size: 11px;" />
                 
                 <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; margin-top: 2px;">
                     <ui:Toggle label="Speech" name="LogSpeak" value="true" class="compact-toggle" />
                     <ui:Toggle label="Listen" name="LogListen" value="true" class="compact-toggle" />
                     <ui:Toggle label="Gestures" name="LogGesture" value="true" class="compact-toggle" />
-                    <ui:Toggle label="Gaze" name="LogGaze" value="true" class="compact-toggle" />
+                    <ui:Toggle label="Gaze &amp; Face" name="LogGaze" value="true" class="compact-toggle" />
+                    <ui:Toggle label="Sensors" name="LogSensors" value="true" class="compact-toggle" />
                     <ui:Toggle label="LED" name="LogLed" value="true" class="compact-toggle" />
                 </ui:VisualElement>
 
                 <ui:ScrollView name="RequestScroll" style="flex-grow: 1; background-color: white; border-width: 1px; border-color: #bdc3c7; margin-top: 4px;" />
                 
                 <ui:VisualElement style="margin-top: 4px; padding: 5px; background-color: #bdc3c7; border-radius: 4px;">
-                    <ui:DropdownField name="RequestTypeSelector" label="Type" choices="Speak Text,Speak Audio,Speak Stop,Listen Start,Listen Stop,Gesture,Attend Location,LED Control" value="Speak Text" style="color: black;" />
+                    <ui:DropdownField name="RequestTypeSelector" label="Type" choices="Speak Text,Speak Audio,Speak Stop,Listen Config,Listen Start,Listen Stop,Voice Config,Voice Status,Gesture,Attend Location,Attend User/Nobody,Face Config,Face Control,Sensors &amp; System,LED Control" value="Speak Text" style="color: black;" />
                     
                     <ui:VisualElement name="InputContainer" style="margin-top: 5px;">
+                        
                         <ui:VisualElement name="PanelSpeakText" style="display: flex;">
                             <ui:VisualElement style="flex-direction: row;">
                                 <ui:Toggle label="Abort" name="SpeakTextAbort" class="compact-toggle" />
@@ -52,6 +54,12 @@
                             <ui:Button name="SendSpeakAudio" text="SEND AUDIO" />
                         </ui:VisualElement>
 
+                        <ui:VisualElement name="PanelListenConfig" style="display: none;">
+                            <ui:TextField label="Languages (csv)" name="ListenLanguages" value="en-US" style="color: black;" />
+                            <ui:TextField label="Phrases (csv)" name="ListenPhrases" style="color: black;" />
+                            <ui:Button name="SendListenConfig" text="SET LISTEN CONFIG" />
+                        </ui:VisualElement>
+
                         <ui:VisualElement name="PanelListenStart" style="display: none;">
                             <ui:VisualElement style="flex-direction: row; flex-wrap: wrap;">
                                 <ui:Toggle label="Partial" name="ListenPartial" class="compact-toggle" />
@@ -66,6 +74,24 @@
                                 <ui:FloatField label="End Speech (s)" name="ListenEndSpeechTime" value="1.0" style="flex-grow: 1; color: black;" />
                             </ui:VisualElement>
                             <ui:Button name="SendListenStart" text="START LISTENING" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement name="PanelVoiceConfig" style="display: none;">
+                            <ui:VisualElement style="flex-direction: row; flex-wrap: wrap;">
+                                <ui:TextField label="Voice ID" name="VoiceId" style="flex-grow: 1; color: black;" />
+                                <ui:TextField label="Name" name="VoiceName" style="flex-grow: 1; color: black;" />
+                                <ui:TextField label="Lang" name="VoiceLang" style="flex-grow: 1; color: black;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; margin-top: 2px;">
+                                <ui:TextField label="Provider" name="VoiceProvider" style="flex-grow: 1; color: black;" />
+                                <ui:TextField label="Gender" name="VoiceGender" style="flex-grow: 1; color: black;" />
+                                <ui:Toggle label="Input Language" name="VoiceInputLang" value="true" class="compact-toggle" />
+                            </ui:VisualElement>
+                            <ui:Button name="SendVoiceConfig" text="SET VOICE CONFIG" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement name="PanelVoice" style="display: none;">
+                            <ui:Button name="ReqVoiceStatus" text="GET CURRENT VOICE STATUS" />
                         </ui:VisualElement>
 
                         <ui:VisualElement name="PanelGesture" style="display: none;">
@@ -90,6 +116,53 @@
                             <ui:Button name="SendAttend" text="ATTEND LOCATION" />
                         </ui:VisualElement>
 
+                        <ui:VisualElement name="PanelAttendUser" style="display: none;">
+                            <ui:VisualElement style="flex-direction: row; margin-top: 2px;">
+                                <ui:TextField label="User ID" name="AttendUserId" value="closest" style="flex-grow: 1; color: black;" />
+                                <ui:DropdownField label="Speed" name="AttendUserSpeed" choices="xslow,slow,medium,fast,xfast" value="medium" style="color: black;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-direction: row; margin-top: 4px;">
+                                <ui:Button name="SendAttendUser" text="ATTEND USER" style="flex-grow: 1;" />
+                                <ui:Button name="SendAttendNobody" text="ATTEND NOBODY" style="flex-grow: 1;" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+
+                        <ui:VisualElement name="PanelFaceConfig" style="display: none;">
+                            <ui:VisualElement style="flex-direction: row;">
+                                <ui:TextField label="Face ID" name="FaceId" value="KEEP" style="flex-grow: 1; color: black;" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; margin-top: 2px;">
+                                <ui:Toggle label="Visibility" name="FaceVisibility" value="true" class="compact-toggle" />
+                                <ui:Toggle label="Microexpressions" name="FaceMicro" value="true" class="compact-toggle" />
+                                <ui:Toggle label="Blinking" name="FaceBlink" value="true" class="compact-toggle" />
+                                <ui:Toggle label="Head Sway" name="FaceSway" value="false" class="compact-toggle" />
+                            </ui:VisualElement>
+                            <ui:Button name="SendFaceConfig" text="SET FACE CONFIG" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement name="PanelFace" style="display: none;">
+                            <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+                                <ui:FloatField label="Yaw" name="FaceYaw" value="0.0" class="coordinate-field" />
+                                <ui:FloatField label="Pitch" name="FacePitch" value="0.0" class="coordinate-field" />
+                                <ui:FloatField label="Roll" name="FaceRoll" value="0.0" class="coordinate-field" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-direction: row; margin-top: 4px;">
+                                <ui:Button name="SendFaceHeadpose" text="SET HEADPOSE" style="flex-grow: 1;" />
+                                <ui:Button name="ReqFaceReset" text="RESET FACE" style="flex-grow: 1;" />
+                                <ui:Button name="ReqFaceStatus" text="STATUS" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+
+                        <ui:VisualElement name="PanelSensors" style="display: none;">
+                            <ui:VisualElement style="flex-direction: row; flex-wrap: wrap;">
+                                <ui:Button name="SendUsersStart" text="START USERS" style="flex-grow: 1;" />
+                                <ui:Button name="SendUsersStop" text="STOP USERS" style="flex-grow: 1;" />
+                                <ui:Button name="SendUsersOnce" text="USERS ONCE" style="flex-grow: 1;" />
+                                <ui:Button name="SendCamStart" text="START CAM" style="flex-grow: 1;" />
+                                <ui:Button name="SendCamStop" text="STOP CAM" style="flex-grow: 1;" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+
                         <ui:VisualElement name="PanelLed" style="display: none;">
                             <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 4px;">
                                 <ui:TextField label="Hex" name="LedColorHex" value="#FFFFFF" style="flex-grow: 1; color: black;" />
@@ -105,22 +178,34 @@
                 </ui:VisualElement>
             </ui:VisualElement>
 
-            <ui:VisualElement class="res-panel" style="flex-grow: 1; margin-left: 4px; background-color: #1a1a1a; padding: 5px; border-radius: 4px;">
-                <ui:Label text="RESPONSES LOG" style="-unity-font-style: bold; color: #3498db; border-bottom-width: 1px; font-size: 11px;" />
+            <ui:VisualElement class="res-panel" style="width: 50%; margin-left: 4px; background-color: #1a1a1a; padding: 5px; border-radius: 4px;">
                 
-                <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; margin-top: 2px;">
-                    <ui:Toggle label="speak.start" name="SubSpeakStart" value="true" class="compact-toggle" />
-                    <ui:Toggle label="speak.end" name="SubSpeakEnd" value="true" class="compact-toggle" />
-                    <ui:Toggle label="speak.word" name="SubWords" value="false" class="compact-toggle" />
-                    <ui:Toggle label="listen.start" name="SubListenStart" value="true" class="compact-toggle" />
-                    <ui:Toggle label="listen.end" name="SubListenEnd" value="true" class="compact-toggle" />
-                    <ui:Toggle label="hear.start" name="SubHearStart" value="true" class="compact-toggle" />
-                    <ui:Toggle label="hear.end" name="SubHearEnd" value="false" class="compact-toggle" />
-                    <ui:Toggle label="gesture.start" name="SubGestureStart" value="false" class="compact-toggle" />
-                    <ui:Toggle label="gesture.end" name="SubGestureEnd" value="true" class="compact-toggle" />
+                <ui:VisualElement style="flex-grow: 1.5; display: flex; flex-direction: column;">
+                    <ui:Label text="RESPONSES LOG" style="-unity-font-style: bold; color: #3498db; border-bottom-width: 1px; font-size: 11px;" />
+                    
+                    <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; margin-top: 2px;">
+                        <ui:Toggle label="speak.start" name="SubSpeakStart" value="true" class="compact-toggle" />
+                        <ui:Toggle label="speak.end" name="SubSpeakEnd" value="true" class="compact-toggle" />
+                        <ui:Toggle label="speak.word" name="SubWords" value="false" class="compact-toggle" />
+                        <ui:Toggle label="listen.start" name="SubListenStart" value="true" class="compact-toggle" />
+                        <ui:Toggle label="listen.end" name="SubListenEnd" value="true" class="compact-toggle" />
+                        <ui:Toggle label="hear.start" name="SubHearStart" value="true" class="compact-toggle" />
+                        <ui:Toggle label="hear.end" name="SubHearEnd" value="false" class="compact-toggle" />
+                        <ui:Toggle label="gesture.start" name="SubGestureStart" value="false" class="compact-toggle" />
+                        <ui:Toggle label="gesture.end" name="SubGestureEnd" value="true" class="compact-toggle" />
+                        <ui:Toggle label="voice.status" name="SubVoice" value="true" class="compact-toggle" />
+                        <ui:Toggle label="attend.status" name="SubAttend" value="true" class="compact-toggle" />
+                        <ui:Toggle label="face.status" name="SubFace" value="true" class="compact-toggle" />
+                    </ui:VisualElement>
+
+                    <ui:ScrollView name="SystemScroll" style="flex-grow: 1; margin-top: 4px;" />
                 </ui:VisualElement>
 
-                <ui:ScrollView name="SystemScroll" style="flex-grow: 1; margin-top: 4px;" />
+                <ui:VisualElement style="flex-grow: 1; margin-top: 5px; border-top-width: 1px; border-color: #333333; padding-top: 5px; display: flex; flex-direction: column;">
+                    <ui:Label text="USER DETECTION &amp; SENSOR LOG" style="-unity-font-style: bold; color: #e67e22; border-bottom-width: 1px; font-size: 11px;" />
+                    <ui:ScrollView name="SensorScroll" style="flex-grow: 1; margin-top: 4px;" />
+                </ui:VisualElement>
+
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
