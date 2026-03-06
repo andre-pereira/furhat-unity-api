@@ -14,6 +14,7 @@ public class FurhatTestController : MonoBehaviour {
     private ScrollView _systemScroll;
     private ScrollView _sensorScroll;
     private VisualElement _root;
+    [SerializeField] private string ipAddress = "127.0.0.1";
 
     private void OnEnable() {
         _root = GetComponent<UIDocument>().rootVisualElement;
@@ -28,6 +29,9 @@ public class FurhatTestController : MonoBehaviour {
         _root.Q<Button>("OpenLogsBtn").clicked += () => Application.OpenURL("file://" + Application.persistentDataPath);
 
         _client = new FurhatClient();
+
+        // Keep UI input and Inspector default in sync.
+        if (_ipField != null) _ipField.value = ipAddress;
         
         _client.OnMessageSent += msg => ProcessLogEntry("REQ", msg, _requestScroll);
         _client.OnMessageReceived += msg => {
@@ -295,7 +299,10 @@ public class FurhatTestController : MonoBehaviour {
     private async void OnConnectClicked() {
         _statusLog.text = "● Connecting...";
         _statusLog.style.color = Color.yellow;
-        await _client.Connect(_ipField.value);
+
+        if (_ipField != null) ipAddress = _ipField.value;
+        await _client.Connect(ipAddress);
+
         _statusLog.text = "● Connected";
         _statusLog.style.color = Color.green;
     }
