@@ -14,6 +14,7 @@ namespace Furhat.Runtime {
         private ClientWebSocket _ws;
         private CancellationTokenSource _cts;
         private readonly ConcurrentQueue<Action> _mainThreadQueue = new ConcurrentQueue<Action>();
+        public bool IsConnected => _ws != null && _ws.State == WebSocketState.Open;
         
         // --- Low-Level Log Events ---
         public event Action<string> OnMessageSent;
@@ -190,8 +191,24 @@ namespace Furhat.Runtime {
         }
 
         public void Dispose() {
-            _cts?.Cancel();
+            try {
+                if (_ws != null && (_ws.State == WebSocketState.Open || _ws.State == WebSocketState.CloseReceived)) {
+                    _ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client disposed", CancellationToken.None).GetAwaiter().GetResult();
+                }
+            } catch {
+                // Ignore close handshake failures during shutdown.
+            }
+
+            try {
+                _cts?.Cancel();
+            } catch {
+                // Ignore cancellation failures during shutdown.
+            }
+
+            _cts?.Dispose();
+            _cts = null;
             _ws?.Dispose();
+            _ws = null;
         }
         #endregion
     }

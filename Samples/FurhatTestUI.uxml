@@ -5,8 +5,9 @@
         
         <ui:VisualElement style="flex-direction: row; align-items: center; margin-bottom: 8px; background-color: #34495e; padding: 4px; border-radius: 3px;">
             <ui:Label text="IP:" style="margin-right: 4px;" />
-            <ui:TextField name="IpField" value="127.0.0.1" style="width: 80px; color: black;" />
+            <ui:TextField name="IpField" value="127.0.0.1" style="width: 160px; color: black;" />
             <ui:Button name="ConnectBtn" text="Connect" style="margin-left: 8px;" />
+            <ui:Button name="DisconnectBtn" text="Disconnect" style="margin-left: 6px;" />
             <ui:Label name="StatusLog" text="● Disconnected" style="margin-left: 12px; color: #e74c3c; -unity-font-style: bold; font-size: 11px;" />
             <ui:VisualElement style="flex-grow: 1;" />
             <ui:Button name="OpenLogsBtn" text="OPEN LOGS" style="background-color: #7f8c8d; color: white;" />
@@ -186,12 +187,12 @@
                     <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; margin-top: 2px;">
                         <ui:Toggle label="speak.start" name="SubSpeakStart" value="true" class="compact-toggle" />
                         <ui:Toggle label="speak.end" name="SubSpeakEnd" value="true" class="compact-toggle" />
-                        <ui:Toggle label="speak.word" name="SubWords" value="false" class="compact-toggle" />
+                        <ui:Toggle label="speak.word" name="SubWords" value="true" class="compact-toggle" />
                         <ui:Toggle label="listen.start" name="SubListenStart" value="true" class="compact-toggle" />
                         <ui:Toggle label="listen.end" name="SubListenEnd" value="true" class="compact-toggle" />
                         <ui:Toggle label="hear.start" name="SubHearStart" value="true" class="compact-toggle" />
-                        <ui:Toggle label="hear.end" name="SubHearEnd" value="false" class="compact-toggle" />
-                        <ui:Toggle label="gesture.start" name="SubGestureStart" value="false" class="compact-toggle" />
+                        <ui:Toggle label="hear.end" name="SubHearEnd" value="true" class="compact-toggle" />
+                        <ui:Toggle label="gesture.start" name="SubGestureStart" value="true" class="compact-toggle" />
                         <ui:Toggle label="gesture.end" name="SubGestureEnd" value="true" class="compact-toggle" />
                         <ui:Toggle label="voice.status" name="SubVoice" value="true" class="compact-toggle" />
                         <ui:Toggle label="attend.status" name="SubAttend" value="true" class="compact-toggle" />
@@ -202,8 +203,22 @@
                 </ui:VisualElement>
 
                 <ui:VisualElement style="flex-grow: 1; margin-top: 5px; border-top-width: 1px; border-color: #333333; padding-top: 5px; display: flex; flex-direction: column;">
-                    <ui:Label text="USER DETECTION &amp; SENSOR LOG" style="-unity-font-style: bold; color: #e67e22; border-bottom-width: 1px; font-size: 11px;" />
-                    <ui:ScrollView name="SensorScroll" style="flex-grow: 1; margin-top: 4px;" />
+                    <ui:Label text="SENSORS" style="-unity-font-style: bold; color: #e67e22; border-bottom-width: 1px; font-size: 11px;" />
+                    <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; margin-top: 4px; align-items: center;">
+                        <ui:Toggle label="Collect Camera Data" name="CollectCameraData" value="false" class="compact-toggle" />
+                        <ui:DropdownField label="Collect Audio Data" name="CollectAudioDataMode" choices="None,Speaker,Microphone,Both" value="None" style="min-width: 480px; color: white; margin-left: 10px;" />
+                        <ui:Toggle label="Collect User Data" name="CollectUserData" value="false" class="compact-toggle" />
+                        <ui:Toggle label="Audio Playback" name="AudioPlayback" value="false" class="compact-toggle" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="flex-direction: row; margin-top: 4px; height: 360px;">
+                        <ui:VisualElement style="width: 50%; margin-right: 4px; border-width: 1px; border-color: #3f3f3f; background-color: #0d0d0d;">
+                            <ui:Image name="LiveCameraImage" style="width: 100%; height: 100%; -unity-background-scale-mode: scale-to-fit;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement style="width: 50%; margin-left: 4px; border-width: 1px; border-color: #3f3f3f; background-color: #101010; padding: 3px;">
+                            <ui:Label text="USERS DATA" style="-unity-font-style: bold; color: #f39c12; font-size: 10px; margin-bottom: 2px;" />
+                            <ui:ScrollView name="SensorScroll" style="height: 334px; flex-grow: 0;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
                 </ui:VisualElement>
 
             </ui:VisualElement>

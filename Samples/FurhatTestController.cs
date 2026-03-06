@@ -1,9 +1,17 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Serialization;
 using Furhat.Runtime;
 using System.Collections.Generic;
 using System;
 using Newtonsoft.Json.Linq;
+
+public enum StartupAudioLoggingMode {
+    None,
+    Microphone,
+    Speaker,
+    Both
+}
 
 public class FurhatTestController : MonoBehaviour {
     private FurhatClient _client;
@@ -13,8 +21,29 @@ public class FurhatTestController : MonoBehaviour {
     private ScrollView _requestScroll;
     private ScrollView _systemScroll;
     private ScrollView _sensorScroll;
+    private Toggle _collectCameraDataToggle;
+    private DropdownField _collectAudioDataModeDropdown;
+    private Toggle _collectUserDataToggle;
+    private Toggle _audioPlaybackToggle;
+    private Image _liveCameraImage;
+    private Texture2D _cameraTexture;
+    [SerializeField] private AudioSource _sensorAudioSource;
+    private Button _connectButton;
+    private Button _disconnectButton;
+    private bool _cameraStreamActive;
+    private bool _audioCaptureActive;
+    private bool _userDetectionActive;
+    private bool _sessionLogVideo;
+    private bool _sessionLogUsers;
+    private string _sessionAudioMode = "None";
     private VisualElement _root;
     [SerializeField] private string ipAddress = "127.0.0.1";
+    [SerializeField] private bool startWithVideoLogging;
+    [SerializeField] private StartupAudioLoggingMode startWithAudioLoggingMode = StartupAudioLoggingMode.None;
+    [SerializeField, HideInInspector, FormerlySerializedAs("startWithAudioLogging")] private bool startWithAudioLoggingLegacy;
+    [SerializeField] private bool startWithUserDataLogging;
+    [SerializeField] private bool autoConnectOnEnable;
+    private const int SensorAudioSampleRate = 16000;
 
     private void OnEnable() {
         _root = GetComponent<UIDocument>().rootVisualElement;
@@ -23,35 +52,223 @@ public class FurhatTestController : MonoBehaviour {
         _requestSelector = _root.Q<DropdownField>("RequestTypeSelector");
         _requestScroll = _root.Q<ScrollView>("RequestScroll");
         _systemScroll = _root.Q<ScrollView>("SystemScroll");
-        _sensorScroll = _root.Q<ScrollView>("SensorScroll"); 
+        _sensorScroll = _root.Q<ScrollView>("SensorScroll");
+        _collectCameraDataToggle = _root.Q<Toggle>("CollectCameraData");
+        _collectAudioDataModeDropdown = _root.Q<DropdownField>("CollectAudioDataMode");
+        _collectUserDataToggle = _root.Q<Toggle>("CollectUserData");
+        _audioPlaybackToggle = _root.Q<Toggle>("AudioPlayback");
+        _liveCameraImage = _root.Q<Image>("LiveCameraImage");
+        _connectButton = _root.Q<Button>("ConnectBtn");
+        _disconnectButton = _root.Q<Button>("DisconnectBtn");
         
-        _root.Q<Button>("ConnectBtn").clicked += OnConnectClicked;
+        _connectButton.clicked += OnConnectClicked;
+        _disconnectButton.clicked += OnDisconnectClicked;
         _root.Q<Button>("OpenLogsBtn").clicked += () => Application.OpenURL("file://" + Application.persistentDataPath);
 
         _client = new FurhatClient();
+        if (_sensorAudioSource == null) _sensorAudioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
+        _sensorAudioSource.playOnAwake = false;
+        _sensorAudioSource.loop = false;
+        _sensorAudioSource.spatialBlend = 0f;
 
         // Keep UI input and Inspector default in sync.
         if (_ipField != null) _ipField.value = ipAddress;
+
+        if (_collectCameraDataToggle != null) {
+            _collectCameraDataToggle.RegisterValueChangedCallback(async evt => await ToggleCameraStreamAsync(evt.newValue));
+        }
+
+        if (_collectAudioDataModeDropdown != null) {
+            _collectAudioDataModeDropdown.RegisterValueChangedCallback(async evt => await ApplyAudioCaptureSelectionAsync(evt.newValue));
+        }
         
         _client.OnMessageSent += msg => ProcessLogEntry("REQ", msg, _requestScroll);
         _client.OnMessageReceived += msg => {
             try {
                 var data = JObject.Parse(msg);
                 string type = data["type"]?.ToString() ?? "";
-                
-                bool isSensor = (type == "response.users.data" || type == "response.camera.data" || type == "response.audio.data");
-                ProcessLogEntry("RES", msg, isSensor ? _sensorScroll : _systemScroll);
+
+                // Camera/audio payloads are handled directly by media handlers, not log panels.
+                if (type == "response.camera.data" || type == "response.audio.data") return;
+
+                if (type == "response.users.data" && _sessionLogUsers) {
+                    FurhatFileLogger.AppendUserData(msg);
+                }
+
+                if (type == "response.users.data") {
+                    UpdateLatestUserDataEntry(msg);
+                    return;
+                }
+
+                ProcessLogEntry("RES", msg, _systemScroll);
             } catch {
-                // FALLBACK: If the payload (like the camera stream) is too massive and breaks the parser, 
-                // we safely route it to the sensor panel without crashing Unity.
-                ProcessLogEntry("RES", "{\"type\":\"response.camera.data\", \"message\":\"[Large Sensor Payload Received]\"}", _sensorScroll);
+                // Ignore malformed/fragmented payloads in the general log stream.
             }
         };
 
+        _client.OnCameraSensorData += HandleCameraSensorData;
+        _client.OnAudioSensorData += HandleAudioSensorData;
         ApplyStartupDefaults(_root);
         SetupDynamicUI(_root);
         SetupPanelButtons(_root);
         SetupFilterCallbacks(_root);
+
+        if (autoConnectOnEnable) {
+            _ = ConnectAsync();
+        }
+    }
+
+    private void HandleCameraSensorData(CameraDataEvent data) {
+        if (data == null || string.IsNullOrEmpty(data.ImageBase64)) return;
+
+        if (_sessionLogVideo) {
+            FurhatFileLogger.AppendCameraFrameBase64(data.ImageBase64);
+        }
+
+        if (_collectCameraDataToggle != null && !_collectCameraDataToggle.value) return;
+
+        try {
+            byte[] bytes = Convert.FromBase64String(data.ImageBase64);
+            if (_cameraTexture == null) _cameraTexture = new Texture2D(2, 2, TextureFormat.RGB24, false);
+            if (_cameraTexture.LoadImage(bytes, false) && _liveCameraImage != null) {
+                _liveCameraImage.image = _cameraTexture;
+                _liveCameraImage.style.display = DisplayStyle.Flex;
+            }
+        } catch {
+            // Ignore malformed sensor frames.
+        }
+    }
+
+    private void HandleAudioSensorData(AudioDataEvent data) {
+        if (data == null) return;
+
+        string mode = _sessionAudioMode;
+        bool allowSpeaker = mode == "Speaker" || mode == "Both";
+        bool allowMic = mode == "Microphone" || mode == "Both";
+
+        if (allowSpeaker && !string.IsNullOrEmpty(data.SpeakerBase64)) {
+            FurhatFileLogger.AppendAudioBase64(data.SpeakerBase64);
+            if (_audioPlaybackToggle == null || _audioPlaybackToggle.value) PlayAudioBase64(data.SpeakerBase64);
+        }
+
+        if (allowMic && !string.IsNullOrEmpty(data.MicrophoneBase64)) {
+            FurhatFileLogger.AppendAudioBase64(data.MicrophoneBase64);
+            if (_audioPlaybackToggle == null || _audioPlaybackToggle.value) PlayAudioBase64(data.MicrophoneBase64);
+        }
+    }
+
+    private void PlayAudioBase64(string encodedAudio) {
+        try {
+            byte[] bytes = Convert.FromBase64String(encodedAudio);
+            if (!TryDecodePcm16(bytes, out var samples, out int sampleRate, out int channels)) return;
+
+            // Playback uses the payload's own PCM format to avoid speed/pitch drift.
+            PlayAudioChunk(samples, sampleRate, channels);
+        } catch {
+            // Ignore malformed sensor audio chunks.
+        }
+    }
+
+    private bool TryDecodePcm16(byte[] bytes, out float[] samples, out int sampleRate, out int channels) {
+        samples = Array.Empty<float>();
+        sampleRate = SensorAudioSampleRate;
+        channels = 1;
+
+        if (bytes == null || bytes.Length < 2) return false;
+
+        // WAV payload (RIFF) with PCM16 data.
+        if (bytes.Length > 44 && bytes[0] == 'R' && bytes[1] == 'I' && bytes[2] == 'F' && bytes[3] == 'F') {
+            int cursor = 12;
+            int dataStart = -1;
+            int dataLength = 0;
+
+            while (cursor + 8 <= bytes.Length) {
+                string chunk = System.Text.Encoding.ASCII.GetString(bytes, cursor, 4);
+                int chunkSize = BitConverter.ToInt32(bytes, cursor + 4);
+                cursor += 8;
+
+                if (chunk == "fmt " && chunkSize >= 16 && cursor + chunkSize <= bytes.Length) {
+                    channels = Mathf.Clamp(BitConverter.ToInt16(bytes, cursor + 2), 1, 2);
+                    sampleRate = BitConverter.ToInt32(bytes, cursor + 4);
+                }
+
+                if (chunk == "data" && cursor + chunkSize <= bytes.Length) {
+                    dataStart = cursor;
+                    dataLength = chunkSize;
+                    break;
+                }
+
+                cursor += chunkSize;
+            }
+
+            if (dataStart >= 0 && dataLength >= 2) {
+                int count = dataLength / 2;
+                samples = new float[count];
+                for (int i = 0; i < count; i++) {
+                    short pcm = BitConverter.ToInt16(bytes, dataStart + i * 2);
+                    samples[i] = pcm / 32768f;
+                }
+                return true;
+            }
+        }
+
+        // Fallback: treat as raw PCM16 mono at configured sample rate.
+        int sampleCount = bytes.Length / 2;
+        if (sampleCount == 0) return false;
+
+        samples = new float[sampleCount];
+        for (int i = 0; i < sampleCount; i++) {
+            short pcm = BitConverter.ToInt16(bytes, i * 2);
+            samples[i] = pcm / 32768f;
+        }
+
+        return true;
+    }
+
+    private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
+        if (_sensorAudioSource == null || samples == null || samples.Length == 0) return;
+
+        int safeChannels = Mathf.Clamp(channels, 1, 2);
+        int safeSampleRate = Mathf.Max(8000, sampleRate);
+        int frameCount = samples.Length / safeChannels;
+        if (frameCount <= 0) return;
+
+        var clip = AudioClip.Create($"furhat-sensor-{Time.frameCount}", frameCount, safeChannels, safeSampleRate, false);
+        clip.SetData(samples, 0);
+        _sensorAudioSource.PlayOneShot(clip);
+
+        Destroy(clip, Mathf.Max(0.25f, clip.length + 0.1f));
+    }
+
+    private void UpdateLatestUserDataEntry(string json) {
+        if (_sensorScroll == null) return;
+
+        _sensorScroll.Clear();
+
+        var entry = new VisualElement();
+        entry.AddToClassList("log-entry-container");
+
+        string summary = "users.data";
+        try {
+            var data = JObject.Parse(json);
+            int count = data["users"] is JArray users ? users.Count : 0;
+            summary = $"users.data ({count} users)";
+        } catch {
+            // Keep fallback summary.
+        }
+
+        var titleLabel = new Label($"[{DateTime.Now:HH:mm:ss}] {summary}");
+        titleLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+        titleLabel.style.fontSize = 11;
+        titleLabel.style.color = new Color(0.95f, 0.65f, 0.2f);
+
+        var detailLabel = new Label($"  > {json}");
+        detailLabel.style.color = new Color(0.75f, 0.75f, 0.75f);
+        detailLabel.style.fontSize = 9;
+
+        entry.Add(titleLabel);
+        entry.Add(detailLabel);
+        _sensorScroll.Add(entry);
     }
 
     private void SetupFilterCallbacks(VisualElement root) {
@@ -110,8 +327,67 @@ public class FurhatTestController : MonoBehaviour {
         if (type.Contains("listen")) return "log-type-listen";
         if (type.Contains("gesture")) return "log-type-gesture";
         if (type.Contains("attend") || type.Contains("gaze") || type.Contains("face")) return "log-type-gaze";
-        if (type.Contains("users") || type.Contains("camera") || type.Contains("audio.start")) return "log-type-sensors";
+        if (type.Contains("users") || type.Contains("camera") || type.Contains("audio")) return "log-type-sensors";
         return "log-type-led";
+    }
+
+    private async System.Threading.Tasks.Task ToggleCameraStreamAsync(bool enabled) {
+        if (_liveCameraImage != null) _liveCameraImage.style.display = enabled ? DisplayStyle.Flex : DisplayStyle.None;
+
+        if (_client == null || !_client.IsConnected) {
+            _cameraStreamActive = false;
+            return;
+        }
+
+        if (enabled) {
+            if (_cameraStreamActive) return;
+            await _client.StartCameraStream();
+            _cameraStreamActive = true;
+            return;
+        }
+
+        if (_cameraStreamActive) {
+            await _client.StopCameraStream();
+            _cameraStreamActive = false;
+        }
+
+        if (_liveCameraImage != null) _liveCameraImage.image = null;
+    }
+
+    private async System.Threading.Tasks.Task ApplyAudioCaptureSelectionAsync(string mode) {
+        bool captureMic = mode == "Microphone" || mode == "Both";
+        bool captureSpeaker = mode == "Speaker" || mode == "Both";
+        bool wantsCapture = captureMic || captureSpeaker;
+
+        if (_client == null || !_client.IsConnected) {
+            _audioCaptureActive = false;
+            return;
+        }
+
+        if (!wantsCapture) {
+            if (_audioCaptureActive) {
+                await _client.StopAudioCapture();
+                _audioCaptureActive = false;
+            }
+            return;
+        }
+
+        if (_audioCaptureActive) {
+            await _client.StopAudioCapture();
+            _audioCaptureActive = false;
+        }
+
+        await _client.StartAudioCapture(SensorAudioSampleRate, mic: captureMic, speaker: captureSpeaker);
+        _audioCaptureActive = true;
+    }
+
+    private void SetCollectionControlsLocked(bool connected) {
+        if (_collectCameraDataToggle != null) _collectCameraDataToggle.SetEnabled(!connected);
+        if (_collectAudioDataModeDropdown != null) _collectAudioDataModeDropdown.SetEnabled(!connected);
+        if (_collectUserDataToggle != null) _collectUserDataToggle.SetEnabled(!connected);
+        if (_ipField != null) _ipField.SetEnabled(!connected);
+        if (_connectButton != null) _connectButton.SetEnabled(!connected);
+        if (_disconnectButton != null) _disconnectButton.SetEnabled(connected);
     }
 
     private void RefreshLogVisibility() {
@@ -166,6 +442,10 @@ public class FurhatTestController : MonoBehaviour {
             foreach (var panel in panels.Values) if (panel != null) panel.style.display = DisplayStyle.None;
             if (panels.ContainsKey(evt.newValue) && panels[evt.newValue] != null) panels[evt.newValue].style.display = DisplayStyle.Flex;
         });
+
+        _requestSelector.SetValueWithoutNotify("Speak Text");
+        foreach (var panel in panels.Values) if (panel != null) panel.style.display = DisplayStyle.None;
+        if (panels["Speak Text"] != null) panels["Speak Text"].style.display = DisplayStyle.Flex;
     }
 
     private void SetupPanelButtons(VisualElement root) {
@@ -262,8 +542,14 @@ public class FurhatTestController : MonoBehaviour {
         root.Q<Button>("SendUsersStart").clicked += async () => await _client.StartUserDetection();
         root.Q<Button>("SendUsersStop").clicked += async () => await _client.StopUserDetection();
         root.Q<Button>("SendUsersOnce").clicked += async () => await _client.DetectUsersOnce();
-        root.Q<Button>("SendCamStart").clicked += async () => await _client.StartCameraStream();
-        root.Q<Button>("SendCamStop").clicked += async () => await _client.StopCameraStream();
+        root.Q<Button>("SendCamStart").clicked += async () => {
+            if (_collectCameraDataToggle != null) _collectCameraDataToggle.SetValueWithoutNotify(true);
+            await ToggleCameraStreamAsync(true);
+        };
+        root.Q<Button>("SendCamStop").clicked += async () => {
+            if (_collectCameraDataToggle != null) _collectCameraDataToggle.SetValueWithoutNotify(false);
+            await ToggleCameraStreamAsync(false);
+        };
 
         root.Q<Button>("SendLed").clicked += async () => await _client.SetLed(root.Q<TextField>("LedColorHex").value);
     }
@@ -281,6 +567,19 @@ public class FurhatTestController : MonoBehaviour {
         root.Q<Toggle>("ListenStopRobot").value = true;
         root.Q<Toggle>("ListenStopUser").value = true;
         root.Q<Toggle>("ListenResume").value = false;
+        _requestSelector?.SetValueWithoutNotify("Speak Text");
+        _collectCameraDataToggle?.SetValueWithoutNotify(startWithVideoLogging);
+        StartupAudioLoggingMode resolvedAudioMode = startWithAudioLoggingMode;
+        if (resolvedAudioMode == StartupAudioLoggingMode.None && startWithAudioLoggingLegacy) {
+            resolvedAudioMode = StartupAudioLoggingMode.Both;
+        }
+        _collectAudioDataModeDropdown?.SetValueWithoutNotify(MapStartupAudioModeToDropdown(resolvedAudioMode));
+        _collectUserDataToggle?.SetValueWithoutNotify(startWithUserDataLogging);
+        _audioPlaybackToggle?.SetValueWithoutNotify(false);
+        if (_collectCameraDataToggle != null && _liveCameraImage != null) {
+            _liveCameraImage.style.display = _collectCameraDataToggle.value ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+        SetCollectionControlsLocked(false);
         
         var hexField = root.Q<TextField>("LedColorHex");
         var swatch = root.Q<VisualElement>("LedColorSwatch");
@@ -291,22 +590,121 @@ public class FurhatTestController : MonoBehaviour {
         }
     }
 
+    private static string MapStartupAudioModeToDropdown(StartupAudioLoggingMode mode) {
+        switch (mode) {
+            case StartupAudioLoggingMode.Microphone: return "Microphone";
+            case StartupAudioLoggingMode.Speaker: return "Speaker";
+            case StartupAudioLoggingMode.Both: return "Both";
+            default: return "None";
+        }
+    }
+
     private void LogWarning(string msg) {
         _statusLog.text = "● " + msg;
         _statusLog.style.color = Color.red;
     }
 
     private async void OnConnectClicked() {
+        await ConnectAsync();
+    }
+
+    private async void OnDisconnectClicked() {
+        await DisconnectAsync();
+    }
+
+    private async System.Threading.Tasks.Task ConnectAsync() {
+        if (_client == null || _client.IsConnected) return;
+
         _statusLog.text = "● Connecting...";
         _statusLog.style.color = Color.yellow;
 
         if (_ipField != null) ipAddress = _ipField.value;
         await _client.Connect(ipAddress);
 
+        _sessionLogVideo = _collectCameraDataToggle != null && _collectCameraDataToggle.value;
+        _sessionAudioMode = _collectAudioDataModeDropdown?.value ?? "None";
+        _sessionLogUsers = _collectUserDataToggle != null && _collectUserDataToggle.value;
+        FurhatFileLogger.StartSession(_sessionAudioMode != "None", _sessionLogVideo, _sessionLogUsers, SensorAudioSampleRate);
+        SetCollectionControlsLocked(true);
+
+        if (_collectCameraDataToggle != null) {
+            await ToggleCameraStreamAsync(_collectCameraDataToggle.value);
+        }
+
+        if (_collectAudioDataModeDropdown != null) {
+            await ApplyAudioCaptureSelectionAsync(_collectAudioDataModeDropdown.value ?? "None");
+        }
+
+        if (_collectUserDataToggle != null && _collectUserDataToggle.value) {
+            await _client.StartUserDetection();
+            _userDetectionActive = true;
+        }
+
         _statusLog.text = "● Connected";
         _statusLog.style.color = Color.green;
     }
 
+    private async System.Threading.Tasks.Task DisconnectAsync() {
+        if (_client != null && _client.IsConnected) {
+            if (_cameraStreamActive) {
+                await _client.StopCameraStream();
+                _cameraStreamActive = false;
+            }
+
+            if (_audioCaptureActive) {
+                await _client.StopAudioCapture();
+                _audioCaptureActive = false;
+            }
+
+            if (_userDetectionActive) {
+                await _client.StopUserDetection();
+                _userDetectionActive = false;
+            }
+        }
+
+        _client?.Dispose();
+        _client = new FurhatClient();
+        _client.OnMessageSent += msg => ProcessLogEntry("REQ", msg, _requestScroll);
+        _client.OnMessageReceived += msg => {
+            try {
+                var data = JObject.Parse(msg);
+                string type = data["type"]?.ToString() ?? "";
+                if (type == "response.camera.data" || type == "response.audio.data") return;
+                if (type == "response.users.data") {
+                    if (_sessionLogUsers) FurhatFileLogger.AppendUserData(msg);
+                    UpdateLatestUserDataEntry(msg);
+                    return;
+                }
+                ProcessLogEntry("RES", msg, _systemScroll);
+            } catch { }
+        };
+        _client.OnCameraSensorData += HandleCameraSensorData;
+        _client.OnAudioSensorData += HandleAudioSensorData;
+
+        FurhatFileLogger.StopSession();
+        SetCollectionControlsLocked(false);
+        _sessionAudioMode = "None";
+        _sessionLogVideo = false;
+        _sessionLogUsers = false;
+
+        _statusLog.text = "● Disconnected";
+        _statusLog.style.color = new Color(0.91f, 0.3f, 0.24f);
+    }
+
     private void Update() => _client?.Update();
-    private void OnDisable() => _client?.Dispose();
+    private void OnDisable() {
+        FurhatFileLogger.StopSession();
+        _client?.Dispose();
+        _cameraStreamActive = false;
+        _audioCaptureActive = false;
+        _userDetectionActive = false;
+        _sessionLogVideo = false;
+        _sessionLogUsers = false;
+        _sessionAudioMode = "None";
+
+        if (_cameraTexture != null) {
+            Destroy(_cameraTexture);
+            _cameraTexture = null;
+        }
+    }
 }
