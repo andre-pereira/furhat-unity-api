@@ -36,11 +36,15 @@ public class FurhatTestController : MonoBehaviour {
     private bool _sessionLogVideo;
     private bool _sessionLogUsers;
     private string _sessionAudioMode = "None";
+
+private AudioClip _streamingClip;
+private int _streamWritePosition;
+private int _streamBufferedSamples;
+
     private VisualElement _root;
     [SerializeField] private string ipAddress = "127.0.0.1";
     [SerializeField] private bool startWithVideoLogging;
     [SerializeField] private StartupAudioLoggingMode startWithAudioLoggingMode = StartupAudioLoggingMode.None;
-    [SerializeField, HideInInspector, FormerlySerializedAs("startWithAudioLogging")] private bool startWithAudioLoggingLegacy;
     [SerializeField] private bool startWithUserDataLogging;
     [SerializeField] private bool autoConnectOnEnable;
     private const int SensorAudioSampleRate = 16000;
@@ -56,14 +60,26 @@ public class FurhatTestController : MonoBehaviour {
         _collectCameraDataToggle = _root.Q<Toggle>("CollectCameraData");
         _collectAudioDataModeDropdown = _root.Q<DropdownField>("CollectAudioDataMode");
         _collectUserDataToggle = _root.Q<Toggle>("CollectUserData");
+        
         _audioPlaybackToggle = _root.Q<Toggle>("AudioPlayback");
+        if (_audioPlaybackToggle != null) {
+            _audioPlaybackToggle.RegisterValueChangedCallback(evt => {
+            // If the toggle is turned off, stop the audio and reset the buffer
+            if (!evt.newValue && _sensorAudioSource != null) {
+                _sensorAudioSource.Stop();
+                _streamBufferedSamples = 0;
+                _streamWritePosition = 0;
+            }
+        });
+}
+        
         _liveCameraImage = _root.Q<Image>("LiveCameraImage");
         _connectButton = _root.Q<Button>("ConnectBtn");
         _disconnectButton = _root.Q<Button>("DisconnectBtn");
         
         _connectButton.clicked += OnConnectClicked;
         _disconnectButton.clicked += OnDisconnectClicked;
-        _root.Q<Button>("OpenLogsBtn").clicked += () => Application.OpenURL("file://" + Application.persistentDataPath);
+        _root.Q<Button>("OpenLogsBtn").clicked += () => Application.OpenURL("file://" + Application.persistentDataPath + "/Logs");
 
         _client = new FurhatClient();
         if (_sensorAudioSource == null) _sensorAudioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
@@ -139,106 +155,165 @@ public class FurhatTestController : MonoBehaviour {
         }
     }
 
-    private void HandleAudioSensorData(AudioDataEvent data) {
-        if (data == null) return;
+private void HandleAudioSensorData(AudioDataEvent data) {
+    if (data == null) return;
 
-        string mode = _sessionAudioMode;
-        bool allowSpeaker = mode == "Speaker" || mode == "Both";
-        bool allowMic = mode == "Microphone" || mode == "Both";
+    string mode = _sessionAudioMode;
+    bool allowSpeaker = mode == "Speaker" || mode == "Both";
+    bool allowMic = mode == "Microphone" || mode == "Both";
 
-        if (allowSpeaker && !string.IsNullOrEmpty(data.SpeakerBase64)) {
-            FurhatFileLogger.AppendAudioBase64(data.SpeakerBase64);
-            if (_audioPlaybackToggle == null || _audioPlaybackToggle.value) PlayAudioBase64(data.SpeakerBase64);
-        }
+    bool hasSpeaker = allowSpeaker && !string.IsNullOrEmpty(data.SpeakerBase64);
+    bool hasMic = allowMic && !string.IsNullOrEmpty(data.MicrophoneBase64);
 
-        if (allowMic && !string.IsNullOrEmpty(data.MicrophoneBase64)) {
-            FurhatFileLogger.AppendAudioBase64(data.MicrophoneBase64);
-            if (_audioPlaybackToggle == null || _audioPlaybackToggle.value) PlayAudioBase64(data.MicrophoneBase64);
-        }
+    // 1. Log the audio to their separated files
+    if (hasSpeaker) {
+        FurhatFileLogger.AppendSpeakerAudioBase64(data.SpeakerBase64);
+    }
+    if (hasMic) {
+        FurhatFileLogger.AppendMicAudioBase64(data.MicrophoneBase64);
     }
 
-    private void PlayAudioBase64(string encodedAudio) {
+    // 2. Handle the live playback
+    if (_audioPlaybackToggle != null && !_audioPlaybackToggle.value) return;
+
+    float[] speakerSamples = null;
+    int speakerRate = 16000, speakerChannels = 1;
+    if (hasSpeaker) {
         try {
-            byte[] bytes = Convert.FromBase64String(encodedAudio);
-            if (!TryDecodePcm16(bytes, out var samples, out int sampleRate, out int channels)) return;
-
-            // Playback uses the payload's own PCM format to avoid speed/pitch drift.
-            PlayAudioChunk(samples, sampleRate, channels);
-        } catch {
-            // Ignore malformed sensor audio chunks.
-        }
+            byte[] speakerBytes = Convert.FromBase64String(data.SpeakerBase64);
+            TryDecodePcm16(speakerBytes, out speakerSamples, out speakerRate, out speakerChannels);
+        } catch { }
     }
 
-    private bool TryDecodePcm16(byte[] bytes, out float[] samples, out int sampleRate, out int channels) {
-        samples = Array.Empty<float>();
-        sampleRate = SensorAudioSampleRate;
-        channels = 1;
+    float[] micSamples = null;
+    int micRate = 16000, micChannels = 1;
+    if (hasMic) {
+        try {
+            byte[] micBytes = Convert.FromBase64String(data.MicrophoneBase64);
+            TryDecodePcm16(micBytes, out micSamples, out micRate, out micChannels);
+        } catch { }
+    }
 
-        if (bytes == null || bytes.Length < 2) return false;
+    // 3. Mix and play
+    if (speakerSamples != null && micSamples != null) {
+        int length = Mathf.Max(speakerSamples.Length, micSamples.Length);
+        float[] mixedSamples = new float[length];
+        
+        for (int i = 0; i < length; i++) {
+            float s = i < speakerSamples.Length ? speakerSamples[i] : 0f;
+            float m = i < micSamples.Length ? micSamples[i] : 0f;
+            // Add and clamp to avoid audio distortion/peaking
+            mixedSamples[i] = Mathf.Clamp(s + m, -1f, 1f); 
+        }
+        
+        PlayAudioChunk(mixedSamples, speakerRate, speakerChannels);
+    } else if (speakerSamples != null) {
+        PlayAudioChunk(speakerSamples, speakerRate, speakerChannels);
+    } else if (micSamples != null) {
+        PlayAudioChunk(micSamples, micRate, micChannels);
+    }
+}
 
-        // WAV payload (RIFF) with PCM16 data.
-        if (bytes.Length > 44 && bytes[0] == 'R' && bytes[1] == 'I' && bytes[2] == 'F' && bytes[3] == 'F') {
-            int cursor = 12;
-            int dataStart = -1;
-            int dataLength = 0;
+private bool TryDecodePcm16(byte[] bytes, out float[] samples, out int sampleRate, out int channels) {
+    samples = Array.Empty<float>();
+    sampleRate = SensorAudioSampleRate;
+    channels = 1;
 
-            while (cursor + 8 <= bytes.Length) {
-                string chunk = System.Text.Encoding.ASCII.GetString(bytes, cursor, 4);
-                int chunkSize = BitConverter.ToInt32(bytes, cursor + 4);
-                cursor += 8;
+    if (bytes == null || bytes.Length < 2) return false;
 
-                if (chunk == "fmt " && chunkSize >= 16 && cursor + chunkSize <= bytes.Length) {
-                    channels = Mathf.Clamp(BitConverter.ToInt16(bytes, cursor + 2), 1, 2);
-                    sampleRate = BitConverter.ToInt32(bytes, cursor + 4);
-                }
+    // WAV payload (RIFF) with PCM16 data.
+    if (bytes.Length > 12 && bytes[0] == 'R' && bytes[1] == 'I' && bytes[2] == 'F' && bytes[3] == 'F') {
+        int cursor = 12;
+        int dataStart = -1;
+        int dataLength = 0;
 
-                if (chunk == "data" && cursor + chunkSize <= bytes.Length) {
-                    dataStart = cursor;
-                    dataLength = chunkSize;
-                    break;
-                }
+        while (cursor + 8 <= bytes.Length) {
+            string chunk = System.Text.Encoding.ASCII.GetString(bytes, cursor, 4);
+            int chunkSize = BitConverter.ToInt32(bytes, cursor + 4);
+            cursor += 8;
 
-                cursor += chunkSize;
+            if (chunk == "fmt " && chunkSize >= 16 && cursor + 16 <= bytes.Length) {
+                channels = Mathf.Clamp(BitConverter.ToInt16(bytes, cursor + 2), 1, 2);
+                sampleRate = BitConverter.ToInt32(bytes, cursor + 4);
+            }
+            else if (chunk == "data") {
+                dataStart = cursor;
+                // Clamp the length to safely strip the header without throwing errors
+                dataLength = Mathf.Min(chunkSize, bytes.Length - cursor);
+                dataLength -= dataLength % 2; 
+                break;
             }
 
-            if (dataStart >= 0 && dataLength >= 2) {
-                int count = dataLength / 2;
-                samples = new float[count];
-                for (int i = 0; i < count; i++) {
-                    short pcm = BitConverter.ToInt16(bytes, dataStart + i * 2);
-                    samples[i] = pcm / 32768f;
-                }
-                return true;
+            cursor += chunkSize;
+        }
+
+        if (dataStart >= 0 && dataLength > 0) {
+            int count = dataLength / 2;
+            samples = new float[count];
+            for (int i = 0; i < count; i++) {
+                short pcm = BitConverter.ToInt16(bytes, dataStart + i * 2);
+                samples[i] = pcm / 32768f;
             }
+            return true;
         }
-
-        // Fallback: treat as raw PCM16 mono at configured sample rate.
-        int sampleCount = bytes.Length / 2;
-        if (sampleCount == 0) return false;
-
-        samples = new float[sampleCount];
-        for (int i = 0; i < sampleCount; i++) {
-            short pcm = BitConverter.ToInt16(bytes, i * 2);
-            samples[i] = pcm / 32768f;
-        }
-
-        return true;
     }
 
-    private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
-        if (_sensorAudioSource == null || samples == null || samples.Length == 0) return;
-
-        int safeChannels = Mathf.Clamp(channels, 1, 2);
-        int safeSampleRate = Mathf.Max(8000, sampleRate);
-        int frameCount = samples.Length / safeChannels;
-        if (frameCount <= 0) return;
-
-        var clip = AudioClip.Create($"furhat-sensor-{Time.frameCount}", frameCount, safeChannels, safeSampleRate, false);
-        clip.SetData(samples, 0);
-        _sensorAudioSource.PlayOneShot(clip);
-
-        Destroy(clip, Mathf.Max(0.25f, clip.length + 0.1f));
+    // Fallback: treat as raw PCM16 mono at configured sample rate.
+    int length = bytes.Length - (bytes.Length % 2);
+    if (length <= 0) return false;
+    
+    int sampleCount = length / 2;
+    samples = new float[sampleCount];
+    for (int i = 0; i < sampleCount; i++) {
+        short pcm = BitConverter.ToInt16(bytes, i * 2);
+        samples[i] = pcm / 32768f;
     }
+
+    return true;
+}
+
+private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
+    if (_sensorAudioSource == null || samples == null || samples.Length == 0) return;
+
+    int safeChannels = Mathf.Clamp(channels, 1, 2);
+    int safeSampleRate = Mathf.Max(8000, sampleRate);
+
+    // 1. Initialize or reset the streaming clip if parameters change
+    if (_streamingClip == null || _streamingClip.frequency != safeSampleRate || _streamingClip.channels != safeChannels) {
+        _sensorAudioSource.Stop();
+        // Create a 3-second looping circular buffer
+        _streamingClip = AudioClip.Create("FurhatLiveStream", safeSampleRate * 3, safeChannels, safeSampleRate, false);
+        _sensorAudioSource.clip = _streamingClip;
+        _sensorAudioSource.loop = true;
+        _streamWritePosition = 0;
+        _streamBufferedSamples = 0;
+    }
+
+    // 2. Write the new samples into the circular buffer safely
+    int clipSamples = _streamingClip.samples;
+    if (_streamWritePosition + samples.Length <= clipSamples) {
+        _streamingClip.SetData(samples, _streamWritePosition);
+    } else {
+        // Handle wrapping around the end of the 3-second buffer
+        int firstBatch = clipSamples - _streamWritePosition;
+        float[] part1 = new float[firstBatch];
+        float[] part2 = new float[samples.Length - firstBatch];
+        Array.Copy(samples, 0, part1, 0, firstBatch);
+        Array.Copy(samples, firstBatch, part2, 0, part2.Length);
+
+        _streamingClip.SetData(part1, _streamWritePosition);
+        _streamingClip.SetData(part2, 0);
+    }
+
+    // 3. Move the write head forward
+    _streamWritePosition = (_streamWritePosition + samples.Length) % clipSamples;
+    _streamBufferedSamples += samples.Length;
+
+    // 4. Start playback once we have buffered a tiny bit of audio to prevent starvation
+    if (!_sensorAudioSource.isPlaying && _streamBufferedSamples > safeSampleRate * 0.1f) {
+        _sensorAudioSource.Play();
+    }
+}
 
     private void UpdateLatestUserDataEntry(string json) {
         if (_sensorScroll == null) return;
@@ -569,11 +644,9 @@ public class FurhatTestController : MonoBehaviour {
         root.Q<Toggle>("ListenResume").value = false;
         _requestSelector?.SetValueWithoutNotify("Speak Text");
         _collectCameraDataToggle?.SetValueWithoutNotify(startWithVideoLogging);
-        StartupAudioLoggingMode resolvedAudioMode = startWithAudioLoggingMode;
-        if (resolvedAudioMode == StartupAudioLoggingMode.None && startWithAudioLoggingLegacy) {
-            resolvedAudioMode = StartupAudioLoggingMode.Both;
-        }
-        _collectAudioDataModeDropdown?.SetValueWithoutNotify(MapStartupAudioModeToDropdown(resolvedAudioMode));
+       
+       _collectAudioDataModeDropdown?.SetValueWithoutNotify(MapStartupAudioModeToDropdown(startWithAudioLoggingMode));
+
         _collectUserDataToggle?.SetValueWithoutNotify(startWithUserDataLogging);
         _audioPlaybackToggle?.SetValueWithoutNotify(false);
         if (_collectCameraDataToggle != null && _liveCameraImage != null) {
@@ -624,7 +697,7 @@ public class FurhatTestController : MonoBehaviour {
         _sessionLogVideo = _collectCameraDataToggle != null && _collectCameraDataToggle.value;
         _sessionAudioMode = _collectAudioDataModeDropdown?.value ?? "None";
         _sessionLogUsers = _collectUserDataToggle != null && _collectUserDataToggle.value;
-        FurhatFileLogger.StartSession(_sessionAudioMode != "None", _sessionLogVideo, _sessionLogUsers, SensorAudioSampleRate);
+        FurhatFileLogger.StartSession(_sessionAudioMode, _sessionLogVideo, _sessionLogUsers, SensorAudioSampleRate);
         SetCollectionControlsLocked(true);
 
         if (_collectCameraDataToggle != null) {
@@ -660,6 +733,12 @@ public class FurhatTestController : MonoBehaviour {
                 await _client.StopUserDetection();
                 _userDetectionActive = false;
             }
+
+            if (_streamingClip != null) {
+                _sensorAudioSource.Stop();
+                Destroy(_streamingClip);
+                _streamingClip = null;
+            }
         }
 
         _client?.Dispose();
@@ -692,19 +771,25 @@ public class FurhatTestController : MonoBehaviour {
     }
 
     private void Update() => _client?.Update();
-    private void OnDisable() {
-        FurhatFileLogger.StopSession();
-        _client?.Dispose();
-        _cameraStreamActive = false;
-        _audioCaptureActive = false;
-        _userDetectionActive = false;
-        _sessionLogVideo = false;
-        _sessionLogUsers = false;
-        _sessionAudioMode = "None";
+private void OnDisable() {
+    FurhatFileLogger.StopSession();
+    _client?.Dispose();
+    _cameraStreamActive = false;
+    _audioCaptureActive = false;
+    _userDetectionActive = false;
+    _sessionLogVideo = false;
+    _sessionLogUsers = false;
+    _sessionAudioMode = "None";
 
-        if (_cameraTexture != null) {
-            Destroy(_cameraTexture);
-            _cameraTexture = null;
-        }
+    if (_cameraTexture != null) {
+        Destroy(_cameraTexture);
+        _cameraTexture = null;
     }
+
+    if (_streamingClip != null) {
+        if (_sensorAudioSource != null) _sensorAudioSource.Stop();
+        Destroy(_streamingClip);
+        _streamingClip = null;
+    }
+}
 }

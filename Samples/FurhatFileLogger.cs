@@ -9,83 +9,108 @@ public static class FurhatFileLogger {
     private static string _sessionFolder;
     private static string _eventsPath;
     private static string _usersPath;
-    private static string _audioPath;
     private static string _videoFramesFolder;
     private static StreamWriter _eventsWriter;
     private static StreamWriter _usersWriter;
-    private static FileStream _audioStream;
+    
+    private static FileStream _micStream;
+    private static FileStream _speakerStream;
+    private static int _micBytesWritten;
+    private static int _speakerBytesWritten;
+    
     private static bool _sessionActive;
     private static int _videoFrameIndex;
     private static DateTime _sessionStartedAtUtc;
     private static int _audioSampleRate = 16000;
     private static short _audioChannels = 1;
-    private static int _audioBytesWritten;
     private static bool _wavInitialized;
+
+    // Remembers the sample rate if later chunks lack headers
+    private static int _detectedSampleRate = 16000;
+    private static short _detectedChannels = 1;
 
     public static string SessionFolder => _sessionFolder;
 
-    public static void StartSession(bool logAudio, bool logVideo, bool logUsers, int sampleRate = 16000) {
-        lock (Sync) {
-            StopSession();
+    public static void StartSession(string audioMode, bool logVideo, bool logUsers, int sampleRate = 16000) {
+    lock (Sync) {
+        StopSession();
 
-            string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            _sessionFolder = Path.Combine(Application.persistentDataPath, "Logs", $"Session_{timestamp}");
-            Directory.CreateDirectory(_sessionFolder);
-            _sessionStartedAtUtc = DateTime.UtcNow;
+        string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+        _sessionFolder = Path.Combine(Application.persistentDataPath, "Logs", $"Session_{timestamp}");
+        Directory.CreateDirectory(_sessionFolder);
+        _sessionStartedAtUtc = DateTime.UtcNow;
 
-            _eventsPath = Path.Combine(_sessionFolder, "events.jsonl");
-            _usersPath = Path.Combine(_sessionFolder, "users_data.jsonl");
-            _audioPath = Path.Combine(_sessionFolder, "audio.wav");
-            _videoFramesFolder = Path.Combine(_sessionFolder, "video_frames");
+        _eventsPath = Path.Combine(_sessionFolder, "events.jsonl");
+        _usersPath = Path.Combine(_sessionFolder, "users_data.jsonl");
+        _videoFramesFolder = Path.Combine(_sessionFolder, "video_frames");
 
-            _eventsWriter = new StreamWriter(new FileStream(_eventsPath, FileMode.Create, FileAccess.Write, FileShare.Read));
-            if (logUsers) {
-                _usersWriter = new StreamWriter(new FileStream(_usersPath, FileMode.Create, FileAccess.Write, FileShare.Read));
-            }
-
-            _audioSampleRate = 16000;
-            _audioChannels = 1;
-            _audioBytesWritten = 0;
-            _wavInitialized = false;
-            if (logAudio) {
-                _audioStream = new FileStream(_audioPath, FileMode.Create, FileAccess.Write, FileShare.Read);
-                WriteWavHeaderPlaceholder();
-                _wavInitialized = true;
-            }
-
-            if (logVideo) {
-                Directory.CreateDirectory(_videoFramesFolder);
-                _videoFrameIndex = 0;
-            } else {
-                _videoFramesFolder = null;
-            }
-
-            _sessionActive = true;
-            Debug.Log($"Furhat logging session: {_sessionFolder}");
+        _eventsWriter = new StreamWriter(new FileStream(_eventsPath, FileMode.Create, FileAccess.Write, FileShare.Read));
+        if (logUsers) {
+            _usersWriter = new StreamWriter(new FileStream(_usersPath, FileMode.Create, FileAccess.Write, FileShare.Read));
         }
+
+        _audioSampleRate = 16000;
+        _audioChannels = 1;
+        _micBytesWritten = 0;
+        _speakerBytesWritten = 0;
+        _detectedSampleRate = 16000;
+        _detectedChannels = 1;
+        _wavInitialized = false;
+
+        bool logMic = audioMode == "Microphone" || audioMode == "Both";
+        bool logSpeaker = audioMode == "Speaker" || audioMode == "Both";
+
+        if (logMic) {
+            _micStream = new FileStream(Path.Combine(_sessionFolder, "audio_mic.wav"), FileMode.Create, FileAccess.Write, FileShare.Read);
+            WriteWavHeaderPlaceholder(_micStream);
+        }
+        
+        if (logSpeaker) {
+            _speakerStream = new FileStream(Path.Combine(_sessionFolder, "audio_speaker.wav"), FileMode.Create, FileAccess.Write, FileShare.Read);
+            WriteWavHeaderPlaceholder(_speakerStream);
+        }
+        
+        _wavInitialized = logMic || logSpeaker;
+
+        if (logVideo) {
+            Directory.CreateDirectory(_videoFramesFolder);
+            _videoFrameIndex = 0;
+        } else {
+            _videoFramesFolder = null;
+        }
+
+        _sessionActive = true;
+        Debug.Log($"Furhat logging session: {_sessionFolder}");
     }
+}
 
     public static void StopSession() {
         lock (Sync) {
-            if (!_sessionActive && _eventsWriter == null && _usersWriter == null && _audioStream == null) return;
+            if (!_sessionActive && _eventsWriter == null && _usersWriter == null && _micStream == null) return;
 
             try {
-                if (_audioStream != null && _wavInitialized) FinalizeWavHeader();
+                if (_wavInitialized) {
+                    FinalizeWavHeader(_micStream, _micBytesWritten);
+                    FinalizeWavHeader(_speakerStream, _speakerBytesWritten);
+                }
             } catch (Exception e) {
                 Debug.LogWarning($"Failed finalizing WAV: {e.Message}");
             }
 
             _eventsWriter?.Flush();
             _usersWriter?.Flush();
-            _audioStream?.Flush();
+            _micStream?.Flush();
+            _speakerStream?.Flush();
 
             _eventsWriter?.Dispose();
             _usersWriter?.Dispose();
-            _audioStream?.Dispose();
+            _micStream?.Dispose();
+            _speakerStream?.Dispose();
 
             _eventsWriter = null;
             _usersWriter = null;
-            _audioStream = null;
+            _micStream = null;
+            _speakerStream = null;
             _sessionActive = false;
         }
     }
@@ -142,7 +167,15 @@ public static class FurhatFileLogger {
         }
     }
 
-    public static void AppendAudioBase64(string base64Audio) {
+    public static void AppendMicAudioBase64(string base64Audio) {
+        ProcessAndWriteAudio(base64Audio, _micStream, ref _micBytesWritten);
+    }
+
+    public static void AppendSpeakerAudioBase64(string base64Audio) {
+        ProcessAndWriteAudio(base64Audio, _speakerStream, ref _speakerBytesWritten);
+    }
+
+    private static void ProcessAndWriteAudio(string base64Audio, FileStream stream, ref int bytesWrittenCounter) {
         if (string.IsNullOrEmpty(base64Audio)) return;
 
         try {
@@ -153,13 +186,9 @@ public static class FurhatFileLogger {
             if (normalized == null || normalized.Length == 0) return;
 
             lock (Sync) {
-                if (_audioStream == null) return;
-
-                _audioSampleRate = 16000;
-                _audioChannels = 1;
-
-                _audioStream.Write(normalized, 0, normalized.Length);
-                _audioBytesWritten += normalized.Length;
+                if (stream == null) return;
+                stream.Write(normalized, 0, normalized.Length);
+                bytesWrittenCounter += normalized.Length;
             }
         } catch (Exception e) {
             Debug.LogWarning($"Failed to append audio payload: {e.Message}");
@@ -184,8 +213,8 @@ public static class FurhatFileLogger {
         }
     }
 
-    private static void WriteWavHeaderPlaceholder() {
-        // 44-byte WAV header, sizes patched at session end.
+    private static void WriteWavHeaderPlaceholder(FileStream stream) {
+        if (stream == null) return;
         byte[] header = new byte[44];
         Array.Copy(Encoding.ASCII.GetBytes("RIFF"), 0, header, 0, 4);
         Array.Copy(BitConverter.GetBytes(36), 0, header, 4, 4);
@@ -202,16 +231,15 @@ public static class FurhatFileLogger {
         Array.Copy(BitConverter.GetBytes((short)16), 0, header, 34, 2);
         Array.Copy(Encoding.ASCII.GetBytes("data"), 0, header, 36, 4);
         Array.Copy(BitConverter.GetBytes(0), 0, header, 40, 4);
-        _audioStream.Write(header, 0, header.Length);
+        stream.Write(header, 0, header.Length);
     }
 
-    private static void FinalizeWavHeader() {
-        if (_audioStream == null) return;
-
-        _audioStream.Seek(0, SeekOrigin.Begin);
+    private static void FinalizeWavHeader(FileStream stream, int bytesWritten) {
+        if (stream == null) return;
+        stream.Seek(0, SeekOrigin.Begin);
         byte[] header = new byte[44];
         Array.Copy(Encoding.ASCII.GetBytes("RIFF"), 0, header, 0, 4);
-        Array.Copy(BitConverter.GetBytes(36 + _audioBytesWritten), 0, header, 4, 4);
+        Array.Copy(BitConverter.GetBytes(36 + bytesWritten), 0, header, 4, 4);
         Array.Copy(Encoding.ASCII.GetBytes("WAVE"), 0, header, 8, 4);
         Array.Copy(Encoding.ASCII.GetBytes("fmt "), 0, header, 12, 4);
         Array.Copy(BitConverter.GetBytes(16), 0, header, 16, 4);
@@ -224,19 +252,19 @@ public static class FurhatFileLogger {
         Array.Copy(BitConverter.GetBytes(blockAlign), 0, header, 32, 2);
         Array.Copy(BitConverter.GetBytes((short)16), 0, header, 34, 2);
         Array.Copy(Encoding.ASCII.GetBytes("data"), 0, header, 36, 4);
-        Array.Copy(BitConverter.GetBytes(_audioBytesWritten), 0, header, 40, 4);
-        _audioStream.Write(header, 0, header.Length);
+        Array.Copy(BitConverter.GetBytes(bytesWritten), 0, header, 40, 4);
+        stream.Write(header, 0, header.Length);
     }
 
     private static bool TryExtractPcm16(byte[] bytes, out byte[] pcmBytes, out int sampleRate, out short channels) {
         pcmBytes = Array.Empty<byte>();
-        sampleRate = 16000;
-        channels = 1;
+        sampleRate = _detectedSampleRate;
+        channels = _detectedChannels;
 
         if (bytes == null || bytes.Length < 2) return false;
 
-        if (bytes.Length > 44 && bytes[0] == 'R' && bytes[1] == 'I' && bytes[2] == 'F' && bytes[3] == 'F') {
-            int cursor = 12;
+        if (bytes.Length > 12 && bytes[0] == 'R' && bytes[1] == 'I' && bytes[2] == 'F' && bytes[3] == 'F') {
+            int cursor = 12; 
             int dataStart = -1;
             int dataLength = 0;
 
@@ -245,34 +273,34 @@ public static class FurhatFileLogger {
                 int chunkSize = BitConverter.ToInt32(bytes, cursor + 4);
                 cursor += 8;
 
-                if (chunk == "fmt " && chunkSize >= 16 && cursor + chunkSize <= bytes.Length) {
+                if (chunk == "fmt " && chunkSize >= 16 && cursor + 16 <= bytes.Length) {
                     channels = (short)Mathf.Clamp(BitConverter.ToInt16(bytes, cursor + 2), 1, 2);
                     sampleRate = BitConverter.ToInt32(bytes, cursor + 4);
+                    
+                    _detectedChannels = channels;
+                    _detectedSampleRate = sampleRate;
                 }
-
-                if (chunk == "data" && cursor + chunkSize <= bytes.Length) {
+                else if (chunk == "data") {
                     dataStart = cursor;
-                    dataLength = chunkSize;
+                    dataLength = Mathf.Min(chunkSize, bytes.Length - cursor);
+                    dataLength -= dataLength % 2; 
                     break;
                 }
 
                 cursor += chunkSize;
             }
 
-            if (dataStart >= 0 && dataLength >= 2) {
+            if (dataStart >= 0 && dataLength > 0) {
                 pcmBytes = new byte[dataLength];
                 Buffer.BlockCopy(bytes, dataStart, pcmBytes, 0, dataLength);
                 return true;
             }
         }
 
-        // Fallback: treat payload as raw PCM16 mono.
         int length = bytes.Length - (bytes.Length % 2);
         if (length <= 0) return false;
         pcmBytes = new byte[length];
         Buffer.BlockCopy(bytes, 0, pcmBytes, 0, length);
-        sampleRate = 16000;
-        channels = 1;
         return true;
     }
 
@@ -286,7 +314,6 @@ public static class FurhatFileLogger {
         int frameCount = totalSamples / channels;
         if (frameCount <= 0) return Array.Empty<byte>();
 
-        // Decode to mono float first.
         float[] mono = new float[frameCount];
         int byteIndex = 0;
         for (int i = 0; i < frameCount; i++) {
@@ -308,7 +335,6 @@ public static class FurhatFileLogger {
             return FloatMonoToPcm16(mono);
         }
 
-        // Linear interpolation resample to keep timeline correct.
         int outCount = Mathf.Max(1, Mathf.RoundToInt(mono.Length * (dstRate / (float)srcRate)));
         float[] resampled = new float[outCount];
         float step = srcRate / (float)dstRate;
