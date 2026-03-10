@@ -31,12 +31,16 @@ public static class FurhatFileLogger {
 
     public static string SessionFolder => _sessionFolder;
 
-    public static void StartSession(string audioMode, bool logVideo, bool logUsers, int sampleRate = 16000) {
+    public static void StartSession(string audioMode, bool logVideo, bool logUsers, int sampleRate = 16000, string rootDirectory = null) {
     lock (Sync) {
         StopSession();
 
         string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-        _sessionFolder = Path.Combine(Application.persistentDataPath, "Logs", $"Session_{timestamp}");
+        string baseDirectory = string.IsNullOrWhiteSpace(rootDirectory)
+            ? Path.Combine(Application.persistentDataPath, "Logs")
+            : rootDirectory;
+
+        _sessionFolder = Path.Combine(baseDirectory, $"Session_{timestamp}");
         Directory.CreateDirectory(_sessionFolder);
         _sessionStartedAtUtc = DateTime.UtcNow;
 

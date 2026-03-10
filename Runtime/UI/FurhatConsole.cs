@@ -1,20 +1,26 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.Serialization;
 using Furhat.Runtime;
 using System.Collections.Generic;
 using System;
 using Newtonsoft.Json.Linq;
 
-public enum StartupAudioLoggingMode {
-    None,
-    Microphone,
-    Speaker,
-    Both
+public enum ConsoleToggleInputMode {
+    Keyboard,
+    External
 }
 
-public class FurhatTestController : MonoBehaviour {
-    private FurhatClient _client;
+public class FurhatConsole : MonoBehaviour {
+
+    [Header("Console Toggle")]
+    [SerializeField] private bool useDefaultTildeKey = true;
+    [SerializeField] private ConsoleToggleInputMode toggleInputMode = ConsoleToggleInputMode.Keyboard;
+    [SerializeField] private KeyCode customToggleKey = KeyCode.BackQuote;
+
+    [Header("References")]
+    [SerializeField] private FurhatRobot _robot;
+    [SerializeField] private AudioSource _sensorAudioSource;
+
     private Label _statusLog;
     private TextField _ipField;
     private DropdownField _requestSelector;
@@ -27,29 +33,26 @@ public class FurhatTestController : MonoBehaviour {
     private Toggle _audioPlaybackToggle;
     private Image _liveCameraImage;
     private Texture2D _cameraTexture;
-    [SerializeField] private AudioSource _sensorAudioSource;
     private Button _connectButton;
     private Button _disconnectButton;
-    private bool _cameraStreamActive;
-    private bool _audioCaptureActive;
-    private bool _userDetectionActive;
-    private bool _sessionLogVideo;
-    private bool _sessionLogUsers;
-    private string _sessionAudioMode = "None";
+    private bool _consoleVisible;
+    private bool _toggleRequested;
 
 private AudioClip _streamingClip;
 private int _streamWritePosition;
 private int _streamBufferedSamples;
 
     private VisualElement _root;
-    [SerializeField] private string ipAddress = "127.0.0.1";
-    [SerializeField] private bool startWithVideoLogging;
-    [SerializeField] private StartupAudioLoggingMode startWithAudioLoggingMode = StartupAudioLoggingMode.None;
-    [SerializeField] private bool startWithUserDataLogging;
-    [SerializeField] private bool autoConnectOnEnable;
     private const int SensorAudioSampleRate = 16000;
 
     private void OnEnable() {
+        if (_robot == null) {
+            _robot = GetComponent<FurhatRobot>();
+        }
+        if (_robot == null) {
+            _robot = FindFirstObjectByType<FurhatRobot>();
+        }
+
         _root = GetComponent<UIDocument>().rootVisualElement;
         _ipField = _root.Q<TextField>("IpField");
         _statusLog = _root.Q<Label>("StatusLog");
@@ -79,16 +82,19 @@ private int _streamBufferedSamples;
         
         _connectButton.clicked += OnConnectClicked;
         _disconnectButton.clicked += OnDisconnectClicked;
-        _root.Q<Button>("OpenLogsBtn").clicked += () => Application.OpenURL("file://" + Application.persistentDataPath + "/Logs");
+        _root.Q<Button>("OpenLogsBtn").clicked += OpenLogsDirectory;
 
-        _client = new FurhatClient();
+        if (_robot == null) {
+            LogWarning("No FurhatRobot found in scene.");
+        }
+
         if (_sensorAudioSource == null) _sensorAudioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
         _sensorAudioSource.playOnAwake = false;
         _sensorAudioSource.loop = false;
         _sensorAudioSource.spatialBlend = 0f;
 
-        // Keep UI input and Inspector default in sync.
-        if (_ipField != null) _ipField.value = ipAddress;
+        // Keep UI input and robot inspector default in sync.
+        if (_ipField != null && _robot != null) _ipField.value = _robot.IpAddress;
 
         if (_collectCameraDataToggle != null) {
             _collectCameraDataToggle.RegisterValueChangedCallback(async evt => await ToggleCameraStreamAsync(evt.newValue));
@@ -97,49 +103,42 @@ private int _streamBufferedSamples;
         if (_collectAudioDataModeDropdown != null) {
             _collectAudioDataModeDropdown.RegisterValueChangedCallback(async evt => await ApplyAudioCaptureSelectionAsync(evt.newValue));
         }
-        
-        _client.OnMessageSent += msg => ProcessLogEntry("REQ", msg, _requestScroll);
-        _client.OnMessageReceived += msg => {
-            try {
-                var data = JObject.Parse(msg);
-                string type = data["type"]?.ToString() ?? "";
 
-                // Camera/audio payloads are handled directly by media handlers, not log panels.
-                if (type == "response.camera.data" || type == "response.audio.data") return;
+        if (_robot != null) {
+            _robot.OnMessageSent += HandleRobotMessageSent;
+            _robot.OnMessageReceived += HandleRobotMessageReceived;
+            _robot.OnCameraSensorData += HandleCameraSensorData;
+            _robot.OnAudioSensorData += HandleAudioSensorData;
+            _robot.OnStatusChanged += HandleRobotStatusChanged;
+        }
 
-                if (type == "response.users.data" && _sessionLogUsers) {
-                    FurhatFileLogger.AppendUserData(msg);
-                }
-
-                if (type == "response.users.data") {
-                    UpdateLatestUserDataEntry(msg);
-                    return;
-                }
-
-                ProcessLogEntry("RES", msg, _systemScroll);
-            } catch {
-                // Ignore malformed/fragmented payloads in the general log stream.
-            }
-        };
-
-        _client.OnCameraSensorData += HandleCameraSensorData;
-        _client.OnAudioSensorData += HandleAudioSensorData;
         ApplyStartupDefaults(_root);
         SetupDynamicUI(_root);
         SetupPanelButtons(_root);
         SetupFilterCallbacks(_root);
 
-        if (autoConnectOnEnable) {
-            _ = ConnectAsync();
+        if (_robot != null && _robot.IsConnected) {
+            // If this console is enabled while a session is active, reflect current session choices.
+            ApplyCurrentSessionValues(_root);
         }
+
+        SetCollectionControlsLocked(_robot != null && _robot.IsConnected);
+
+        _consoleVisible = false;
+        ApplyConsoleVisibility();
+    }
+
+    private void OpenLogsDirectory() {
+        if (_robot != null) {
+            Application.OpenURL("file://" + _robot.LogRootDirectory);
+            return;
+        }
+
+        Application.OpenURL("file://" + Application.persistentDataPath + "/Logs");
     }
 
     private void HandleCameraSensorData(CameraDataEvent data) {
         if (data == null || string.IsNullOrEmpty(data.ImageBase64)) return;
-
-        if (_sessionLogVideo) {
-            FurhatFileLogger.AppendCameraFrameBase64(data.ImageBase64);
-        }
 
         if (_collectCameraDataToggle != null && !_collectCameraDataToggle.value) return;
 
@@ -158,22 +157,14 @@ private int _streamBufferedSamples;
 private void HandleAudioSensorData(AudioDataEvent data) {
     if (data == null) return;
 
-    string mode = _sessionAudioMode;
+    string mode = _robot != null ? _robot.CurrentAudioLoggingMode : "None";
     bool allowSpeaker = mode == "Speaker" || mode == "Both";
     bool allowMic = mode == "Microphone" || mode == "Both";
 
     bool hasSpeaker = allowSpeaker && !string.IsNullOrEmpty(data.SpeakerBase64);
     bool hasMic = allowMic && !string.IsNullOrEmpty(data.MicrophoneBase64);
 
-    // 1. Log the audio to their separated files
-    if (hasSpeaker) {
-        FurhatFileLogger.AppendSpeakerAudioBase64(data.SpeakerBase64);
-    }
-    if (hasMic) {
-        FurhatFileLogger.AppendMicAudioBase64(data.MicrophoneBase64);
-    }
-
-    // 2. Handle the live playback
+    // Live playback
     if (_audioPlaybackToggle != null && !_audioPlaybackToggle.value) return;
 
     float[] speakerSamples = null;
@@ -212,6 +203,35 @@ private void HandleAudioSensorData(AudioDataEvent data) {
     } else if (micSamples != null) {
         PlayAudioChunk(micSamples, micRate, micChannels);
     }
+}
+
+private void HandleRobotMessageSent(string msg) {
+    ProcessLogEntry("REQ", msg, _requestScroll);
+}
+
+private void HandleRobotMessageReceived(string msg) {
+    try {
+        var data = JObject.Parse(msg);
+        string type = data["type"]?.ToString() ?? "";
+
+        // Camera/audio payloads are handled directly by media handlers, not log panels.
+        if (type == "response.camera.data" || type == "response.audio.data") return;
+
+        if (type == "response.users.data") {
+            UpdateLatestUserDataEntry(msg);
+            return;
+        }
+
+        ProcessLogEntry("RES", msg, _systemScroll);
+    } catch {
+        // Ignore malformed/fragmented payloads in the general log stream.
+    }
+}
+
+private void HandleRobotStatusChanged(string status, Color color) {
+    if (_statusLog == null) return;
+    _statusLog.text = "● " + status;
+    _statusLog.style.color = color;
 }
 
 private bool TryDecodePcm16(byte[] bytes, out float[] samples, out int sampleRate, out int channels) {
@@ -375,8 +395,6 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
             categoryClass = direction == "REQ" ? "log-type-led" : "response-fragment";
         }
         
-        FurhatFileLogger.Append(direction, fullType, json);
-
         var entry = new VisualElement();
         entry.AddToClassList("log-entry-container");
         entry.AddToClassList(categoryClass); 
@@ -409,51 +427,17 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
     private async System.Threading.Tasks.Task ToggleCameraStreamAsync(bool enabled) {
         if (_liveCameraImage != null) _liveCameraImage.style.display = enabled ? DisplayStyle.Flex : DisplayStyle.None;
 
-        if (_client == null || !_client.IsConnected) {
-            _cameraStreamActive = false;
-            return;
-        }
-
-        if (enabled) {
-            if (_cameraStreamActive) return;
-            await _client.StartCameraStream();
-            _cameraStreamActive = true;
-            return;
-        }
-
-        if (_cameraStreamActive) {
-            await _client.StopCameraStream();
-            _cameraStreamActive = false;
+        if (_robot != null) {
+            await _robot.SetCameraStreamAsync(enabled);
         }
 
         if (_liveCameraImage != null) _liveCameraImage.image = null;
     }
 
     private async System.Threading.Tasks.Task ApplyAudioCaptureSelectionAsync(string mode) {
-        bool captureMic = mode == "Microphone" || mode == "Both";
-        bool captureSpeaker = mode == "Speaker" || mode == "Both";
-        bool wantsCapture = captureMic || captureSpeaker;
-
-        if (_client == null || !_client.IsConnected) {
-            _audioCaptureActive = false;
-            return;
+        if (_robot != null) {
+            await _robot.SetAudioCaptureModeAsync(mode);
         }
-
-        if (!wantsCapture) {
-            if (_audioCaptureActive) {
-                await _client.StopAudioCapture();
-                _audioCaptureActive = false;
-            }
-            return;
-        }
-
-        if (_audioCaptureActive) {
-            await _client.StopAudioCapture();
-            _audioCaptureActive = false;
-        }
-
-        await _client.StartAudioCapture(SensorAudioSampleRate, mic: captureMic, speaker: captureSpeaker);
-        _audioCaptureActive = true;
     }
 
     private void SetCollectionControlsLocked(bool connected) {
@@ -528,13 +512,13 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
         root.Q<Button>("SendSpeakText").clicked += async () => {
             var txt = root.Q<TextField>("SpeakTextInput").value;
             if (string.IsNullOrWhiteSpace(txt)) { LogWarning("Text cannot be empty!"); return; }
-            await _client.Speak(txt, root.Q<Toggle>("SpeakTextAbort").value, root.Q<Toggle>("SpeakTextMonitor").value);
+            await Client.Speak(txt, root.Q<Toggle>("SpeakTextAbort").value, root.Q<Toggle>("SpeakTextMonitor").value);
         };
 
         root.Q<Button>("SendSpeakAudio").clicked += async () => {
             var url = root.Q<TextField>("AudioUrl").value;
             if (string.IsNullOrWhiteSpace(url)) { LogWarning("URL cannot be empty!"); return; }
-            await _client.SpeakAudio(url, root.Q<Toggle>("AudioAbort").value, root.Q<Toggle>("AudioLipsync").value, root.Q<TextField>("AudioDisplayText").value);
+            await Client.SpeakAudio(url, root.Q<Toggle>("AudioAbort").value, root.Q<Toggle>("AudioLipsync").value, root.Q<TextField>("AudioDisplayText").value);
         };
 
         root.Q<Button>("SendListenStart").clicked += async () => {
@@ -548,12 +532,12 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
                 NoSpeechTimeout = root.Q<FloatField>("ListenNoSpeechTime").value,
                 EndSpeechTimeout = root.Q<FloatField>("ListenEndSpeechTime").value
             };
-            await _client.StartListening(config);
+            await Client.StartListening(config);
         };
 
         root.Q<Button>("SendGenericStop").clicked += async () => {
-            if (_requestSelector.value.Contains("Listen")) await _client.StopListening();
-            else await _client.StopSpeaking();
+            if (_requestSelector.value.Contains("Listen")) await Client.StopListening();
+            else await Client.StopSpeaking();
         };
 
         // -- Configs (Using your actual API models!) --
@@ -562,7 +546,7 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
             string rawPhrases = root.Q<TextField>("ListenPhrases").value;
             var langList = new List<string>(rawLangs.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
             var phraseList = new List<string>(rawPhrases.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
-            await _client.SetListenConfig(langList, phraseList);
+            await Client.SetListenConfig(langList, phraseList);
         };
 
         root.Q<Button>("SendVoiceConfig").clicked += async () => {
@@ -574,7 +558,7 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
                 Gender = string.IsNullOrEmpty(root.Q<TextField>("VoiceGender").value) ? null : root.Q<TextField>("VoiceGender").value,
                 InputLanguage = root.Q<Toggle>("VoiceInputLang").value
             };
-            await _client.SetVoice(config);
+            await Client.SetVoice(config);
         };
 
         root.Q<Button>("SendFaceConfig").clicked += async () => {
@@ -585,38 +569,38 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
                 Blinking = root.Q<Toggle>("FaceBlink").value,
                 HeadSway = root.Q<Toggle>("FaceSway").value
             };
-            await _client.SetFaceConfig(config);
+            await Client.SetFaceConfig(config);
         };
 
         // -- Voice & Face Control --
-        root.Q<Button>("ReqVoiceStatus").clicked += async () => await _client.RequestVoiceStatus();
+        root.Q<Button>("ReqVoiceStatus").clicked += async () => await Client.RequestVoiceStatus();
 
         root.Q<Button>("SendFaceHeadpose").clicked += async () => {
-            await _client.SetFaceHeadpose(
+            await Client.SetFaceHeadpose(
                 root.Q<FloatField>("FaceYaw").value, root.Q<FloatField>("FacePitch").value, root.Q<FloatField>("FaceRoll").value
             );
         };
         
-        root.Q<Button>("ReqFaceStatus").clicked += async () => await _client.RequestFaceStatus();
-        root.Q<Button>("ReqFaceReset").clicked += async () => await _client.ResetFace();
+        root.Q<Button>("ReqFaceStatus").clicked += async () => await Client.RequestFaceStatus();
+        root.Q<Button>("ReqFaceReset").clicked += async () => await Client.ResetFace();
 
         // -- Gestures & Attention --
         root.Q<Button>("SendGesture").clicked += async () => {
             var gName = root.Q<TextField>("GestureName").value;
-            if (!string.IsNullOrWhiteSpace(gName)) await _client.Gesture(gName, Mathf.Clamp01(root.Q<FloatField>("GestureIntensity").value), Mathf.Max(0.1f, root.Q<FloatField>("GestureDuration").value), root.Q<Toggle>("GestureMonitor").value);
+            if (!string.IsNullOrWhiteSpace(gName)) await Client.Gesture(gName, Mathf.Clamp01(root.Q<FloatField>("GestureIntensity").value), Mathf.Max(0.1f, root.Q<FloatField>("GestureDuration").value), root.Q<Toggle>("GestureMonitor").value);
         };
 
         root.Q<Button>("SendAttend").clicked += async () => {
-            await _client.AttendLocation(root.Q<FloatField>("AttendX").value, root.Q<FloatField>("AttendY").value, root.Q<FloatField>("AttendZ").value, root.Q<DropdownField>("AttendSpeed").value);
+            await Client.AttendLocation(root.Q<FloatField>("AttendX").value, root.Q<FloatField>("AttendY").value, root.Q<FloatField>("AttendZ").value, root.Q<DropdownField>("AttendSpeed").value);
         };
 
-        root.Q<Button>("SendAttendUser").clicked += async () => await _client.AttendUser(root.Q<TextField>("AttendUserId").value, root.Q<DropdownField>("AttendUserSpeed").value);
-        root.Q<Button>("SendAttendNobody").clicked += async () => await _client.AttendNobody();
+        root.Q<Button>("SendAttendUser").clicked += async () => await Client.AttendUser(root.Q<TextField>("AttendUserId").value, root.Q<DropdownField>("AttendUserSpeed").value);
+        root.Q<Button>("SendAttendNobody").clicked += async () => await Client.AttendNobody();
 
         // -- Sensors & System --
-        root.Q<Button>("SendUsersStart").clicked += async () => await _client.StartUserDetection();
-        root.Q<Button>("SendUsersStop").clicked += async () => await _client.StopUserDetection();
-        root.Q<Button>("SendUsersOnce").clicked += async () => await _client.DetectUsersOnce();
+        root.Q<Button>("SendUsersStart").clicked += async () => await Client.StartUserDetection();
+        root.Q<Button>("SendUsersStop").clicked += async () => await Client.StopUserDetection();
+        root.Q<Button>("SendUsersOnce").clicked += async () => await Client.DetectUsersOnce();
         root.Q<Button>("SendCamStart").clicked += async () => {
             if (_collectCameraDataToggle != null) _collectCameraDataToggle.SetValueWithoutNotify(true);
             await ToggleCameraStreamAsync(true);
@@ -626,7 +610,7 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
             await ToggleCameraStreamAsync(false);
         };
 
-        root.Q<Button>("SendLed").clicked += async () => await _client.SetLed(root.Q<TextField>("LedColorHex").value);
+        root.Q<Button>("SendLed").clicked += async () => await Client.SetLed(root.Q<TextField>("LedColorHex").value);
     }
 
     private void ApplyStartupDefaults(VisualElement root) {
@@ -643,11 +627,19 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
         root.Q<Toggle>("ListenStopUser").value = true;
         root.Q<Toggle>("ListenResume").value = false;
         _requestSelector?.SetValueWithoutNotify("Speak Text");
-        _collectCameraDataToggle?.SetValueWithoutNotify(startWithVideoLogging);
-       
-       _collectAudioDataModeDropdown?.SetValueWithoutNotify(MapStartupAudioModeToDropdown(startWithAudioLoggingMode));
 
-        _collectUserDataToggle?.SetValueWithoutNotify(startWithUserDataLogging);
+        if (_robot != null) {
+            if (_robot.IsConnected) {
+                _collectCameraDataToggle?.SetValueWithoutNotify(_robot.CurrentVideoLogging);
+                _collectAudioDataModeDropdown?.SetValueWithoutNotify(_robot.CurrentAudioLoggingMode);
+                _collectUserDataToggle?.SetValueWithoutNotify(_robot.CurrentUserLogging);
+            } else {
+                _collectCameraDataToggle?.SetValueWithoutNotify(_robot.StartWithVideoLogging);
+                _collectAudioDataModeDropdown?.SetValueWithoutNotify(MapStartupAudioModeToDropdown(_robot.StartWithAudioLoggingMode));
+                _collectUserDataToggle?.SetValueWithoutNotify(_robot.StartWithUserDataLogging);
+            }
+        }
+
         _audioPlaybackToggle?.SetValueWithoutNotify(false);
         if (_collectCameraDataToggle != null && _liveCameraImage != null) {
             _liveCameraImage.style.display = _collectCameraDataToggle.value ? DisplayStyle.Flex : DisplayStyle.None;
@@ -661,6 +653,14 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
                 if (ColorUtility.TryParseHtmlString(evt.newValue, out Color col)) swatch.style.backgroundColor = col;
             });
         }
+    }
+
+    private void ApplyCurrentSessionValues(VisualElement root) {
+        if (_robot == null) return;
+
+        _collectCameraDataToggle?.SetValueWithoutNotify(_robot.CurrentVideoLogging);
+        _collectAudioDataModeDropdown?.SetValueWithoutNotify(_robot.CurrentAudioLoggingMode);
+        _collectUserDataToggle?.SetValueWithoutNotify(_robot.CurrentUserLogging);
     }
 
     private static string MapStartupAudioModeToDropdown(StartupAudioLoggingMode mode) {
@@ -677,6 +677,8 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
         _statusLog.style.color = Color.red;
     }
 
+    private FurhatClient Client => _robot != null ? _robot.Client : null;
+
     private async void OnConnectClicked() {
         await ConnectAsync();
     }
@@ -686,110 +688,164 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
     }
 
     private async System.Threading.Tasks.Task ConnectAsync() {
-        if (_client == null || _client.IsConnected) return;
-
-        _statusLog.text = "● Connecting...";
-        _statusLog.style.color = Color.yellow;
-
-        if (_ipField != null) ipAddress = _ipField.value;
-        await _client.Connect(ipAddress);
-
-        _sessionLogVideo = _collectCameraDataToggle != null && _collectCameraDataToggle.value;
-        _sessionAudioMode = _collectAudioDataModeDropdown?.value ?? "None";
-        _sessionLogUsers = _collectUserDataToggle != null && _collectUserDataToggle.value;
-        FurhatFileLogger.StartSession(_sessionAudioMode, _sessionLogVideo, _sessionLogUsers, SensorAudioSampleRate);
-        SetCollectionControlsLocked(true);
-
-        if (_collectCameraDataToggle != null) {
-            await ToggleCameraStreamAsync(_collectCameraDataToggle.value);
+        if (_robot == null) {
+            LogWarning("FurhatRobot reference is missing.");
+            return;
         }
 
-        if (_collectAudioDataModeDropdown != null) {
-            await ApplyAudioCaptureSelectionAsync(_collectAudioDataModeDropdown.value ?? "None");
-        }
+        string connectIp = _ipField != null ? _ipField.value : _robot.IpAddress;
+        await _robot.ConnectAsync(
+            ipOverride: connectIp,
+            logVideoOverride: _collectCameraDataToggle != null && _collectCameraDataToggle.value,
+            audioModeOverride: _collectAudioDataModeDropdown?.value ?? "None",
+            logUsersOverride: _collectUserDataToggle != null && _collectUserDataToggle.value
+        );
 
-        if (_collectUserDataToggle != null && _collectUserDataToggle.value) {
-            await _client.StartUserDetection();
-            _userDetectionActive = true;
-        }
-
-        _statusLog.text = "● Connected";
-        _statusLog.style.color = Color.green;
+        SetCollectionControlsLocked(_robot.IsConnected);
     }
 
     private async System.Threading.Tasks.Task DisconnectAsync() {
-        if (_client != null && _client.IsConnected) {
-            if (_cameraStreamActive) {
-                await _client.StopCameraStream();
-                _cameraStreamActive = false;
-            }
-
-            if (_audioCaptureActive) {
-                await _client.StopAudioCapture();
-                _audioCaptureActive = false;
-            }
-
-            if (_userDetectionActive) {
-                await _client.StopUserDetection();
-                _userDetectionActive = false;
-            }
-
-            if (_streamingClip != null) {
-                _sensorAudioSource.Stop();
-                Destroy(_streamingClip);
-                _streamingClip = null;
-            }
+        if (_robot != null) {
+            await _robot.DisconnectAsync();
         }
 
-        _client?.Dispose();
-        _client = new FurhatClient();
-        _client.OnMessageSent += msg => ProcessLogEntry("REQ", msg, _requestScroll);
-        _client.OnMessageReceived += msg => {
-            try {
-                var data = JObject.Parse(msg);
-                string type = data["type"]?.ToString() ?? "";
-                if (type == "response.camera.data" || type == "response.audio.data") return;
-                if (type == "response.users.data") {
-                    if (_sessionLogUsers) FurhatFileLogger.AppendUserData(msg);
-                    UpdateLatestUserDataEntry(msg);
-                    return;
-                }
-                ProcessLogEntry("RES", msg, _systemScroll);
-            } catch { }
-        };
-        _client.OnCameraSensorData += HandleCameraSensorData;
-        _client.OnAudioSensorData += HandleAudioSensorData;
-
-        FurhatFileLogger.StopSession();
         SetCollectionControlsLocked(false);
-        _sessionAudioMode = "None";
-        _sessionLogVideo = false;
-        _sessionLogUsers = false;
 
-        _statusLog.text = "● Disconnected";
-        _statusLog.style.color = new Color(0.91f, 0.3f, 0.24f);
+        if (_streamingClip != null) {
+            _sensorAudioSource.Stop();
+            Destroy(_streamingClip);
+            _streamingClip = null;
+        }
     }
 
-    private void Update() => _client?.Update();
-private void OnDisable() {
-    FurhatFileLogger.StopSession();
-    _client?.Dispose();
-    _cameraStreamActive = false;
-    _audioCaptureActive = false;
-    _userDetectionActive = false;
-    _sessionLogVideo = false;
-    _sessionLogUsers = false;
-    _sessionAudioMode = "None";
-
-    if (_cameraTexture != null) {
-        Destroy(_cameraTexture);
-        _cameraTexture = null;
+    private void ApplyConsoleVisibility() {
+        if (_root == null) return;
+        _root.style.display = _consoleVisible ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
-    if (_streamingClip != null) {
-        if (_sensorAudioSource != null) _sensorAudioSource.Stop();
-        Destroy(_streamingClip);
-        _streamingClip = null;
+    private void Update() {
+        bool shouldToggle = _toggleRequested;
+        _toggleRequested = false;
+
+        if (toggleInputMode == ConsoleToggleInputMode.Keyboard && IsKeyboardTogglePressed()) {
+            shouldToggle = true;
+        }
+
+        if (shouldToggle) {
+            _consoleVisible = !_consoleVisible;
+            ApplyConsoleVisibility();
+        }
     }
-}
+
+    private void OnDisable() {
+        if (_robot != null) {
+            _robot.OnMessageSent -= HandleRobotMessageSent;
+            _robot.OnMessageReceived -= HandleRobotMessageReceived;
+            _robot.OnCameraSensorData -= HandleCameraSensorData;
+            _robot.OnAudioSensorData -= HandleAudioSensorData;
+            _robot.OnStatusChanged -= HandleRobotStatusChanged;
+        }
+
+        if (_cameraTexture != null) {
+            Destroy(_cameraTexture);
+            _cameraTexture = null;
+        }
+
+        if (_streamingClip != null) {
+            if (_sensorAudioSource != null) _sensorAudioSource.Stop();
+            Destroy(_streamingClip);
+            _streamingClip = null;
+        }
+    }
+
+    public void RequestToggleConsole() {
+        _toggleRequested = true;
+    }
+
+    public void SetConsoleVisible(bool visible) {
+        _consoleVisible = visible;
+        ApplyConsoleVisibility();
+    }
+
+    private bool IsKeyboardTogglePressed() {
+        bool? inputSystemPressed = TryGetInputSystemTogglePressed();
+        if (inputSystemPressed.HasValue) {
+            return inputSystemPressed.Value;
+        }
+
+        // Legacy input is optional fallback for projects not using the Input System package.
+        try {
+            KeyCode key = useDefaultTildeKey ? KeyCode.BackQuote : customToggleKey;
+            return Input.GetKeyDown(key);
+        } catch (InvalidOperationException) {
+            return false;
+        }
+    }
+
+    private bool? TryGetInputSystemTogglePressed() {
+        Type keyboardType = FindType("UnityEngine.InputSystem.Keyboard");
+        if (keyboardType == null) return null;
+
+        var currentProp = keyboardType.GetProperty("current", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+        if (currentProp == null) return null;
+
+        object keyboard = currentProp.GetValue(null);
+        if (keyboard == null) return false;
+
+        string keyControlProperty = useDefaultTildeKey ? "backquoteKey" : MapKeyCodeToInputSystemProperty(customToggleKey);
+
+        var keyControlProp = keyboardType.GetProperty(keyControlProperty, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.IgnoreCase);
+        if (keyControlProp == null) return false;
+
+        object keyControl = keyControlProp.GetValue(keyboard);
+        if (keyControl == null) return false;
+
+        var wasPressedProp = keyControl.GetType().GetProperty("wasPressedThisFrame", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+        if (wasPressedProp == null) return false;
+
+        object result = wasPressedProp.GetValue(keyControl);
+        return result is bool pressed && pressed;
+    }
+
+    private static Type FindType(string fullName) {
+        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+            Type type = assembly.GetType(fullName, false);
+            if (type != null) return type;
+        }
+
+        return null;
+    }
+
+    private static string MapKeyCodeToInputSystemProperty(KeyCode keyCode) {
+        switch (keyCode) {
+            case KeyCode.BackQuote: return "backquoteKey";
+            case KeyCode.Space: return "spaceKey";
+            case KeyCode.Return:
+            case KeyCode.KeypadEnter: return "enterKey";
+            case KeyCode.Escape: return "escapeKey";
+            case KeyCode.Tab: return "tabKey";
+            case KeyCode.Backspace: return "backspaceKey";
+            case KeyCode.UpArrow: return "upArrowKey";
+            case KeyCode.DownArrow: return "downArrowKey";
+            case KeyCode.LeftArrow: return "leftArrowKey";
+            case KeyCode.RightArrow: return "rightArrowKey";
+            case KeyCode.Alpha0: return "digit0Key";
+            case KeyCode.Alpha1: return "digit1Key";
+            case KeyCode.Alpha2: return "digit2Key";
+            case KeyCode.Alpha3: return "digit3Key";
+            case KeyCode.Alpha4: return "digit4Key";
+            case KeyCode.Alpha5: return "digit5Key";
+            case KeyCode.Alpha6: return "digit6Key";
+            case KeyCode.Alpha7: return "digit7Key";
+            case KeyCode.Alpha8: return "digit8Key";
+            case KeyCode.Alpha9: return "digit9Key";
+            default:
+                string lower = keyCode.ToString().ToLowerInvariant();
+                if (lower.Length == 1 && lower[0] >= 'a' && lower[0] <= 'z') {
+                    return lower + "Key";
+                }
+
+                return "backquoteKey";
+        }
+    }
 }
