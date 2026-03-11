@@ -39,13 +39,13 @@ namespace Furhat.Runtime {
         public event Action<AudioDataEvent> OnAudioSensorData;
         public event Action<CameraDataEvent> OnCameraSensorData;
 
-        public async Task Connect(string ip, string apiKey = null) {
+        public async Task Connect(string ip, string authenticationKey = null) {
             _ws = new ClientWebSocket();
             _cts = new CancellationTokenSource();
             Uri uri = new Uri($"ws://{ip}:9000/v1/events");
             await _ws.ConnectAsync(uri, _cts.Token);
 
-            string authKey = string.IsNullOrEmpty(apiKey) ? "" : apiKey;
+            string authKey = string.IsNullOrEmpty(authenticationKey) ? "" : authenticationKey;
             await SendRaw($"{{\"type\": \"request.auth\", \"key\": \"{authKey}\"}}");
             _ = ReceiveLoop(); 
         }
