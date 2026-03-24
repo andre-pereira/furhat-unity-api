@@ -130,7 +130,7 @@
 
                         <ui:VisualElement name="PanelFaceConfig" style="display: none;">
                             <ui:VisualElement style="flex-direction: row;">
-                                <ui:TextField label="Face ID" name="FaceId" value="KEEP" style="flex-grow: 1; color: black;" />
+                                <ui:TextField label="Face ID" name="FaceId" value="adult - default" style="flex-grow: 1; color: black;" />
                             </ui:VisualElement>
                             <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; margin-top: 2px;">
                                 <ui:Toggle label="Visibility" name="FaceVisibility" value="true" class="compact-toggle" />
@@ -146,6 +146,10 @@
                                 <ui:FloatField label="Yaw" name="FaceYaw" value="0.0" class="coordinate-field" />
                                 <ui:FloatField label="Pitch" name="FacePitch" value="0.0" class="coordinate-field" />
                                 <ui:FloatField label="Roll" name="FaceRoll" value="0.0" class="coordinate-field" />
+                            </ui:VisualElement>
+                            <ui:VisualElement style="flex-direction: row; margin-top: 4px; align-items: center;">
+                                <ui:Toggle label="Relative" name="FaceRelative" value="true" class="compact-toggle" />
+                                <ui:DropdownField label="Speed" name="FaceHeadposeSpeed" choices="xslow,slow,medium,fast,xfast" value="medium" style="color: black;" />
                             </ui:VisualElement>
                             <ui:VisualElement style="flex-direction: row; margin-top: 4px;">
                                 <ui:Button name="SendFaceHeadpose" text="SET HEADPOSE" style="flex-grow: 1;" />
@@ -203,11 +207,12 @@
                 </ui:VisualElement>
 
                 <ui:VisualElement style="flex-grow: 1; margin-top: 5px; border-top-width: 1px; border-color: #333333; padding-top: 5px; display: flex; flex-direction: column;">
-                    <ui:Label text="SENSORS" style="-unity-font-style: bold; color: #e67e22; border-bottom-width: 1px; font-size: 11px;" />
+                    <ui:Label text="LOGGING AND VISUALIZATION" style="-unity-font-style: bold; color: #e67e22; border-bottom-width: 1px; font-size: 11px;" />
                     <ui:VisualElement style="flex-direction: row; flex-wrap: wrap; margin-top: 4px; align-items: center;">
-                        <ui:Toggle label="Collect Camera Data" name="CollectCameraData" value="false" class="compact-toggle" />
-                        <ui:DropdownField label="Collect Audio Data" name="CollectAudioDataMode" choices="None,Speaker,Microphone,Both" value="None" style="min-width: 480px; color: white; margin-left: 10px;" />
-                        <ui:Toggle label="Collect User Data" name="CollectUserData" value="false" class="compact-toggle" />
+                        <ui:Toggle label="Enable Logging" name="EnableLogging" value="true" class="compact-toggle" />
+                        <ui:Toggle label="Camera Data" name="CollectCameraData" value="false" class="compact-toggle" />
+                        <ui:DropdownField label="Audio Data" name="CollectAudioDataMode" choices="None,Speaker,Microphone,Both" value="None" style="min-width: 400px; color: white;" />
+                        <ui:Toggle label="User Data" name="CollectUserData" value="false" class="compact-toggle" />
                         <ui:Toggle label="Audio Playback" name="AudioPlayback" value="false" class="compact-toggle" />
                     </ui:VisualElement>
                     <ui:VisualElement style="flex-direction: row; margin-top: 4px; height: 360px;">

@@ -58,6 +58,7 @@ namespace Furhat.Runtime {
         [SerializeField] private string authenticationKey = "";
         [SerializeField] private bool connectOnStart;
 
+        [SerializeField] private bool enableLogging = true;
         [SerializeField] private bool startWithVideoLogging;
         [SerializeField] private StartupAudioLoggingMode startWithAudioLoggingMode = StartupAudioLoggingMode.None;
         [SerializeField] private bool startWithUserDataLogging;
@@ -122,6 +123,10 @@ namespace Furhat.Runtime {
         }
 
         public string LogRootDirectory => ResolveLogRootDirectory();
+        public bool EnableLogging {
+            get => enableLogging;
+            set => enableLogging = value;
+        }
         public string CurrentAudioLoggingMode => _sessionAudioMode;
         public bool CurrentVideoLogging => _sessionLogVideo;
         public bool CurrentUserLogging => _sessionLogUsers;
@@ -187,15 +192,21 @@ namespace Furhat.Runtime {
             if (_client.IsConnected) return;
 
             string targetIp = string.IsNullOrWhiteSpace(ipOverride) ? ipAddress : ipOverride;
-            _sessionLogVideo = logVideoOverride ?? startWithVideoLogging;
-            _sessionAudioMode = string.IsNullOrWhiteSpace(audioModeOverride)
+            bool requestedLogVideo = logVideoOverride ?? startWithVideoLogging;
+            string requestedAudioMode = string.IsNullOrWhiteSpace(audioModeOverride)
                 ? MapStartupAudioModeToDropdown(startWithAudioLoggingMode)
                 : audioModeOverride;
-            _sessionLogUsers = logUsersOverride ?? startWithUserDataLogging;
+            bool requestedLogUsers = logUsersOverride ?? startWithUserDataLogging;
+
+            _sessionLogVideo = enableLogging && requestedLogVideo;
+            _sessionAudioMode = enableLogging ? requestedAudioMode : "None";
+            _sessionLogUsers = enableLogging && requestedLogUsers;
 
             try {
                 OnStatusChanged?.Invoke("Connecting...", Color.yellow);
-                FurhatLoggerBridge.StartSession(_sessionAudioMode, _sessionLogVideo, _sessionLogUsers, SensorAudioSampleRate, ResolveLogRootDirectory());
+                if (enableLogging) {
+                    FurhatLoggerBridge.StartSession(_sessionAudioMode, _sessionLogVideo, _sessionLogUsers, SensorAudioSampleRate, ResolveLogRootDirectory());
+                }
                 await _client.Connect(targetIp, authenticationKey);
 
                 ipAddress = targetIp;
@@ -405,6 +416,16 @@ namespace Furhat.Runtime {
 
             await _client.RequestFaceStatus();
             await _client.RequestVoiceStatus();
+        }
+
+        public async Task RefreshVoiceStatusAsync() {
+            if (_client == null || !_client.IsConnected) return;
+            await _client.RequestVoiceStatus();
+        }
+
+        public async Task RefreshFaceStatusAsync() {
+            if (_client == null || !_client.IsConnected) return;
+            await _client.RequestFaceStatus();
         }
 
         public void LoadPersistedStatusCache() {

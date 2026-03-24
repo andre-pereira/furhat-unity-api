@@ -30,6 +30,7 @@ public class FurhatConsole : MonoBehaviour {
     private Toggle _collectCameraDataToggle;
     private DropdownField _collectAudioDataModeDropdown;
     private Toggle _collectUserDataToggle;
+    private Toggle _enableLoggingToggle;
     private Toggle _audioPlaybackToggle;
     private Image _liveCameraImage;
     private Texture2D _cameraTexture;
@@ -63,6 +64,7 @@ private int _streamBufferedSamples;
         _collectCameraDataToggle = _root.Q<Toggle>("CollectCameraData");
         _collectAudioDataModeDropdown = _root.Q<DropdownField>("CollectAudioDataMode");
         _collectUserDataToggle = _root.Q<Toggle>("CollectUserData");
+        _enableLoggingToggle = _root.Q<Toggle>("EnableLogging");
         
         _audioPlaybackToggle = _root.Q<Toggle>("AudioPlayback");
         if (_audioPlaybackToggle != null) {
@@ -102,6 +104,22 @@ private int _streamBufferedSamples;
 
         if (_collectAudioDataModeDropdown != null) {
             _collectAudioDataModeDropdown.RegisterValueChangedCallback(async evt => await ApplyAudioCaptureSelectionAsync(evt.newValue));
+        }
+
+        if (_enableLoggingToggle != null) {
+            _enableLoggingToggle.RegisterValueChangedCallback(evt => {
+                if (_robot != null) {
+                    _robot.EnableLogging = evt.newValue;
+                }
+
+                if (!evt.newValue) {
+                    _collectCameraDataToggle?.SetValueWithoutNotify(false);
+                    _collectAudioDataModeDropdown?.SetValueWithoutNotify("None");
+                    _collectUserDataToggle?.SetValueWithoutNotify(false);
+                }
+
+                SetCollectionControlsLocked(_robot != null && _robot.IsConnected);
+            });
         }
 
         if (_robot != null) {
@@ -232,6 +250,7 @@ private void HandleRobotStatusChanged(string status, Color color) {
     if (_statusLog == null) return;
     _statusLog.text = "● " + status;
     _statusLog.style.color = color;
+    SetCollectionControlsLocked(_robot != null && _robot.IsConnected);
 }
 
 private bool TryDecodePcm16(byte[] bytes, out float[] samples, out int sampleRate, out int channels) {
@@ -441,9 +460,11 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
     }
 
     private void SetCollectionControlsLocked(bool connected) {
-        if (_collectCameraDataToggle != null) _collectCameraDataToggle.SetEnabled(!connected);
-        if (_collectAudioDataModeDropdown != null) _collectAudioDataModeDropdown.SetEnabled(!connected);
-        if (_collectUserDataToggle != null) _collectUserDataToggle.SetEnabled(!connected);
+        bool loggingEnabled = _enableLoggingToggle == null || _enableLoggingToggle.value;
+        if (_enableLoggingToggle != null) _enableLoggingToggle.SetEnabled(!connected);
+        if (_collectCameraDataToggle != null) _collectCameraDataToggle.SetEnabled(!connected && loggingEnabled);
+        if (_collectAudioDataModeDropdown != null) _collectAudioDataModeDropdown.SetEnabled(!connected && loggingEnabled);
+        if (_collectUserDataToggle != null) _collectUserDataToggle.SetEnabled(!connected && loggingEnabled);
         if (_ipField != null) _ipField.SetEnabled(!connected);
         if (_connectButton != null) _connectButton.SetEnabled(!connected);
         if (_disconnectButton != null) _disconnectButton.SetEnabled(connected);
@@ -577,7 +598,11 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
 
         root.Q<Button>("SendFaceHeadpose").clicked += async () => {
             await Client.SetFaceHeadpose(
-                root.Q<FloatField>("FaceYaw").value, root.Q<FloatField>("FacePitch").value, root.Q<FloatField>("FaceRoll").value
+                root.Q<FloatField>("FaceYaw").value,
+                root.Q<FloatField>("FacePitch").value,
+                root.Q<FloatField>("FaceRoll").value,
+                root.Q<Toggle>("FaceRelative").value,
+                root.Q<DropdownField>("FaceHeadposeSpeed").value
             );
         };
         
@@ -627,6 +652,9 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
         root.Q<Toggle>("ListenStopUser").value = true;
         root.Q<Toggle>("ListenResume").value = false;
         _requestSelector?.SetValueWithoutNotify("Speak Text");
+        root.Q<TextField>("FaceId").value = "adult - default";
+        root.Q<Toggle>("FaceRelative").value = true;
+        _enableLoggingToggle?.SetValueWithoutNotify(_robot == null || _robot.EnableLogging);
 
         if (_robot != null) {
             if (_robot.IsConnected) {
@@ -634,9 +662,10 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
                 _collectAudioDataModeDropdown?.SetValueWithoutNotify(_robot.CurrentAudioLoggingMode);
                 _collectUserDataToggle?.SetValueWithoutNotify(_robot.CurrentUserLogging);
             } else {
-                _collectCameraDataToggle?.SetValueWithoutNotify(_robot.StartWithVideoLogging);
-                _collectAudioDataModeDropdown?.SetValueWithoutNotify(MapStartupAudioModeToDropdown(_robot.StartWithAudioLoggingMode));
-                _collectUserDataToggle?.SetValueWithoutNotify(_robot.StartWithUserDataLogging);
+                bool loggingEnabled = _robot.EnableLogging;
+                _collectCameraDataToggle?.SetValueWithoutNotify(loggingEnabled && _robot.StartWithVideoLogging);
+                _collectAudioDataModeDropdown?.SetValueWithoutNotify(loggingEnabled ? MapStartupAudioModeToDropdown(_robot.StartWithAudioLoggingMode) : "None");
+                _collectUserDataToggle?.SetValueWithoutNotify(loggingEnabled && _robot.StartWithUserDataLogging);
             }
         }
 
@@ -644,7 +673,7 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
         if (_collectCameraDataToggle != null && _liveCameraImage != null) {
             _liveCameraImage.style.display = _collectCameraDataToggle.value ? DisplayStyle.Flex : DisplayStyle.None;
         }
-        SetCollectionControlsLocked(false);
+        SetCollectionControlsLocked(_robot != null && _robot.IsConnected);
         
         var hexField = root.Q<TextField>("LedColorHex");
         var swatch = root.Q<VisualElement>("LedColorSwatch");
@@ -694,6 +723,7 @@ private void PlayAudioChunk(float[] samples, int sampleRate, int channels) {
         }
 
         string connectIp = _ipField != null ? _ipField.value : _robot.IpAddress;
+        _robot.EnableLogging = _enableLoggingToggle == null || _enableLoggingToggle.value;
         await _robot.ConnectAsync(
             ipOverride: connectIp,
             logVideoOverride: _collectCameraDataToggle != null && _collectCameraDataToggle.value,

@@ -11,6 +11,7 @@ public class FurhatRobotEditor : Editor {
     private SerializedProperty _ipAddress;
     private SerializedProperty _authenticationKey;
     private SerializedProperty _connectOnStart;
+    private SerializedProperty _enableLogging;
     private SerializedProperty _startWithVideoLogging;
     private SerializedProperty _startWithAudioLoggingMode;
     private SerializedProperty _startWithUserDataLogging;
@@ -68,9 +69,13 @@ public class FurhatRobotEditor : Editor {
         GUILayout.Space(6f);
         DrawLiveStatusSection();
         GUILayout.Space(6f);
-        DrawStartupLoggingSection();
+        DrawLoggingSection();
         GUILayout.Space(6f);
-        DrawRobotConfigurationSection();
+        DrawTextToSpeechSection();
+        GUILayout.Space(6f);
+        DrawFaceConfigurationSection();
+        GUILayout.Space(6f);
+        DrawLedSection();
         GUILayout.Space(6f);
         DrawListenSection();
         GUILayout.Space(6f);
@@ -88,11 +93,14 @@ public class FurhatRobotEditor : Editor {
         EditorGUILayout.PropertyField(_connectOnStart);
     }
 
-    private void DrawStartupLoggingSection() {
-        EditorGUILayout.LabelField("Startup Logging", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(_startWithVideoLogging);
-        EditorGUILayout.PropertyField(_startWithAudioLoggingMode);
-        EditorGUILayout.PropertyField(_startWithUserDataLogging);
+    private void DrawLoggingSection() {
+        EditorGUILayout.LabelField("Logging", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(_enableLogging, new GUIContent("Enable Logging"));
+        using (new EditorGUI.DisabledScope(!_enableLogging.boolValue)) {
+            EditorGUILayout.PropertyField(_startWithVideoLogging);
+            EditorGUILayout.PropertyField(_startWithAudioLoggingMode);
+            EditorGUILayout.PropertyField(_startWithUserDataLogging);
+        }
         EditorGUILayout.PropertyField(_logRootDirectory);
         if (GUILayout.Button("Open Log Directory")) {
             EditorUtility.RevealInFinder(_robot.LogRootDirectory);
@@ -113,9 +121,8 @@ public class FurhatRobotEditor : Editor {
         }
     }
 
-    private void DrawRobotConfigurationSection() {
-        EditorGUILayout.LabelField("Robot Configuration", EditorStyles.boldLabel);
-
+    private void DrawTextToSpeechSection() {
+        EditorGUILayout.LabelField("Text-to-Speech Configuration", EditorStyles.boldLabel);
         EditorGUI.BeginChangeCheck();
         DrawVoiceFilterPopup(_voiceProviderFilter, "Voice Provider Filter", GetDistinctVoiceValues("provider"));
         DrawVoiceFilterPopup(_voiceLanguageFilter, "Voice Language Filter", GetDistinctVoiceValues("language"));
@@ -123,32 +130,44 @@ public class FurhatRobotEditor : Editor {
         DrawVoiceIdControl();
         bool voiceChanged = EditorGUI.EndChangeCheck();
 
-        EditorGUI.BeginChangeCheck();
-        DrawFaceModelControl();
-        EditorGUILayout.PropertyField(_ledColorHex);
-        EditorGUILayout.PropertyField(_faceVisibility);
-        EditorGUILayout.PropertyField(_microexpressions);
-        EditorGUILayout.PropertyField(_blinking);
-        EditorGUILayout.PropertyField(_headSway);
-        bool faceChanged = EditorGUI.EndChangeCheck();
-
-        using (new EditorGUILayout.HorizontalScope()) {
-            if (GUILayout.Button("Get Voice and Face List")) {
-                _ = _robot.RefreshCachedRobotStatusAsync();
-            }
+        if (GUILayout.Button("Get Voice List")) {
+            _ = _robot.RefreshVoiceStatusAsync();
         }
 
         if (voiceChanged) {
             serializedObject.ApplyModifiedProperties();
             LiveApply(() => _robot.ApplyVoiceConfigAsync());
         }
+    }
+
+    private void DrawFaceConfigurationSection() {
+        EditorGUILayout.LabelField("Face Configuration", EditorStyles.boldLabel);
+
+        EditorGUI.BeginChangeCheck();
+        DrawFaceModelControl();
+        EditorGUILayout.PropertyField(_faceVisibility);
+        EditorGUILayout.PropertyField(_microexpressions);
+        EditorGUILayout.PropertyField(_blinking);
+        EditorGUILayout.PropertyField(_headSway);
+        bool faceChanged = EditorGUI.EndChangeCheck();
+
+        if (GUILayout.Button("Get Face List")) {
+            _ = _robot.RefreshFaceStatusAsync();
+        }
 
         if (faceChanged) {
             serializedObject.ApplyModifiedProperties();
-            LiveApply(async () => {
-                await _robot.ApplyFaceConfigAsync();
-                await _robot.ApplyLedAsync();
-            });
+            LiveApply(() => _robot.ApplyFaceConfigAsync());
+        }
+    }
+
+    private void DrawLedSection() {
+        EditorGUILayout.LabelField("LED", EditorStyles.boldLabel);
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(_ledColorHex, new GUIContent("Color Hex"));
+        if (EditorGUI.EndChangeCheck()) {
+            serializedObject.ApplyModifiedProperties();
+            LiveApply(() => _robot.ApplyLedAsync());
         }
     }
 
@@ -313,6 +332,7 @@ public class FurhatRobotEditor : Editor {
         _ipAddress = serializedObject.FindProperty("ipAddress");
         _authenticationKey = serializedObject.FindProperty("authenticationKey");
         _connectOnStart = serializedObject.FindProperty("connectOnStart");
+        _enableLogging = serializedObject.FindProperty("enableLogging");
         _startWithVideoLogging = serializedObject.FindProperty("startWithVideoLogging");
         _startWithAudioLoggingMode = serializedObject.FindProperty("startWithAudioLoggingMode");
         _startWithUserDataLogging = serializedObject.FindProperty("startWithUserDataLogging");
