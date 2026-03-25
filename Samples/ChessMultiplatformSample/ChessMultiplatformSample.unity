@@ -1,0 +1,4508 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!29 &1
+OcclusionCullingSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_OcclusionBakeSettings:
+    smallestOccluder: 5
+    smallestHole: 0.25
+    backfaceThreshold: 100
+  m_SceneGUID: 00000000000000000000000000000000
+  m_OcclusionCullingData: {fileID: 0}
+--- !u!104 &2
+RenderSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 10
+  m_Fog: 0
+  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_FogMode: 3
+  m_FogDensity: 0.01
+  m_LinearFogStart: 0
+  m_LinearFogEnd: 300
+  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+  m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+  m_AmbientIntensity: 1
+  m_AmbientMode: 0
+  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_HaloStrength: 0.5
+  m_FlareStrength: 1
+  m_FlareFadeSpeed: 3
+  m_HaloTexture: {fileID: 0}
+  m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
+  m_DefaultReflectionMode: 0
+  m_DefaultReflectionResolution: 128
+  m_ReflectionBounces: 1
+  m_ReflectionIntensity: 1
+  m_CustomReflection: {fileID: 0}
+  m_Sun: {fileID: 0}
+  m_UseRadianceAmbientProbe: 0
+--- !u!157 &3
+LightmapSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
+  m_GISettings:
+    serializedVersion: 2
+    m_BounceScale: 1
+    m_IndirectOutputScale: 1
+    m_AlbedoBoost: 1
+    m_EnvironmentLightingMode: 0
+    m_EnableBakedLightmaps: 1
+    m_EnableRealtimeLightmaps: 0
+  m_LightmapEditorSettings:
+    serializedVersion: 12
+    m_Resolution: 2
+    m_BakeResolution: 40
+    m_AtlasSize: 1024
+    m_AO: 0
+    m_AOMaxDistance: 1
+    m_CompAOExponent: 1
+    m_CompAOExponentDirect: 0
+    m_ExtractAmbientOcclusion: 0
+    m_Padding: 2
+    m_LightmapParameters: {fileID: 0}
+    m_LightmapsBakeMode: 1
+    m_TextureCompression: 1
+    m_ReflectionCompression: 2
+    m_MixedBakeMode: 2
+    m_BakeBackend: 2
+    m_PVRSampling: 1
+    m_PVRDirectSampleCount: 32
+    m_PVRSampleCount: 512
+    m_PVRBounces: 2
+    m_PVREnvironmentSampleCount: 256
+    m_PVREnvironmentReferencePointCount: 2048
+    m_PVRFilteringMode: 1
+    m_PVRDenoiserTypeDirect: 1
+    m_PVRDenoiserTypeIndirect: 1
+    m_PVRDenoiserTypeAO: 1
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
+    m_PVREnvironmentMIS: 1
+    m_PVRCulling: 1
+    m_PVRFilteringGaussRadiusDirect: 1
+    m_PVRFilteringGaussRadiusIndirect: 1
+    m_PVRFilteringGaussRadiusAO: 1
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
+  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingSettings: {fileID: 0}
+--- !u!196 &4
+NavMeshSettings:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_BuildSettings:
+    serializedVersion: 3
+    agentTypeID: 0
+    agentRadius: 0.5
+    agentHeight: 2
+    agentSlope: 45
+    agentClimb: 0.4
+    ledgeDropHeight: 0
+    maxJumpAcrossDistance: 0
+    minRegionArea: 2
+    manualCellSize: 0
+    cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
+    buildHeightMesh: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
+    debug:
+      m_Flags: 0
+  m_NavMeshData: {fileID: 0}
+--- !u!1 &179122278
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 179122281}
+  - component: {fileID: 179122280}
+  - component: {fileID: 179122279}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &179122279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179122278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
+--- !u!114 &179122280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179122278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventSystem
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &179122281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179122278}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &257090710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 257090711}
+  - component: {fileID: 257090712}
+  - component: {fileID: 257090713}
+  m_Layer: 0
+  m_Name: FurhatRobot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &257090711
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257090710}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1074754394}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &257090712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257090710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f439fec432d97f349b74e1601336b1f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Furhat.Runtime::Furhat.Runtime.FurhatRobot
+  ipAddress: 127.0.0.1
+  authenticationKey: 
+  connectOnStart: 1
+  enableLogging: 1
+  startWithVideoLogging: 0
+  startWithAudioLoggingMode: 0
+  startWithUserDataLogging: 0
+  logRootDirectory: Logs/
+  voiceProviderFilter: Microsoft Azure
+  voiceLanguageFilter: en-US
+  voiceGenderFilter: MALE
+  voiceId: GuyNeural (en-US) - Microsoft Azure
+  faceModel: adult - default
+  ledColorHex: '#000000'
+  faceVisibility: 0
+  microexpressions: 0
+  blinking: 0
+  headSway: 0
+  listenLanguages: 
+  boostedListenPhrases: 
+  attendTarget: 1
+  attendLocation: {x: 0, y: 0, z: 1}
+  attendUserId: closest
+  attendSpeed: 2
+  basicFaceParameters:
+  - name: BROW_DOWN_LEFT
+    value: 0
+  - name: BROW_DOWN_RIGHT
+    value: 0
+  - name: BROW_INNER_UP
+    value: 0
+  - name: BROW_OUTER_UP_LEFT
+    value: 0
+  - name: BROW_OUTER_UP_RIGHT
+    value: 0
+  - name: EYE_BLINK_LEFT
+    value: 0
+  - name: EYE_BLINK_RIGHT
+    value: 0
+  - name: EYE_LOOK_DOWN_LEFT
+    value: 0
+  - name: EYE_LOOK_DOWN_RIGHT
+    value: 0
+  - name: EYE_LOOK_IN_LEFT
+    value: 0
+  - name: EYE_LOOK_IN_RIGHT
+    value: 0
+  - name: EYE_LOOK_OUT_LEFT
+    value: 0
+  - name: EYE_LOOK_OUT_RIGHT
+    value: 0
+  - name: EYE_LOOK_UP_LEFT
+    value: 0
+  - name: EYE_LOOK_UP_RIGHT
+    value: 0
+  - name: EYE_SQUINT_LEFT
+    value: 0
+  - name: EYE_SQUINT_RIGHT
+    value: 0
+  - name: EYE_WIDE_LEFT
+    value: 0
+  - name: EYE_WIDE_RIGHT
+    value: 0
+  - name: JAW_FORWARD
+    value: 0
+  - name: JAW_LEFT
+    value: 0
+  - name: JAW_OPEN
+    value: 0
+  - name: JAW_RIGHT
+    value: 0
+  - name: MOUTH_CLOSE
+    value: 0
+  - name: MOUTH_DIMPLE_LEFT
+    value: 0
+  - name: MOUTH_DIMPLE_RIGHT
+    value: 0
+  - name: MOUTH_FROWN_LEFT
+    value: 0
+  - name: MOUTH_FROWN_RIGHT
+    value: 0
+  - name: MOUTH_FUNNEL
+    value: 0
+  - name: MOUTH_LEFT
+    value: 0
+  - name: MOUTH_LOWER_DOWN_LEFT
+    value: 0
+  - name: MOUTH_LOWER_DOWN_RIGHT
+    value: 0
+  - name: MOUTH_PRESS_LEFT
+    value: 0
+  - name: MOUTH_PRESS_RIGHT
+    value: 0
+  - name: MOUTH_PUCKER
+    value: 0
+  - name: MOUTH_RIGHT
+    value: 0
+  - name: MOUTH_ROLL_LOWER
+    value: 0
+  - name: MOUTH_ROLL_UPPER
+    value: 0
+  - name: MOUTH_SHRUG_LOWER
+    value: 0
+  - name: MOUTH_SHRUG_UPPER
+    value: 0
+  - name: MOUTH_SMILE_LEFT
+    value: 0
+  - name: MOUTH_SMILE_RIGHT
+    value: 0
+  - name: MOUTH_STRETCH_LEFT
+    value: 0
+  - name: MOUTH_STRETCH_RIGHT
+    value: 0
+  - name: MOUTH_UPPER_UP_LEFT
+    value: 0
+  - name: MOUTH_UPPER_UP_RIGHT
+    value: 0
+  - name: NOSE_SNEER_LEFT
+    value: 0
+  - name: NOSE_SNEER_RIGHT
+    value: 0
+  - name: CHEEK_PUFF
+    value: 0
+  - name: CHEEK_SQUINT_LEFT
+    value: 0
+  - name: CHEEK_SQUINT_RIGHT
+    value: 0
+  - name: TONGUE_OUT
+    value: 0
+  - name: GAZE_PAN
+    value: 0
+  - name: GAZE_TILT
+    value: 0
+  - name: NECK_PAN
+    value: 0
+  - name: NECK_ROLL
+    value: 0
+  - name: NECK_TILT
+    value: 0
+  arkitFaceParameters:
+  - name: BrowDownLeft
+    value: 0
+  - name: BrowDownRight
+    value: 0
+  - name: BrowInnerUp
+    value: 0
+  - name: BrowOuterUpLeft
+    value: 0
+  - name: BrowOuterUpRight
+    value: 0
+  - name: CheekPuff
+    value: 0
+  - name: CheekSquintLeft
+    value: 0
+  - name: CheekSquintRight
+    value: 0
+  - name: EyeBlinkLeft
+    value: 0
+  - name: EyeBlinkRight
+    value: 0
+  - name: EyeLookDownLeft
+    value: 0
+  - name: EyeLookDownRight
+    value: 0
+  - name: EyeLookInLeft
+    value: 0
+  - name: EyeLookInRight
+    value: 0
+  - name: EyeLookOutLeft
+    value: 0
+  - name: EyeLookOutRight
+    value: 0
+  - name: EyeLookUpLeft
+    value: 0
+  - name: EyeLookUpRight
+    value: 0
+  - name: EyeSquintLeft
+    value: 0
+  - name: EyeSquintRight
+    value: 0
+  - name: EyeWideLeft
+    value: 0
+  - name: EyeWideRight
+    value: 0
+  - name: JawForward
+    value: 0
+  - name: JawLeft
+    value: 0
+  - name: JawOpen
+    value: 0
+  - name: JawRight
+    value: 0
+  - name: MouthClose
+    value: 0
+  - name: MouthDimpleLeft
+    value: 0
+  - name: MouthDimpleRight
+    value: 0
+  - name: MouthFrownLeft
+    value: 0
+  - name: MouthFrownRight
+    value: 0
+  - name: MouthFunnel
+    value: 0
+  - name: MouthLeft
+    value: 0
+  - name: MouthLowerDownLeft
+    value: 0
+  - name: MouthLowerDownRight
+    value: 0
+  - name: MouthPressLeft
+    value: 0
+  - name: MouthPressRight
+    value: 0
+  - name: MouthPucker
+    value: 0
+  - name: MouthRight
+    value: 0
+  - name: MouthRollLower
+    value: 0
+  - name: MouthRollUpper
+    value: 0
+  - name: MouthShrugLower
+    value: 0
+  - name: MouthShrugUpper
+    value: 0
+  - name: MouthSmileLeft
+    value: 0
+  - name: MouthSmileRight
+    value: 0
+  - name: MouthStretchLeft
+    value: 0
+  - name: MouthStretchRight
+    value: 0
+  - name: MouthUpperUpLeft
+    value: 0
+  - name: MouthUpperUpRight
+    value: 0
+  - name: NoseSneerLeft
+    value: 0
+  - name: NoseSneerRight
+    value: 0
+  - name: TongueOut
+    value: 0
+  charFaceParameters:
+  - name: PHONE_AAH
+    value: 0
+  - name: PHONE_B_M_P
+    value: 0
+  - name: PHONE_BIGAAH
+    value: 0
+  - name: PHONE_CH_J_SH
+    value: 0
+  - name: PHONE_D_S_T
+    value: 0
+  - name: PHONE_EEH
+    value: 0
+  - name: PHONE_F_V
+    value: 0
+  - name: PHONE_K_G_NG
+    value: 0
+  - name: PHONE_N
+    value: 0
+  - name: PHONE_OH
+    value: 0
+  - name: PHONE_R
+    value: 0
+  - name: PHONE_TH
+    value: 0
+  - name: PHONE_W_OO
+    value: 0
+  - name: BROW_CENTER_UP
+    value: 0
+  - name: BROW_CENTER_UP_DOWN
+    value: 0
+  - name: BROW_DOWN_LEFT
+    value: 0
+  - name: BROW_DOWN_RIGHT
+    value: 0
+  - name: BROW_IN_LEFT
+    value: 0
+  - name: BROW_IN_RIGHT
+    value: 0
+  - name: BROW_OUT_LEFT
+    value: 0
+  - name: BROW_OUT_RIGHT
+    value: 0
+  - name: EYE_BLINK_LEFT
+    value: 0
+  - name: EYE_BLINK_RIGHT
+    value: 0
+  - name: EYE_SQUINT_LEFT
+    value: 0
+  - name: EYE_SQUINT_RIGHT
+    value: 0
+  - name: EYE_WIDE_LEFT
+    value: 0
+  - name: EYE_WIDE_RIGHT
+    value: 0
+  - name: EPICANTHIC_FOLD_LEFT
+    value: 0
+  - name: EPICANTHIC_FOLD_RIGHT
+    value: 0
+  - name: EXPR_ANGER
+    value: 0
+  - name: EXPR_DISGUST
+    value: 0
+  - name: EXPR_FEAR
+    value: 0
+  - name: EXPR_SAD
+    value: 0
+  - name: EXPR_SMILE
+    value: 0
+  - name: EXPR_SURPRISE
+    value: 0
+  - name: GAZE_PAN
+    value: 0
+  - name: GAZE_TILT
+    value: 0
+  - name: JAW_BACK
+    value: 0
+  - name: JAW_DOWN
+    value: 0
+  - name: JAW_LEFT
+    value: 0
+  - name: JAW_RIGHT
+    value: 0
+  - name: MOUTH_CORNER_DOWN_LEFT
+    value: 0
+  - name: MOUTH_CORNER_DOWN_RIGHT
+    value: 0
+  - name: MOUTH_CORNER_IN_LEFT
+    value: 0
+  - name: MOUTH_CORNER_IN_RIGHT
+    value: 0
+  - name: MOUTH_CORNER_OUT_LEFT
+    value: 0
+  - name: MOUTH_CORNER_OUT_RIGHT
+    value: 0
+  - name: MOUTH_CORNER_UP_LEFT
+    value: 0
+  - name: MOUTH_CORNER_UP_RIGHT
+    value: 0
+  - name: MOUTH_CURL_LOWER
+    value: 0
+  - name: MOUTH_CURL_UPPER
+    value: 0
+  - name: MOUTH_FROWN
+    value: 0
+  - name: MOUTH_LOWER_INSIDE
+    value: 0
+  - name: MOUTH_OPEN
+    value: 0
+  - name: MOUTH_OPEN_WIDE
+    value: 0
+  - name: MOUTH_PUCKER
+    value: 0
+  - name: MOUTH_PUCKER_WIDE
+    value: 0
+  - name: MOUTH_UPPER_INSIDE
+    value: 0
+  - name: MOUTH_UPPER_OVERLAP
+    value: 0
+  - name: MOUTH_WIDEN
+    value: 0
+  - name: NECK_PAN
+    value: 0
+  - name: NECK_ROLL
+    value: 0
+  - name: NECK_TILT
+    value: 0
+  isSpeaking: 0
+  isListening: 0
+  isGesturing: 0
+  lastSpokenText: 
+  lastHeardText: 
+  lastGesturePlayed: 
+  currentAttendUserId: 
+  availableVoices:
+  - voiceId: AaravNeural (en-IN) - Microsoft Azure
+    name: AaravNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: MALE
+  - voiceId: AaravNeural (hi-IN) - Microsoft Azure
+    name: AaravNeural
+    provider: Microsoft Azure
+    language: hi-IN
+    gender: MALE
+  - voiceId: AarohiNeural (mr-IN) - Microsoft Azure
+    name: AarohiNeural
+    provider: Microsoft Azure
+    language: mr-IN
+    gender: FEMALE
+  - voiceId: AartiIndicNeural (en-IN) - Microsoft Azure
+    name: AartiIndicNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: FEMALE
+  - voiceId: AartiNeural (en-IN) - Microsoft Azure
+    name: AartiNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: FEMALE
+  - voiceId: AartiNeural (hi-IN) - Microsoft Azure
+    name: AartiNeural
+    provider: Microsoft Azure
+    language: hi-IN
+    gender: FEMALE
+  - voiceId: AashiNeural (en-IN) - Microsoft Azure
+    name: AashiNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: FEMALE
+  - voiceId: AbbiNeural (en-GB) - Microsoft Azure
+    name: AbbiNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: FEMALE
+  - voiceId: AbdullahNeural (ar-OM) - Microsoft Azure
+    name: AbdullahNeural
+    provider: Microsoft Azure
+    language: ar-OM
+    gender: MALE
+  - voiceId: AbeoNeural (en-NG) - Microsoft Azure
+    name: AbeoNeural
+    provider: Microsoft Azure
+    language: en-NG
+    gender: MALE
+  - voiceId: AbrilNeural (es-ES) - Microsoft Azure
+    name: AbrilNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: AcharaNeural (th-TH) - Microsoft Azure
+    name: AcharaNeural
+    provider: Microsoft Azure
+    language: th-TH
+    gender: FEMALE
+  - voiceId: AdamMultilingualNeural (en-US) - Microsoft Azure
+    name: AdamMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: AdaMultilingualNeural (en-GB) - Microsoft Azure
+    name: AdaMultilingualNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: FEMALE
+  - voiceId: AdriNeural (af-ZA) - Microsoft Azure
+    name: AdriNeural
+    provider: Microsoft Azure
+    language: af-ZA
+    gender: FEMALE
+  - voiceId: AgnieszkaNeural (pl-PL) - Microsoft Azure
+    name: AgnieszkaNeural
+    provider: Microsoft Azure
+    language: pl-PL
+    gender: FEMALE
+  - voiceId: AhmetNeural (tr-TR) - Microsoft Azure
+    name: AhmetNeural
+    provider: Microsoft Azure
+    language: tr-TR
+    gender: MALE
+  - voiceId: AigulNeural (kk-KZ) - Microsoft Azure
+    name: AigulNeural
+    provider: Microsoft Azure
+    language: kk-KZ
+    gender: FEMALE
+  - voiceId: AinhoaNeural (eu-ES) - Microsoft Azure
+    name: AinhoaNeural
+    provider: Microsoft Azure
+    language: eu-ES
+    gender: FEMALE
+  - voiceId: AlainNeural (fr-FR) - Microsoft Azure
+    name: AlainNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: MALE
+  - voiceId: AlbaNeural (ca-ES) - Microsoft Azure
+    name: AlbaNeural
+    provider: Microsoft Azure
+    language: ca-ES
+    gender: FEMALE
+  - voiceId: AledNeural (cy-GB) - Microsoft Azure
+    name: AledNeural
+    provider: Microsoft Azure
+    language: cy-GB
+    gender: MALE
+  - voiceId: AleksandarNeural (mk-MK) - Microsoft Azure
+    name: AleksandarNeural
+    provider: Microsoft Azure
+    language: mk-MK
+    gender: MALE
+  - voiceId: AlessioMultilingualNeural (it-IT) - Microsoft Azure
+    name: AlessioMultilingualNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: MALE
+  - voiceId: AlexNeural (es-PE) - Microsoft Azure
+    name: AlexNeural
+    provider: Microsoft Azure
+    language: es-PE
+    gender: MALE
+  - voiceId: AlfieNeural (en-GB) - Microsoft Azure
+    name: AlfieNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: MALE
+  - voiceId: AlinaNeural (ro-RO) - Microsoft Azure
+    name: AlinaNeural
+    provider: Microsoft Azure
+    language: ro-RO
+    gender: FEMALE
+  - voiceId: AliNeural (ar-BH) - Microsoft Azure
+    name: AliNeural
+    provider: Microsoft Azure
+    language: ar-BH
+    gender: MALE
+  - voiceId: AlloyTurboMultilingualNeural (en-US) - Microsoft Azure
+    name: AlloyTurboMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: AlonsoNeural (es-US) - Microsoft Azure
+    name: AlonsoNeural
+    provider: Microsoft Azure
+    language: es-US
+    gender: MALE
+  - voiceId: AlvaroNeural (es-ES) - Microsoft Azure
+    name: AlvaroNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: MALE
+  - voiceId: AmalaNeural (de-DE) - Microsoft Azure
+    name: AmalaNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: FEMALE
+  - voiceId: AmalNeural (ar-QA) - Microsoft Azure
+    name: AmalNeural
+    provider: Microsoft Azure
+    language: ar-QA
+    gender: FEMALE
+  - voiceId: AmandaMultilingualNeural (en-US) - Microsoft Azure
+    name: AmandaMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: AmanyNeural (ar-SY) - Microsoft Azure
+    name: AmanyNeural
+    provider: Microsoft Azure
+    language: ar-SY
+    gender: FEMALE
+  - voiceId: AmberNeural (en-US) - Microsoft Azure
+    name: AmberNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: AmehaNeural (am-ET) - Microsoft Azure
+    name: AmehaNeural
+    provider: Microsoft Azure
+    language: am-ET
+    gender: MALE
+  - voiceId: AminaNeural (ar-DZ) - Microsoft Azure
+    name: AminaNeural
+    provider: Microsoft Azure
+    language: ar-DZ
+    gender: FEMALE
+  - voiceId: AnahitNeural (hy-AM) - Microsoft Azure
+    name: AnahitNeural
+    provider: Microsoft Azure
+    language: hy-AM
+    gender: FEMALE
+  - voiceId: AnaNeural (en-US) - Microsoft Azure
+    name: AnaNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: AnanyaNeural (en-IN) - Microsoft Azure
+    name: AnanyaNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: FEMALE
+  - voiceId: AnanyaNeural (hi-IN) - Microsoft Azure
+    name: AnanyaNeural
+    provider: Microsoft Azure
+    language: hi-IN
+    gender: FEMALE
+  - voiceId: AnbuNeural (ta-SG) - Microsoft Azure
+    name: AnbuNeural
+    provider: Microsoft Azure
+    language: ta-SG
+    gender: MALE
+  - voiceId: AnderNeural (eu-ES) - Microsoft Azure
+    name: AnderNeural
+    provider: Microsoft Azure
+    language: eu-ES
+    gender: MALE
+  - voiceId: AndreaNeural (es-EC) - Microsoft Azure
+    name: AndreaNeural
+    provider: Microsoft Azure
+    language: es-EC
+    gender: FEMALE
+  - voiceId: AndresNeural (es-GT) - Microsoft Azure
+    name: AndresNeural
+    provider: Microsoft Azure
+    language: es-GT
+    gender: MALE
+  - voiceId: AndrewMultilingualNeural (en-US) - Microsoft Azure
+    name: AndrewMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: AndrewNeural (en-US) - Microsoft Azure
+    name: AndrewNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: AngeloNeural (fil-PH) - Microsoft Azure
+    name: AngeloNeural
+    provider: Microsoft Azure
+    language: fil-PH
+    gender: MALE
+  - voiceId: AnilaNeural (sq-AL) - Microsoft Azure
+    name: AnilaNeural
+    provider: Microsoft Azure
+    language: sq-AL
+    gender: FEMALE
+  - voiceId: AnnetteNeural (en-AU) - Microsoft Azure
+    name: AnnetteNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: FEMALE
+  - voiceId: AntoineNeural (fr-CA) - Microsoft Azure
+    name: AntoineNeural
+    provider: Microsoft Azure
+    language: fr-CA
+    gender: MALE
+  - voiceId: AntoninNeural (cs-CZ) - Microsoft Azure
+    name: AntoninNeural
+    provider: Microsoft Azure
+    language: cs-CZ
+    gender: MALE
+  - voiceId: AntonioNeural (pt-BR) - Microsoft Azure
+    name: AntonioNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: MALE
+  - voiceId: AnuNeural (et-EE) - Microsoft Azure
+    name: AnuNeural
+    provider: Microsoft Azure
+    language: et-EE
+    gender: FEMALE
+  - voiceId: AoiNeural (ja-JP) - Microsoft Azure
+    name: AoiNeural
+    provider: Microsoft Azure
+    language: ja-JP
+    gender: FEMALE
+  - voiceId: ArabellaMultilingualNeural (es-ES) - Microsoft Azure
+    name: ArabellaMultilingualNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: ArdiNeural (id-ID) - Microsoft Azure
+    name: ArdiNeural
+    provider: Microsoft Azure
+    language: id-ID
+    gender: MALE
+  - voiceId: ArianeNeural (fr-CH) - Microsoft Azure
+    name: ArianeNeural
+    provider: Microsoft Azure
+    language: fr-CH
+    gender: FEMALE
+  - voiceId: AriaNeural (en-US) - Microsoft Azure
+    name: AriaNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: ArjunIndicNeural (en-IN) - Microsoft Azure
+    name: ArjunIndicNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: MALE
+  - voiceId: ArjunNeural (en-IN) - Microsoft Azure
+    name: ArjunNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: MALE
+  - voiceId: ArjunNeural (hi-IN) - Microsoft Azure
+    name: ArjunNeural
+    provider: Microsoft Azure
+    language: hi-IN
+    gender: MALE
+  - voiceId: ArnaudNeural (nl-BE) - Microsoft Azure
+    name: ArnaudNeural
+    provider: Microsoft Azure
+    language: nl-BE
+    gender: MALE
+  - voiceId: ArnauNeural (es-ES) - Microsoft Azure
+    name: ArnauNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: MALE
+  - voiceId: AsadNeural (ur-PK) - Microsoft Azure
+    name: AsadNeural
+    provider: Microsoft Azure
+    language: ur-PK
+    gender: MALE
+  - voiceId: AshleyNeural (en-US) - Microsoft Azure
+    name: AshleyNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: AsiliaNeural (en-KE) - Microsoft Azure
+    name: AsiliaNeural
+    provider: Microsoft Azure
+    language: en-KE
+    gender: FEMALE
+  - voiceId: AthinaNeural (el-GR) - Microsoft Azure
+    name: AthinaNeural
+    provider: Microsoft Azure
+    language: el-GR
+    gender: FEMALE
+  - voiceId: AvaMultilingualNeural (en-US) - Microsoft Azure
+    name: AvaMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: AvaNeural (en-US) - Microsoft Azure
+    name: AvaNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: AvriNeural (he-IL) - Microsoft Azure
+    name: AvriNeural
+    provider: Microsoft Azure
+    language: he-IL
+    gender: MALE
+  - voiceId: AyshaNeural (ar-OM) - Microsoft Azure
+    name: AyshaNeural
+    provider: Microsoft Azure
+    language: ar-OM
+    gender: FEMALE
+  - voiceId: BabekNeural (az-AZ) - Microsoft Azure
+    name: BabekNeural
+    provider: Microsoft Azure
+    language: az-AZ
+    gender: MALE
+  - voiceId: BanuNeural (az-AZ) - Microsoft Azure
+    name: BanuNeural
+    provider: Microsoft Azure
+    language: az-AZ
+    gender: FEMALE
+  - voiceId: BashkarNeural (bn-IN) - Microsoft Azure
+    name: BashkarNeural
+    provider: Microsoft Azure
+    language: bn-IN
+    gender: MALE
+  - voiceId: BasselNeural (ar-IQ) - Microsoft Azure
+    name: BasselNeural
+    provider: Microsoft Azure
+    language: ar-IQ
+    gender: MALE
+  - voiceId: BataaNeural (mn-MN) - Microsoft Azure
+    name: BataaNeural
+    provider: Microsoft Azure
+    language: mn-MN
+    gender: MALE
+  - voiceId: BeatrizNeural (es-MX) - Microsoft Azure
+    name: BeatrizNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: FEMALE
+  - voiceId: BelkysNeural (es-CU) - Microsoft Azure
+    name: BelkysNeural
+    provider: Microsoft Azure
+    language: es-CU
+    gender: FEMALE
+  - voiceId: BellaNeural (en-GB) - Microsoft Azure
+    name: BellaNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: FEMALE
+  - voiceId: BenignoNeural (it-IT) - Microsoft Azure
+    name: BenignoNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: MALE
+  - voiceId: BerndNeural (de-DE) - Microsoft Azure
+    name: BerndNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: MALE
+  - voiceId: BlessicaNeural (fil-PH) - Microsoft Azure
+    name: BlessicaNeural
+    provider: Microsoft Azure
+    language: fil-PH
+    gender: FEMALE
+  - voiceId: BongJinNeural (ko-KR) - Microsoft Azure
+    name: BongJinNeural
+    provider: Microsoft Azure
+    language: ko-KR
+    gender: MALE
+  - voiceId: BorislavNeural (bg-BG) - Microsoft Azure
+    name: BorislavNeural
+    provider: Microsoft Azure
+    language: bg-BG
+    gender: MALE
+  - voiceId: BrandonMultilingualNeural (en-US) - Microsoft Azure
+    name: BrandonMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: BrandonNeural (en-US) - Microsoft Azure
+    name: BrandonNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: BrendaNeural (pt-BR) - Microsoft Azure
+    name: BrendaNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: FEMALE
+  - voiceId: BrianMultilingualNeural (en-US) - Microsoft Azure
+    name: BrianMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: BrianNeural (en-US) - Microsoft Azure
+    name: BrianNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: BrigitteNeural (fr-FR) - Microsoft Azure
+    name: BrigitteNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: FEMALE
+  - voiceId: CalimeroNeural (it-IT) - Microsoft Azure
+    name: CalimeroNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: MALE
+  - voiceId: CamilaNeural (es-PE) - Microsoft Azure
+    name: CamilaNeural
+    provider: Microsoft Azure
+    language: es-PE
+    gender: FEMALE
+  - voiceId: CandelaNeural (es-MX) - Microsoft Azure
+    name: CandelaNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: FEMALE
+  - voiceId: CarlosNeural (es-HN) - Microsoft Azure
+    name: CarlosNeural
+    provider: Microsoft Azure
+    language: es-HN
+    gender: MALE
+  - voiceId: CarlotaNeural (es-MX) - Microsoft Azure
+    name: CarlotaNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: FEMALE
+  - voiceId: CarlyNeural (en-AU) - Microsoft Azure
+    name: CarlyNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: FEMALE
+  - voiceId: CataldoNeural (it-IT) - Microsoft Azure
+    name: CataldoNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: MALE
+  - voiceId: CatalinaNeural (es-CL) - Microsoft Azure
+    name: CatalinaNeural
+    provider: Microsoft Azure
+    language: es-CL
+    gender: FEMALE
+  - voiceId: CecilioNeural (es-MX) - Microsoft Azure
+    name: CecilioNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: MALE
+  - voiceId: CelesteNeural (fr-FR) - Microsoft Azure
+    name: CelesteNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: FEMALE
+  - voiceId: ChanthavongNeural (lo-LA) - Microsoft Azure
+    name: ChanthavongNeural
+    provider: Microsoft Azure
+    language: lo-LA
+    gender: MALE
+  - voiceId: CharlineNeural (fr-BE) - Microsoft Azure
+    name: CharlineNeural
+    provider: Microsoft Azure
+    language: fr-BE
+    gender: FEMALE
+  - voiceId: ChilembaNeural (en-KE) - Microsoft Azure
+    name: ChilembaNeural
+    provider: Microsoft Azure
+    language: en-KE
+    gender: MALE
+  - voiceId: ChristelNeural (da-DK) - Microsoft Azure
+    name: ChristelNeural
+    provider: Microsoft Azure
+    language: da-DK
+    gender: FEMALE
+  - voiceId: ChristopherMultilingualNeural (en-US) - Microsoft Azure
+    name: ChristopherMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: ChristopherNeural (en-US) - Microsoft Azure
+    name: ChristopherNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: ChristophNeural (de-DE) - Microsoft Azure
+    name: ChristophNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: MALE
+  - voiceId: ClaraNeural (en-CA) - Microsoft Azure
+    name: ClaraNeural
+    provider: Microsoft Azure
+    language: en-CA
+    gender: FEMALE
+  - voiceId: ClaudeNeural (fr-FR) - Microsoft Azure
+    name: ClaudeNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: MALE
+  - voiceId: ColetteNeural (nl-NL) - Microsoft Azure
+    name: ColetteNeural
+    provider: Microsoft Azure
+    language: nl-NL
+    gender: FEMALE
+  - voiceId: ColmNeural (ga-IE) - Microsoft Azure
+    name: ColmNeural
+    provider: Microsoft Azure
+    language: ga-IE
+    gender: MALE
+  - voiceId: ConnorNeural (en-IE) - Microsoft Azure
+    name: ConnorNeural
+    provider: Microsoft Azure
+    language: en-IE
+    gender: MALE
+  - voiceId: ConradNeural (de-DE) - Microsoft Azure
+    name: ConradNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: MALE
+  - voiceId: CoralieNeural (fr-FR) - Microsoft Azure
+    name: CoralieNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: FEMALE
+  - voiceId: CoraMultilingualNeural (en-US) - Microsoft Azure
+    name: CoraMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: CoraNeural (en-US) - Microsoft Azure
+    name: CoraNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: DaichiNeural (ja-JP) - Microsoft Azure
+    name: DaichiNeural
+    provider: Microsoft Azure
+    language: ja-JP
+    gender: MALE
+  - voiceId: DaliaMultilingualNeural (es-MX) - Microsoft Azure
+    name: DaliaMultilingualNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: FEMALE
+  - voiceId: DaliaNeural (es-MX) - Microsoft Azure
+    name: DaliaNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: FEMALE
+  - voiceId: DarioNeural (es-ES) - Microsoft Azure
+    name: DarioNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: MALE
+  - voiceId: DariyaNeural (ru-RU) - Microsoft Azure
+    name: DariyaNeural
+    provider: Microsoft Azure
+    language: ru-RU
+    gender: FEMALE
+  - voiceId: DarrenNeural (en-AU) - Microsoft Azure
+    name: DarrenNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: MALE
+  - voiceId: DaudiNeural (sw-TZ) - Microsoft Azure
+    name: DaudiNeural
+    provider: Microsoft Azure
+    language: sw-TZ
+    gender: MALE
+  - voiceId: DauletNeural (kk-KZ) - Microsoft Azure
+    name: DauletNeural
+    provider: Microsoft Azure
+    language: kk-KZ
+    gender: MALE
+  - voiceId: DavisMultilingualNeural (en-US) - Microsoft Azure
+    name: DavisMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: DavisNeural (en-US) - Microsoft Azure
+    name: DavisNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: DenaNeural (nl-BE) - Microsoft Azure
+    name: DenaNeural
+    provider: Microsoft Azure
+    language: nl-BE
+    gender: FEMALE
+  - voiceId: DeniseNeural (fr-FR) - Microsoft Azure
+    name: DeniseNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: FEMALE
+  - voiceId: DerekMultilingualNeural (en-US) - Microsoft Azure
+    name: DerekMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: DhwaniNeural (gu-IN) - Microsoft Azure
+    name: DhwaniNeural
+    provider: Microsoft Azure
+    language: gu-IN
+    gender: FEMALE
+  - voiceId: DiegoNeural (it-IT) - Microsoft Azure
+    name: DiegoNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: MALE
+  - voiceId: DilaraNeural (fa-IR) - Microsoft Azure
+    name: DilaraNeural
+    provider: Microsoft Azure
+    language: fa-IR
+    gender: FEMALE
+  - voiceId: DimasNeural (jv-ID) - Microsoft Azure
+    name: DimasNeural
+    provider: Microsoft Azure
+    language: jv-ID
+    gender: MALE
+  - voiceId: DmitryNeural (ru-RU) - Microsoft Azure
+    name: DmitryNeural
+    provider: Microsoft Azure
+    language: ru-RU
+    gender: MALE
+  - voiceId: DonatoNeural (pt-BR) - Microsoft Azure
+    name: DonatoNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: MALE
+  - voiceId: DuarteNeural (pt-PT) - Microsoft Azure
+    name: DuarteNeural
+    provider: Microsoft Azure
+    language: pt-PT
+    gender: MALE
+  - voiceId: DuncanNeural (en-AU) - Microsoft Azure
+    name: DuncanNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: MALE
+  - voiceId: DustinMultilingualNeural (en-US) - Microsoft Azure
+    name: DustinMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: EchoTurboMultilingualNeural (en-US) - Microsoft Azure
+    name: EchoTurboMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: EkaNeural (ka-GE) - Microsoft Azure
+    name: EkaNeural
+    provider: Microsoft Azure
+    language: ka-GE
+    gender: FEMALE
+  - voiceId: ElenaNeural (es-AR) - Microsoft Azure
+    name: ElenaNeural
+    provider: Microsoft Azure
+    language: es-AR
+    gender: FEMALE
+  - voiceId: EliasNeural (es-ES) - Microsoft Azure
+    name: EliasNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: MALE
+  - voiceId: ElimuNeural (en-TZ) - Microsoft Azure
+    name: ElimuNeural
+    provider: Microsoft Azure
+    language: en-TZ
+    gender: MALE
+  - voiceId: ElizabethNeural (en-US) - Microsoft Azure
+    name: ElizabethNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: ElkeNeural (de-DE) - Microsoft Azure
+    name: ElkeNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: FEMALE
+  - voiceId: ElliotNeural (en-GB) - Microsoft Azure
+    name: ElliotNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: MALE
+  - voiceId: EloiseNeural (fr-FR) - Microsoft Azure
+    name: EloiseNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: FEMALE
+  - voiceId: ElsaNeural (it-IT) - Microsoft Azure
+    name: ElsaNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: FEMALE
+  - voiceId: ElsieNeural (en-AU) - Microsoft Azure
+    name: ElsieNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: FEMALE
+  - voiceId: ElviraNeural (es-ES) - Microsoft Azure
+    name: ElviraNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: ElzaNeural (pt-BR) - Microsoft Azure
+    name: ElzaNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: FEMALE
+  - voiceId: EmelNeural (tr-TR) - Microsoft Azure
+    name: EmelNeural
+    provider: Microsoft Azure
+    language: tr-TR
+    gender: FEMALE
+  - voiceId: EmilioNeural (es-DO) - Microsoft Azure
+    name: EmilioNeural
+    provider: Microsoft Azure
+    language: es-DO
+    gender: MALE
+  - voiceId: EmilNeural (ro-RO) - Microsoft Azure
+    name: EmilNeural
+    provider: Microsoft Azure
+    language: ro-RO
+    gender: MALE
+  - voiceId: EmilyNeural (en-IE) - Microsoft Azure
+    name: EmilyNeural
+    provider: Microsoft Azure
+    language: en-IE
+    gender: FEMALE
+  - voiceId: EmmaMultilingualNeural (en-US) - Microsoft Azure
+    name: EmmaMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: EmmaNeural (en-US) - Microsoft Azure
+    name: EmmaNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: EnricNeural (ca-ES) - Microsoft Azure
+    name: EnricNeural
+    provider: Microsoft Azure
+    language: ca-ES
+    gender: MALE
+  - voiceId: EricNeural (en-US) - Microsoft Azure
+    name: EricNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: EstrellaNeural (es-ES) - Microsoft Azure
+    name: EstrellaNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: EthanNeural (en-GB) - Microsoft Azure
+    name: EthanNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: MALE
+  - voiceId: EvelynMultilingualNeural (en-US) - Microsoft Azure
+    name: EvelynMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: EveritaNeural (lv-LV) - Microsoft Azure
+    name: EveritaNeural
+    provider: Microsoft Azure
+    language: lv-LV
+    gender: FEMALE
+  - voiceId: EzinneNeural (en-NG) - Microsoft Azure
+    name: EzinneNeural
+    provider: Microsoft Azure
+    language: en-NG
+    gender: FEMALE
+  - voiceId: FabiolaNeural (it-IT) - Microsoft Azure
+    name: FabiolaNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: FEMALE
+  - voiceId: FabioNeural (pt-BR) - Microsoft Azure
+    name: FabioNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: MALE
+  - voiceId: FableTurboMultilingualNeural (en-US) - Microsoft Azure
+    name: FableTurboMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: NEUTRAL
+  - voiceId: FabriceNeural (fr-CH) - Microsoft Azure
+    name: FabriceNeural
+    provider: Microsoft Azure
+    language: fr-CH
+    gender: MALE
+  - voiceId: FahedNeural (ar-KW) - Microsoft Azure
+    name: FahedNeural
+    provider: Microsoft Azure
+    language: ar-KW
+    gender: MALE
+  - voiceId: FaridNeural (fa-IR) - Microsoft Azure
+    name: FaridNeural
+    provider: Microsoft Azure
+    language: fa-IR
+    gender: MALE
+  - voiceId: FatimaNeural (ar-AE) - Microsoft Azure
+    name: FatimaNeural
+    provider: Microsoft Azure
+    language: ar-AE
+    gender: FEMALE
+  - voiceId: FedericoNeural (es-NI) - Microsoft Azure
+    name: FedericoNeural
+    provider: Microsoft Azure
+    language: es-NI
+    gender: MALE
+  - voiceId: FennaNeural (nl-NL) - Microsoft Azure
+    name: FennaNeural
+    provider: Microsoft Azure
+    language: nl-NL
+    gender: FEMALE
+  - voiceId: FernandaNeural (pt-PT) - Microsoft Azure
+    name: FernandaNeural
+    provider: Microsoft Azure
+    language: pt-PT
+    gender: FEMALE
+  - voiceId: FiammaNeural (it-IT) - Microsoft Azure
+    name: FiammaNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: FEMALE
+  - voiceId: FinnNeural (nb-NO) - Microsoft Azure
+    name: FinnNeural
+    provider: Microsoft Azure
+    language: nb-NO
+    gender: MALE
+  - voiceId: FlorianMultilingualNeural (de-DE) - Microsoft Azure
+    name: FlorianMultilingualNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: MALE
+  - voiceId: FranciscaNeural (pt-BR) - Microsoft Azure
+    name: FranciscaNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: FEMALE
+  - voiceId: FreyaNeural (en-AU) - Microsoft Azure
+    name: FreyaNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: FEMALE
+  - voiceId: GabrijelaNeural (hr-HR) - Microsoft Azure
+    name: GabrijelaNeural
+    provider: Microsoft Azure
+    language: hr-HR
+    gender: FEMALE
+  - voiceId: GadisNeural (id-ID) - Microsoft Azure
+    name: GadisNeural
+    provider: Microsoft Azure
+    language: id-ID
+    gender: FEMALE
+  - voiceId: GaganNeural (kn-IN) - Microsoft Azure
+    name: GaganNeural
+    provider: Microsoft Azure
+    language: kn-IN
+    gender: MALE
+  - voiceId: GerardNeural (fr-BE) - Microsoft Azure
+    name: GerardNeural
+    provider: Microsoft Azure
+    language: fr-BE
+    gender: MALE
+  - voiceId: GerardoNeural (es-MX) - Microsoft Azure
+    name: GerardoNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: MALE
+  - voiceId: GianniNeural (it-IT) - Microsoft Azure
+    name: GianniNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: MALE
+  - voiceId: GiorgiNeural (ka-GE) - Microsoft Azure
+    name: GiorgiNeural
+    provider: Microsoft Azure
+    language: ka-GE
+    gender: MALE
+  - voiceId: GiovannaNeural (pt-BR) - Microsoft Azure
+    name: GiovannaNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: FEMALE
+  - voiceId: GiselaNeural (de-DE) - Microsoft Azure
+    name: GiselaNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: FEMALE
+  - voiceId: GiuseppeMultilingualNeural (it-IT) - Microsoft Azure
+    name: GiuseppeMultilingualNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: MALE
+  - voiceId: GiuseppeNeural (it-IT) - Microsoft Azure
+    name: GiuseppeNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: MALE
+  - voiceId: GonzaloNeural (es-CO) - Microsoft Azure
+    name: GonzaloNeural
+    provider: Microsoft Azure
+    language: es-CO
+    gender: MALE
+  - voiceId: GookMinNeural (ko-KR) - Microsoft Azure
+    name: GookMinNeural
+    provider: Microsoft Azure
+    language: ko-KR
+    gender: MALE
+  - voiceId: GoranNeural (bs-BA) - Microsoft Azure
+    name: GoranNeural
+    provider: Microsoft Azure
+    language: bs-BA
+    gender: MALE
+  - voiceId: GraceNeural (mt-MT) - Microsoft Azure
+    name: GraceNeural
+    provider: Microsoft Azure
+    language: mt-MT
+    gender: FEMALE
+  - voiceId: GudrunNeural (is-IS) - Microsoft Azure
+    name: GudrunNeural
+    provider: Microsoft Azure
+    language: is-IS
+    gender: FEMALE
+  - voiceId: GulNawazNeural (ps-AF) - Microsoft Azure
+    name: GulNawazNeural
+    provider: Microsoft Azure
+    language: ps-AF
+    gender: MALE
+  - voiceId: GulNeural (ur-IN) - Microsoft Azure
+    name: GulNeural
+    provider: Microsoft Azure
+    language: ur-IN
+    gender: FEMALE
+  - voiceId: GunnarNeural (is-IS) - Microsoft Azure
+    name: GunnarNeural
+    provider: Microsoft Azure
+    language: is-IS
+    gender: MALE
+  - voiceId: GuyNeural (en-US) - Microsoft Azure
+    name: GuyNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: HamdanNeural (ar-AE) - Microsoft Azure
+    name: HamdanNeural
+    provider: Microsoft Azure
+    language: ar-AE
+    gender: MALE
+  - voiceId: HamedNeural (ar-SA) - Microsoft Azure
+    name: HamedNeural
+    provider: Microsoft Azure
+    language: ar-SA
+    gender: MALE
+  - voiceId: HarriNeural (fi-FI) - Microsoft Azure
+    name: HarriNeural
+    provider: Microsoft Azure
+    language: fi-FI
+    gender: MALE
+  - voiceId: HaykNeural (hy-AM) - Microsoft Azure
+    name: HaykNeural
+    provider: Microsoft Azure
+    language: hy-AM
+    gender: MALE
+  - voiceId: HediNeural (ar-TN) - Microsoft Azure
+    name: HediNeural
+    provider: Microsoft Azure
+    language: ar-TN
+    gender: MALE
+  - voiceId: HemkalaNeural (ne-NP) - Microsoft Azure
+    name: HemkalaNeural
+    provider: Microsoft Azure
+    language: ne-NP
+    gender: FEMALE
+  - voiceId: HenriNeural (fr-FR) - Microsoft Azure
+    name: HenriNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: MALE
+  - voiceId: HilaNeural (he-IL) - Microsoft Azure
+    name: HilaNeural
+    provider: Microsoft Azure
+    language: he-IL
+    gender: FEMALE
+  - voiceId: HilleviNeural (sv-SE) - Microsoft Azure
+    name: HilleviNeural
+    provider: Microsoft Azure
+    language: sv-SE
+    gender: FEMALE
+  - voiceId: HiuGaaiNeural (zh-HK) - Microsoft Azure
+    name: HiuGaaiNeural
+    provider: Microsoft Azure
+    language: zh-HK
+    gender: FEMALE
+  - voiceId: HiuMaanNeural (zh-HK) - Microsoft Azure
+    name: HiuMaanNeural
+    provider: Microsoft Azure
+    language: zh-HK
+    gender: FEMALE
+  - voiceId: HoaiMyNeural (vi-VN) - Microsoft Azure
+    name: HoaiMyNeural
+    provider: Microsoft Azure
+    language: vi-VN
+    gender: FEMALE
+  - voiceId: HollieNeural (en-GB) - Microsoft Azure
+    name: HollieNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: FEMALE
+  - voiceId: HsiaoChenNeural (zh-TW) - Microsoft Azure
+    name: HsiaoChenNeural
+    provider: Microsoft Azure
+    language: zh-TW
+    gender: FEMALE
+  - voiceId: HsiaoYuNeural (zh-TW) - Microsoft Azure
+    name: HsiaoYuNeural
+    provider: Microsoft Azure
+    language: zh-TW
+    gender: FEMALE
+  - voiceId: HumbertoNeural (pt-BR) - Microsoft Azure
+    name: HumbertoNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: MALE
+  - voiceId: HyunsuMultilingualNeural (ko-KR) - Microsoft Azure
+    name: HyunsuMultilingualNeural
+    provider: Microsoft Azure
+    language: ko-KR
+    gender: MALE
+  - voiceId: HyunsuNeural (ko-KR) - Microsoft Azure
+    name: HyunsuNeural
+    provider: Microsoft Azure
+    language: ko-KR
+    gender: MALE
+  - voiceId: IlirNeural (sq-AL) - Microsoft Azure
+    name: IlirNeural
+    provider: Microsoft Azure
+    language: sq-AL
+    gender: MALE
+  - voiceId: ImaniNeural (en-TZ) - Microsoft Azure
+    name: ImaniNeural
+    provider: Microsoft Azure
+    language: en-TZ
+    gender: FEMALE
+  - voiceId: ImanNeural (ar-LY) - Microsoft Azure
+    name: ImanNeural
+    provider: Microsoft Azure
+    language: ar-LY
+    gender: FEMALE
+  - voiceId: ImeldaNeural (it-IT) - Microsoft Azure
+    name: ImeldaNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: FEMALE
+  - voiceId: IngridNeural (de-AT) - Microsoft Azure
+    name: IngridNeural
+    provider: Microsoft Azure
+    language: de-AT
+    gender: FEMALE
+  - voiceId: InJoonNeural (ko-KR) - Microsoft Azure
+    name: InJoonNeural
+    provider: Microsoft Azure
+    language: ko-KR
+    gender: MALE
+  - voiceId: IreneNeural (es-ES) - Microsoft Azure
+    name: IreneNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: IrmaNeural (it-IT) - Microsoft Azure
+    name: IrmaNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: FEMALE
+  - voiceId: IsabellaMultilingualNeural (it-IT) - Microsoft Azure
+    name: IsabellaMultilingualNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: FEMALE
+  - voiceId: IsabellaNeural (it-IT) - Microsoft Azure
+    name: IsabellaNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: FEMALE
+  - voiceId: IselinNeural (nb-NO) - Microsoft Azure
+    name: IselinNeural
+    provider: Microsoft Azure
+    language: nb-NO
+    gender: FEMALE
+  - voiceId: IsidoraMultilingualNeural (es-ES) - Microsoft Azure
+    name: IsidoraMultilingualNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: IsmaelNeural (ar-DZ) - Microsoft Azure
+    name: IsmaelNeural
+    provider: Microsoft Azure
+    language: ar-DZ
+    gender: MALE
+  - voiceId: JacobNeural (en-US) - Microsoft Azure
+    name: JacobNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: JacquelineNeural (fr-FR) - Microsoft Azure
+    name: JacquelineNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: FEMALE
+  - voiceId: JajangNeural (su-ID) - Microsoft Azure
+    name: JajangNeural
+    provider: Microsoft Azure
+    language: su-ID
+    gender: MALE
+  - voiceId: JamalNeural (ar-MA) - Microsoft Azure
+    name: JamalNeural
+    provider: Microsoft Azure
+    language: ar-MA
+    gender: MALE
+  - voiceId: JamesNeural (en-PH) - Microsoft Azure
+    name: JamesNeural
+    provider: Microsoft Azure
+    language: en-PH
+    gender: MALE
+  - voiceId: JaneNeural (en-US) - Microsoft Azure
+    name: JaneNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: JanNeural (de-CH) - Microsoft Azure
+    name: JanNeural
+    provider: Microsoft Azure
+    language: de-CH
+    gender: MALE
+  - voiceId: JasonNeural (en-US) - Microsoft Azure
+    name: JasonNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: JavierNeural (es-GQ) - Microsoft Azure
+    name: JavierNeural
+    provider: Microsoft Azure
+    language: es-GQ
+    gender: MALE
+  - voiceId: JeanNeural (fr-CA) - Microsoft Azure
+    name: JeanNeural
+    provider: Microsoft Azure
+    language: fr-CA
+    gender: MALE
+  - voiceId: JennyMultilingualNeural (en-US) - Microsoft Azure
+    name: JennyMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: JennyNeural (en-US) - Microsoft Azure
+    name: JennyNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: JeppeNeural (da-DK) - Microsoft Azure
+    name: JeppeNeural
+    provider: Microsoft Azure
+    language: da-DK
+    gender: MALE
+  - voiceId: JeromeNeural (fr-FR) - Microsoft Azure
+    name: JeromeNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: MALE
+  - voiceId: JiMinNeural (ko-KR) - Microsoft Azure
+    name: JiMinNeural
+    provider: Microsoft Azure
+    language: ko-KR
+    gender: FEMALE
+  - voiceId: JoanaNeural (ca-ES) - Microsoft Azure
+    name: JoanaNeural
+    provider: Microsoft Azure
+    language: ca-ES
+    gender: FEMALE
+  - voiceId: JoanneNeural (en-AU) - Microsoft Azure
+    name: JoanneNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: FEMALE
+  - voiceId: JonasNeural (de-AT) - Microsoft Azure
+    name: JonasNeural
+    provider: Microsoft Azure
+    language: de-AT
+    gender: MALE
+  - voiceId: JorgeMultilingualNeural (es-MX) - Microsoft Azure
+    name: JorgeMultilingualNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: MALE
+  - voiceId: JorgeNeural (es-MX) - Microsoft Azure
+    name: JorgeNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: MALE
+  - voiceId: JosephineNeural (fr-FR) - Microsoft Azure
+    name: JosephineNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: FEMALE
+  - voiceId: JosephNeural (mt-MT) - Microsoft Azure
+    name: JosephNeural
+    provider: Microsoft Azure
+    language: mt-MT
+    gender: MALE
+  - voiceId: JuanNeural (es-CR) - Microsoft Azure
+    name: JuanNeural
+    provider: Microsoft Azure
+    language: es-CR
+    gender: MALE
+  - voiceId: JulioNeural (pt-BR) - Microsoft Azure
+    name: JulioNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: MALE
+  - voiceId: KaiNeural (en-US) - Microsoft Azure
+    name: KaiNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: KalinaNeural (bg-BG) - Microsoft Azure
+    name: KalinaNeural
+    provider: Microsoft Azure
+    language: bg-BG
+    gender: FEMALE
+  - voiceId: KaniNeural (ta-MY) - Microsoft Azure
+    name: KaniNeural
+    provider: Microsoft Azure
+    language: ta-MY
+    gender: FEMALE
+  - voiceId: KarinaNeural (es-PR) - Microsoft Azure
+    name: KarinaNeural
+    provider: Microsoft Azure
+    language: es-PR
+    gender: FEMALE
+  - voiceId: KarlaNeural (es-HN) - Microsoft Azure
+    name: KarlaNeural
+    provider: Microsoft Azure
+    language: es-HN
+    gender: FEMALE
+  - voiceId: KasperNeural (de-DE) - Microsoft Azure
+    name: KasperNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: MALE
+  - voiceId: KatjaNeural (de-DE) - Microsoft Azure
+    name: KatjaNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: FEMALE
+  - voiceId: KavyaNeural (en-IN) - Microsoft Azure
+    name: KavyaNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: FEMALE
+  - voiceId: KavyaNeural (hi-IN) - Microsoft Azure
+    name: KavyaNeural
+    provider: Microsoft Azure
+    language: hi-IN
+    gender: FEMALE
+  - voiceId: KeitaNeural (ja-JP) - Microsoft Azure
+    name: KeitaNeural
+    provider: Microsoft Azure
+    language: ja-JP
+    gender: MALE
+  - voiceId: KenNeural (en-AU) - Microsoft Azure
+    name: KenNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: MALE
+  - voiceId: KeomanyNeural (lo-LA) - Microsoft Azure
+    name: KeomanyNeural
+    provider: Microsoft Azure
+    language: lo-LA
+    gender: FEMALE
+  - voiceId: KertNeural (et-EE) - Microsoft Azure
+    name: KertNeural
+    provider: Microsoft Azure
+    language: et-EE
+    gender: MALE
+  - voiceId: KillianNeural (de-DE) - Microsoft Azure
+    name: KillianNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: MALE
+  - voiceId: KimNeural (en-AU) - Microsoft Azure
+    name: KimNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: FEMALE
+  - voiceId: KlarissaNeural (de-DE) - Microsoft Azure
+    name: KlarissaNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: FEMALE
+  - voiceId: KlausNeural (de-DE) - Microsoft Azure
+    name: KlausNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: MALE
+  - voiceId: KumarNeural (ta-LK) - Microsoft Azure
+    name: KumarNeural
+    provider: Microsoft Azure
+    language: ta-LK
+    gender: MALE
+  - voiceId: KunalNeural (en-IN) - Microsoft Azure
+    name: KunalNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: MALE
+  - voiceId: KunalNeural (hi-IN) - Microsoft Azure
+    name: KunalNeural
+    provider: Microsoft Azure
+    language: hi-IN
+    gender: MALE
+  - voiceId: LaiaNeural (es-ES) - Microsoft Azure
+    name: LaiaNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: LailaNeural (ar-BH) - Microsoft Azure
+    name: LailaNeural
+    provider: Microsoft Azure
+    language: ar-BH
+    gender: FEMALE
+  - voiceId: LaithNeural (ar-SY) - Microsoft Azure
+    name: LaithNeural
+    provider: Microsoft Azure
+    language: ar-SY
+    gender: MALE
+  - voiceId: LarissaNeural (es-MX) - Microsoft Azure
+    name: LarissaNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: FEMALE
+  - voiceId: LatifaNeural (ps-AF) - Microsoft Azure
+    name: LatifaNeural
+    provider: Microsoft Azure
+    language: ps-AF
+    gender: FEMALE
+  - voiceId: LaylaNeural (ar-LB) - Microsoft Azure
+    name: LaylaNeural
+    provider: Microsoft Azure
+    language: ar-LB
+    gender: FEMALE
+  - voiceId: LeahNeural (en-ZA) - Microsoft Azure
+    name: LeahNeural
+    provider: Microsoft Azure
+    language: en-ZA
+    gender: FEMALE
+  - voiceId: LeilaNeural (pt-BR) - Microsoft Azure
+    name: LeilaNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: FEMALE
+  - voiceId: LeniNeural (de-CH) - Microsoft Azure
+    name: LeniNeural
+    provider: Microsoft Azure
+    language: de-CH
+    gender: FEMALE
+  - voiceId: LeonasNeural (lt-LT) - Microsoft Azure
+    name: LeonasNeural
+    provider: Microsoft Azure
+    language: lt-LT
+    gender: MALE
+  - voiceId: LeticiaNeural (pt-BR) - Microsoft Azure
+    name: LeticiaNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: FEMALE
+  - voiceId: LewisMultilingualNeural (en-US) - Microsoft Azure
+    name: LewisMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: LiamNeural (en-CA) - Microsoft Azure
+    name: LiamNeural
+    provider: Microsoft Azure
+    language: en-CA
+    gender: MALE
+  - voiceId: LiaNeural (es-ES) - Microsoft Azure
+    name: LiaNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: LibbyNeural (en-GB) - Microsoft Azure
+    name: LibbyNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: FEMALE
+  - voiceId: LibertoNeural (es-MX) - Microsoft Azure
+    name: LibertoNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: MALE
+  - voiceId: LisandroNeural (it-IT) - Microsoft Azure
+    name: LisandroNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: MALE
+  - voiceId: LolaMultilingualNeural (en-US) - Microsoft Azure
+    name: LolaMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: LorenaNeural (es-SV) - Microsoft Azure
+    name: LorenaNeural
+    provider: Microsoft Azure
+    language: es-SV
+    gender: FEMALE
+  - voiceId: LorenzoNeural (es-CL) - Microsoft Azure
+    name: LorenzoNeural
+    provider: Microsoft Azure
+    language: es-CL
+    gender: MALE
+  - voiceId: LouisaNeural (de-DE) - Microsoft Azure
+    name: LouisaNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: FEMALE
+  - voiceId: LucianoNeural (es-MX) - Microsoft Azure
+    name: LucianoNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: MALE
+  - voiceId: LucienMultilingualNeural (fr-FR) - Microsoft Azure
+    name: LucienMultilingualNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: MALE
+  - voiceId: LuisNeural (es-EC) - Microsoft Azure
+    name: LuisNeural
+    provider: Microsoft Azure
+    language: es-EC
+    gender: MALE
+  - voiceId: LukasNeural (sk-SK) - Microsoft Azure
+    name: LukasNeural
+    provider: Microsoft Azure
+    language: sk-SK
+    gender: MALE
+  - voiceId: LukeNeural (en-ZA) - Microsoft Azure
+    name: LukeNeural
+    provider: Microsoft Azure
+    language: en-ZA
+    gender: MALE
+  - voiceId: LunaNeural (en-SG) - Microsoft Azure
+    name: LunaNeural
+    provider: Microsoft Azure
+    language: en-SG
+    gender: FEMALE
+  - voiceId: LunaNeural (en-US) - Microsoft Azure
+    name: LunaNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: MaartenNeural (nl-NL) - Microsoft Azure
+    name: MaartenNeural
+    provider: Microsoft Azure
+    language: nl-NL
+    gender: MALE
+  - voiceId: MacerioMultilingualNeural (pt-BR) - Microsoft Azure
+    name: MacerioMultilingualNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: MALE
+  - voiceId: MadhurNeural (hi-IN) - Microsoft Azure
+    name: MadhurNeural
+    provider: Microsoft Azure
+    language: hi-IN
+    gender: MALE
+  - voiceId: MadinaNeural (uz-UZ) - Microsoft Azure
+    name: MadinaNeural
+    provider: Microsoft Azure
+    language: uz-UZ
+    gender: FEMALE
+  - voiceId: MaisieNeural (en-GB) - Microsoft Azure
+    name: MaisieNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: FEMALE
+  - voiceId: MajaNeural (de-DE) - Microsoft Azure
+    name: MajaNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: FEMALE
+  - voiceId: ManoharNeural (mr-IN) - Microsoft Azure
+    name: ManoharNeural
+    provider: Microsoft Azure
+    language: mr-IN
+    gender: MALE
+  - voiceId: ManuelaNeural (pt-BR) - Microsoft Azure
+    name: ManuelaNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: FEMALE
+  - voiceId: ManuelNeural (es-CU) - Microsoft Azure
+    name: ManuelNeural
+    provider: Microsoft Azure
+    language: es-CU
+    gender: MALE
+  - voiceId: MarcelloMultilingualNeural (it-IT) - Microsoft Azure
+    name: MarcelloMultilingualNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: MALE
+  - voiceId: MarceloNeural (es-BO) - Microsoft Azure
+    name: MarceloNeural
+    provider: Microsoft Azure
+    language: es-BO
+    gender: MALE
+  - voiceId: MarekNeural (pl-PL) - Microsoft Azure
+    name: MarekNeural
+    provider: Microsoft Azure
+    language: pl-PL
+    gender: MALE
+  - voiceId: MargaritaNeural (es-PA) - Microsoft Azure
+    name: MargaritaNeural
+    provider: Microsoft Azure
+    language: es-PA
+    gender: FEMALE
+  - voiceId: MariaNeural (es-CR) - Microsoft Azure
+    name: MariaNeural
+    provider: Microsoft Azure
+    language: es-CR
+    gender: FEMALE
+  - voiceId: MarijaNeural (mk-MK) - Microsoft Azure
+    name: MarijaNeural
+    provider: Microsoft Azure
+    language: mk-MK
+    gender: FEMALE
+  - voiceId: MarinaNeural (es-MX) - Microsoft Azure
+    name: MarinaNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: FEMALE
+  - voiceId: MarioNeural (es-PY) - Microsoft Azure
+    name: MarioNeural
+    provider: Microsoft Azure
+    language: es-PY
+    gender: MALE
+  - voiceId: MartaNeural (es-GT) - Microsoft Azure
+    name: MartaNeural
+    provider: Microsoft Azure
+    language: es-GT
+    gender: FEMALE
+  - voiceId: MaryamNeural (ar-YE) - Microsoft Azure
+    name: MaryamNeural
+    provider: Microsoft Azure
+    language: ar-YE
+    gender: FEMALE
+  - voiceId: MateoNeural (es-UY) - Microsoft Azure
+    name: MateoNeural
+    provider: Microsoft Azure
+    language: es-UY
+    gender: MALE
+  - voiceId: MattiasNeural (sv-SE) - Microsoft Azure
+    name: MattiasNeural
+    provider: Microsoft Azure
+    language: sv-SE
+    gender: MALE
+  - voiceId: MauriceNeural (fr-FR) - Microsoft Azure
+    name: MauriceNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: MALE
+  - voiceId: MayuNeural (ja-JP) - Microsoft Azure
+    name: MayuNeural
+    provider: Microsoft Azure
+    language: ja-JP
+    gender: FEMALE
+  - voiceId: MekdesNeural (am-ET) - Microsoft Azure
+    name: MekdesNeural
+    provider: Microsoft Azure
+    language: am-ET
+    gender: FEMALE
+  - voiceId: MiaNeural (en-GB) - Microsoft Azure
+    name: MiaNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: FEMALE
+  - voiceId: MichelleNeural (en-US) - Microsoft Azure
+    name: MichelleNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: MidhunNeural (ml-IN) - Microsoft Azure
+    name: MidhunNeural
+    provider: Microsoft Azure
+    language: ml-IN
+    gender: MALE
+  - voiceId: MitchellNeural (en-NZ) - Microsoft Azure
+    name: MitchellNeural
+    provider: Microsoft Azure
+    language: en-NZ
+    gender: MALE
+  - voiceId: MoazNeural (ar-QA) - Microsoft Azure
+    name: MoazNeural
+    provider: Microsoft Azure
+    language: ar-QA
+    gender: MALE
+  - voiceId: MohanNeural (te-IN) - Microsoft Azure
+    name: MohanNeural
+    provider: Microsoft Azure
+    language: te-IN
+    gender: MALE
+  - voiceId: MollyNeural (en-NZ) - Microsoft Azure
+    name: MollyNeural
+    provider: Microsoft Azure
+    language: en-NZ
+    gender: FEMALE
+  - voiceId: MonicaNeural (en-US) - Microsoft Azure
+    name: MonicaNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: MounaNeural (ar-MA) - Microsoft Azure
+    name: MounaNeural
+    provider: Microsoft Azure
+    language: ar-MA
+    gender: FEMALE
+  - voiceId: MuuseNeural (so-SO) - Microsoft Azure
+    name: MuuseNeural
+    provider: Microsoft Azure
+    language: so-SO
+    gender: MALE
+  - voiceId: NabanitaNeural (bn-BD) - Microsoft Azure
+    name: NabanitaNeural
+    provider: Microsoft Azure
+    language: bn-BD
+    gender: FEMALE
+  - voiceId: NamMinhNeural (vi-VN) - Microsoft Azure
+    name: NamMinhNeural
+    provider: Microsoft Azure
+    language: vi-VN
+    gender: MALE
+  - voiceId: NanamiNeural (ja-JP) - Microsoft Azure
+    name: NanamiNeural
+    provider: Microsoft Azure
+    language: ja-JP
+    gender: FEMALE
+  - voiceId: NancyMultilingualNeural (en-US) - Microsoft Azure
+    name: NancyMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: NancyNeural (en-US) - Microsoft Azure
+    name: NancyNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: NaokiNeural (ja-JP) - Microsoft Azure
+    name: NaokiNeural
+    provider: Microsoft Azure
+    language: ja-JP
+    gender: MALE
+  - voiceId: NatashaNeural (en-AU) - Microsoft Azure
+    name: NatashaNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: FEMALE
+  - voiceId: NeerjaIndicNeural (en-IN) - Microsoft Azure
+    name: NeerjaIndicNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: FEMALE
+  - voiceId: NeerjaNeural (en-IN) - Microsoft Azure
+    name: NeerjaNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: FEMALE
+  - voiceId: NeilNeural (en-AU) - Microsoft Azure
+    name: NeilNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: MALE
+  - voiceId: NestorasNeural (el-GR) - Microsoft Azure
+    name: NestorasNeural
+    provider: Microsoft Azure
+    language: el-GR
+    gender: MALE
+  - voiceId: NiaNeural (cy-GB) - Microsoft Azure
+    name: NiaNeural
+    provider: Microsoft Azure
+    language: cy-GB
+    gender: FEMALE
+  - voiceId: NicholasNeural (sr-Latn-RS) - Microsoft Azure
+    name: NicholasNeural
+    provider: Microsoft Azure
+    language: sr-Latn-RS
+    gender: MALE
+  - voiceId: NicholasNeural (sr-RS) - Microsoft Azure
+    name: NicholasNeural
+    provider: Microsoft Azure
+    language: sr-RS
+    gender: MALE
+  - voiceId: NicolauNeural (pt-BR) - Microsoft Azure
+    name: NicolauNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: MALE
+  - voiceId: NilarNeural (my-MM) - Microsoft Azure
+    name: NilarNeural
+    provider: Microsoft Azure
+    language: my-MM
+    gender: FEMALE
+  - voiceId: NilNeural (es-ES) - Microsoft Azure
+    name: NilNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: MALE
+  - voiceId: NilsNeural (lv-LV) - Microsoft Azure
+    name: NilsNeural
+    provider: Microsoft Azure
+    language: lv-LV
+    gender: MALE
+  - voiceId: NiranjanNeural (gu-IN) - Microsoft Azure
+    name: NiranjanNeural
+    provider: Microsoft Azure
+    language: gu-IN
+    gender: MALE
+  - voiceId: NiwatNeural (th-TH) - Microsoft Azure
+    name: NiwatNeural
+    provider: Microsoft Azure
+    language: th-TH
+    gender: MALE
+  - voiceId: NoahNeural (en-GB) - Microsoft Azure
+    name: NoahNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: MALE
+  - voiceId: NoemiNeural (hu-HU) - Microsoft Azure
+    name: NoemiNeural
+    provider: Microsoft Azure
+    language: hu-HU
+    gender: FEMALE
+  - voiceId: NooraNeural (fi-FI) - Microsoft Azure
+    name: NooraNeural
+    provider: Microsoft Azure
+    language: fi-FI
+    gender: FEMALE
+  - voiceId: NouraNeural (ar-KW) - Microsoft Azure
+    name: NouraNeural
+    provider: Microsoft Azure
+    language: ar-KW
+    gender: FEMALE
+  - voiceId: NovaTurboMultilingualNeural (en-US) - Microsoft Azure
+    name: NovaTurboMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: NuriaNeural (es-MX) - Microsoft Azure
+    name: NuriaNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: FEMALE
+  - voiceId: OjasNeural (pa-IN) - Microsoft Azure
+    name: OjasNeural
+    provider: Microsoft Azure
+    language: pa-IN
+    gender: MALE
+  - voiceId: OliverNeural (en-GB) - Microsoft Azure
+    name: OliverNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: MALE
+  - voiceId: OliviaNeural (en-GB) - Microsoft Azure
+    name: OliviaNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: FEMALE
+  - voiceId: OllieMultilingualNeural (en-GB) - Microsoft Azure
+    name: OllieMultilingualNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: MALE
+  - voiceId: OmarNeural (ar-LY) - Microsoft Azure
+    name: OmarNeural
+    provider: Microsoft Azure
+    language: ar-LY
+    gender: MALE
+  - voiceId: OnaNeural (lt-LT) - Microsoft Azure
+    name: OnaNeural
+    provider: Microsoft Azure
+    language: lt-LT
+    gender: FEMALE
+  - voiceId: OnyxTurboMultilingualNeural (en-US) - Microsoft Azure
+    name: OnyxTurboMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: OrlaNeural (ga-IE) - Microsoft Azure
+    name: OrlaNeural
+    provider: Microsoft Azure
+    language: ga-IE
+    gender: FEMALE
+  - voiceId: OsmanNeural (ms-MY) - Microsoft Azure
+    name: OsmanNeural
+    provider: Microsoft Azure
+    language: ms-MY
+    gender: MALE
+  - voiceId: OstapNeural (uk-UA) - Microsoft Azure
+    name: OstapNeural
+    provider: Microsoft Azure
+    language: uk-UA
+    gender: MALE
+  - voiceId: PallaviNeural (ta-IN) - Microsoft Azure
+    name: PallaviNeural
+    provider: Microsoft Azure
+    language: ta-IN
+    gender: FEMALE
+  - voiceId: PalmiraNeural (it-IT) - Microsoft Azure
+    name: PalmiraNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: FEMALE
+  - voiceId: PalomaNeural (es-US) - Microsoft Azure
+    name: PalomaNeural
+    provider: Microsoft Azure
+    language: es-US
+    gender: FEMALE
+  - voiceId: PaolaNeural (es-VE) - Microsoft Azure
+    name: PaolaNeural
+    provider: Microsoft Azure
+    language: es-VE
+    gender: FEMALE
+  - voiceId: PelayoNeural (es-MX) - Microsoft Azure
+    name: PelayoNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: MALE
+  - voiceId: PernilleNeural (nb-NO) - Microsoft Azure
+    name: PernilleNeural
+    provider: Microsoft Azure
+    language: nb-NO
+    gender: FEMALE
+  - voiceId: PetraNeural (sl-SI) - Microsoft Azure
+    name: PetraNeural
+    provider: Microsoft Azure
+    language: sl-SI
+    gender: FEMALE
+  - voiceId: PhoebeMultilingualNeural (en-US) - Microsoft Azure
+    name: PhoebeMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: PierinaNeural (it-IT) - Microsoft Azure
+    name: PierinaNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: FEMALE
+  - voiceId: PisethNeural (km-KH) - Microsoft Azure
+    name: PisethNeural
+    provider: Microsoft Azure
+    language: km-KH
+    gender: MALE
+  - voiceId: PolinaNeural (uk-UA) - Microsoft Azure
+    name: PolinaNeural
+    provider: Microsoft Azure
+    language: uk-UA
+    gender: FEMALE
+  - voiceId: PrabhatIndicNeural (en-IN) - Microsoft Azure
+    name: PrabhatIndicNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: MALE
+  - voiceId: PrabhatNeural (en-IN) - Microsoft Azure
+    name: PrabhatNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: MALE
+  - voiceId: PradeepNeural (bn-BD) - Microsoft Azure
+    name: PradeepNeural
+    provider: Microsoft Azure
+    language: bn-BD
+    gender: MALE
+  - voiceId: PremwadeeNeural (th-TH) - Microsoft Azure
+    name: PremwadeeNeural
+    provider: Microsoft Azure
+    language: th-TH
+    gender: FEMALE
+  - voiceId: PriyomNeural (as-IN) - Microsoft Azure
+    name: PriyomNeural
+    provider: Microsoft Azure
+    language: as-IN
+    gender: MALE
+  - voiceId: RafikiNeural (sw-KE) - Microsoft Azure
+    name: RafikiNeural
+    provider: Microsoft Azure
+    language: sw-KE
+    gender: MALE
+  - voiceId: RalfNeural (de-DE) - Microsoft Azure
+    name: RalfNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: MALE
+  - voiceId: RamiNeural (ar-LB) - Microsoft Azure
+    name: RamiNeural
+    provider: Microsoft Azure
+    language: ar-LB
+    gender: MALE
+  - voiceId: RamonaNeural (es-DO) - Microsoft Azure
+    name: RamonaNeural
+    provider: Microsoft Azure
+    language: es-DO
+    gender: FEMALE
+  - voiceId: RanaNeural (ar-IQ) - Microsoft Azure
+    name: RanaNeural
+    provider: Microsoft Azure
+    language: ar-IQ
+    gender: FEMALE
+  - voiceId: RaquelNeural (pt-PT) - Microsoft Azure
+    name: RaquelNeural
+    provider: Microsoft Azure
+    language: pt-PT
+    gender: FEMALE
+  - voiceId: ReemNeural (ar-TN) - Microsoft Azure
+    name: ReemNeural
+    provider: Microsoft Azure
+    language: ar-TN
+    gender: FEMALE
+  - voiceId: RehaanNeural (en-IN) - Microsoft Azure
+    name: RehaanNeural
+    provider: Microsoft Azure
+    language: en-IN
+    gender: MALE
+  - voiceId: RehaanNeural (hi-IN) - Microsoft Azure
+    name: RehaanNeural
+    provider: Microsoft Azure
+    language: hi-IN
+    gender: MALE
+  - voiceId: RehemaNeural (sw-TZ) - Microsoft Azure
+    name: RehemaNeural
+    provider: Microsoft Azure
+    language: sw-TZ
+    gender: FEMALE
+  - voiceId: RemyMultilingualNeural (fr-FR) - Microsoft Azure
+    name: RemyMultilingualNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: MALE
+  - voiceId: RenataNeural (es-MX) - Microsoft Azure
+    name: RenataNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: FEMALE
+  - voiceId: RinaldoNeural (it-IT) - Microsoft Azure
+    name: RinaldoNeural
+    provider: Microsoft Azure
+    language: it-IT
+    gender: MALE
+  - voiceId: RobertoNeural (es-PA) - Microsoft Azure
+    name: RobertoNeural
+    provider: Microsoft Azure
+    language: es-PA
+    gender: MALE
+  - voiceId: RodrigoNeural (es-SV) - Microsoft Azure
+    name: RodrigoNeural
+    provider: Microsoft Azure
+    language: es-SV
+    gender: MALE
+  - voiceId: RogerNeural (en-US) - Microsoft Azure
+    name: RogerNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: RoiNeural (gl-ES) - Microsoft Azure
+    name: RoiNeural
+    provider: Microsoft Azure
+    language: gl-ES
+    gender: MALE
+  - voiceId: RokNeural (sl-SI) - Microsoft Azure
+    name: RokNeural
+    provider: Microsoft Azure
+    language: sl-SI
+    gender: MALE
+  - voiceId: RosaNeural (en-PH) - Microsoft Azure
+    name: RosaNeural
+    provider: Microsoft Azure
+    language: en-PH
+    gender: FEMALE
+  - voiceId: RyanMultilingualNeural (en-US) - Microsoft Azure
+    name: RyanMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: RyanNeural (en-GB) - Microsoft Azure
+    name: RyanNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: MALE
+  - voiceId: SabelaNeural (gl-ES) - Microsoft Azure
+    name: SabelaNeural
+    provider: Microsoft Azure
+    language: gl-ES
+    gender: FEMALE
+  - voiceId: SagarNeural (ne-NP) - Microsoft Azure
+    name: SagarNeural
+    provider: Microsoft Azure
+    language: ne-NP
+    gender: MALE
+  - voiceId: SalehNeural (ar-YE) - Microsoft Azure
+    name: SalehNeural
+    provider: Microsoft Azure
+    language: ar-YE
+    gender: MALE
+  - voiceId: SalmaNeural (ar-EG) - Microsoft Azure
+    name: SalmaNeural
+    provider: Microsoft Azure
+    language: ar-EG
+    gender: FEMALE
+  - voiceId: SalmanNeural (ur-IN) - Microsoft Azure
+    name: SalmanNeural
+    provider: Microsoft Azure
+    language: ur-IN
+    gender: MALE
+  - voiceId: SalomeNeural (es-CO) - Microsoft Azure
+    name: SalomeNeural
+    provider: Microsoft Azure
+    language: es-CO
+    gender: FEMALE
+  - voiceId: SameeraNeural (si-LK) - Microsoft Azure
+    name: SameeraNeural
+    provider: Microsoft Azure
+    language: si-LK
+    gender: MALE
+  - voiceId: SamNeural (en-HK) - Microsoft Azure
+    name: SamNeural
+    provider: Microsoft Azure
+    language: en-HK
+    gender: MALE
+  - voiceId: SamuelMultilingualNeural (en-US) - Microsoft Azure
+    name: SamuelMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: SanaNeural (ar-JO) - Microsoft Azure
+    name: SanaNeural
+    provider: Microsoft Azure
+    language: ar-JO
+    gender: FEMALE
+  - voiceId: SapnaNeural (kn-IN) - Microsoft Azure
+    name: SapnaNeural
+    provider: Microsoft Azure
+    language: kn-IN
+    gender: FEMALE
+  - voiceId: SaraNeural (en-US) - Microsoft Azure
+    name: SaraNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: SaranyaNeural (ta-LK) - Microsoft Azure
+    name: SaranyaNeural
+    provider: Microsoft Azure
+    language: ta-LK
+    gender: FEMALE
+  - voiceId: SardorNeural (uz-UZ) - Microsoft Azure
+    name: SardorNeural
+    provider: Microsoft Azure
+    language: uz-UZ
+    gender: MALE
+  - voiceId: SaulNeural (es-ES) - Microsoft Azure
+    name: SaulNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: MALE
+  - voiceId: SebastianNeural (es-VE) - Microsoft Azure
+    name: SebastianNeural
+    provider: Microsoft Azure
+    language: es-VE
+    gender: MALE
+  - voiceId: SelmaNeural (fi-FI) - Microsoft Azure
+    name: SelmaNeural
+    provider: Microsoft Azure
+    language: fi-FI
+    gender: FEMALE
+  - voiceId: SeoHyeonNeural (ko-KR) - Microsoft Azure
+    name: SeoHyeonNeural
+    provider: Microsoft Azure
+    language: ko-KR
+    gender: FEMALE
+  - voiceId: SeraphinaMultilingualNeural (de-DE) - Microsoft Azure
+    name: SeraphinaMultilingualNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: FEMALE
+  - voiceId: SerenaMultilingualNeural (en-US) - Microsoft Azure
+    name: SerenaMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: ShakirNeural (ar-EG) - Microsoft Azure
+    name: ShakirNeural
+    provider: Microsoft Azure
+    language: ar-EG
+    gender: MALE
+  - voiceId: ShimmerTurboMultilingualNeural (en-US) - Microsoft Azure
+    name: ShimmerTurboMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: FEMALE
+  - voiceId: ShioriNeural (ja-JP) - Microsoft Azure
+    name: ShioriNeural
+    provider: Microsoft Azure
+    language: ja-JP
+    gender: FEMALE
+  - voiceId: ShrutiNeural (te-IN) - Microsoft Azure
+    name: ShrutiNeural
+    provider: Microsoft Azure
+    language: te-IN
+    gender: FEMALE
+  - voiceId: SiqiniqNeural (iu-Cans-CA) - Microsoft Azure
+    name: SiqiniqNeural
+    provider: Microsoft Azure
+    language: iu-Cans-CA
+    gender: FEMALE
+  - voiceId: SiqiniqNeural (iu-Latn-CA) - Microsoft Azure
+    name: SiqiniqNeural
+    provider: Microsoft Azure
+    language: iu-Latn-CA
+    gender: FEMALE
+  - voiceId: SitiNeural (jv-ID) - Microsoft Azure
+    name: SitiNeural
+    provider: Microsoft Azure
+    language: jv-ID
+    gender: FEMALE
+  - voiceId: SobhanaNeural (ml-IN) - Microsoft Azure
+    name: SobhanaNeural
+    provider: Microsoft Azure
+    language: ml-IN
+    gender: FEMALE
+  - voiceId: SofiaNeural (es-BO) - Microsoft Azure
+    name: SofiaNeural
+    provider: Microsoft Azure
+    language: es-BO
+    gender: FEMALE
+  - voiceId: SofieNeural (sv-SE) - Microsoft Azure
+    name: SofieNeural
+    provider: Microsoft Azure
+    language: sv-SE
+    gender: FEMALE
+  - voiceId: SoniaNeural (en-GB) - Microsoft Azure
+    name: SoniaNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: FEMALE
+  - voiceId: SoonBokNeural (ko-KR) - Microsoft Azure
+    name: SoonBokNeural
+    provider: Microsoft Azure
+    language: ko-KR
+    gender: FEMALE
+  - voiceId: SophieNeural (sr-Latn-RS) - Microsoft Azure
+    name: SophieNeural
+    provider: Microsoft Azure
+    language: sr-Latn-RS
+    gender: FEMALE
+  - voiceId: SophieNeural (sr-RS) - Microsoft Azure
+    name: SophieNeural
+    provider: Microsoft Azure
+    language: sr-RS
+    gender: FEMALE
+  - voiceId: SreckoNeural (hr-HR) - Microsoft Azure
+    name: SreckoNeural
+    provider: Microsoft Azure
+    language: hr-HR
+    gender: MALE
+  - voiceId: SreymomNeural (km-KH) - Microsoft Azure
+    name: SreymomNeural
+    provider: Microsoft Azure
+    language: km-KH
+    gender: FEMALE
+  - voiceId: SteffanMultilingualNeural (en-US) - Microsoft Azure
+    name: SteffanMultilingualNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: SteffanNeural (en-US) - Microsoft Azure
+    name: SteffanNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: SubhasiniNeural (or-IN) - Microsoft Azure
+    name: SubhasiniNeural
+    provider: Microsoft Azure
+    language: or-IN
+    gender: FEMALE
+  - voiceId: SukantNeural (or-IN) - Microsoft Azure
+    name: SukantNeural
+    provider: Microsoft Azure
+    language: or-IN
+    gender: MALE
+  - voiceId: SunHiNeural (ko-KR) - Microsoft Azure
+    name: SunHiNeural
+    provider: Microsoft Azure
+    language: ko-KR
+    gender: FEMALE
+  - voiceId: SuryaNeural (ta-MY) - Microsoft Azure
+    name: SuryaNeural
+    provider: Microsoft Azure
+    language: ta-MY
+    gender: MALE
+  - voiceId: SvetlanaNeural (ru-RU) - Microsoft Azure
+    name: SvetlanaNeural
+    provider: Microsoft Azure
+    language: ru-RU
+    gender: FEMALE
+  - voiceId: SwaraNeural (hi-IN) - Microsoft Azure
+    name: SwaraNeural
+    provider: Microsoft Azure
+    language: hi-IN
+    gender: FEMALE
+  - voiceId: SylvieNeural (fr-CA) - Microsoft Azure
+    name: SylvieNeural
+    provider: Microsoft Azure
+    language: fr-CA
+    gender: FEMALE
+  - voiceId: TaimNeural (ar-JO) - Microsoft Azure
+    name: TaimNeural
+    provider: Microsoft Azure
+    language: ar-JO
+    gender: MALE
+  - voiceId: TamasNeural (hu-HU) - Microsoft Azure
+    name: TamasNeural
+    provider: Microsoft Azure
+    language: hu-HU
+    gender: MALE
+  - voiceId: TaniaNeural (es-PY) - Microsoft Azure
+    name: TaniaNeural
+    provider: Microsoft Azure
+    language: es-PY
+    gender: FEMALE
+  - voiceId: TanishaaNeural (bn-IN) - Microsoft Azure
+    name: TanishaaNeural
+    provider: Microsoft Azure
+    language: bn-IN
+    gender: FEMALE
+  - voiceId: TanjaNeural (de-DE) - Microsoft Azure
+    name: TanjaNeural
+    provider: Microsoft Azure
+    language: de-DE
+    gender: FEMALE
+  - voiceId: TaqqiqNeural (iu-Cans-CA) - Microsoft Azure
+    name: TaqqiqNeural
+    provider: Microsoft Azure
+    language: iu-Cans-CA
+    gender: MALE
+  - voiceId: TaqqiqNeural (iu-Latn-CA) - Microsoft Azure
+    name: TaqqiqNeural
+    provider: Microsoft Azure
+    language: iu-Latn-CA
+    gender: MALE
+  - voiceId: TeoNeural (es-ES) - Microsoft Azure
+    name: TeoNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: MALE
+  - voiceId: TeresaNeural (es-GQ) - Microsoft Azure
+    name: TeresaNeural
+    provider: Microsoft Azure
+    language: es-GQ
+    gender: FEMALE
+  - voiceId: ThalitaMultilingualNeural (pt-BR) - Microsoft Azure
+    name: ThalitaMultilingualNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: FEMALE
+  - voiceId: ThalitaNeural (pt-BR) - Microsoft Azure
+    name: ThalitaNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: FEMALE
+  - voiceId: ThandoNeural (zu-ZA) - Microsoft Azure
+    name: ThandoNeural
+    provider: Microsoft Azure
+    language: zu-ZA
+    gender: FEMALE
+  - voiceId: ThembaNeural (zu-ZA) - Microsoft Azure
+    name: ThembaNeural
+    provider: Microsoft Azure
+    language: zu-ZA
+    gender: MALE
+  - voiceId: ThierryNeural (fr-CA) - Microsoft Azure
+    name: ThierryNeural
+    provider: Microsoft Azure
+    language: fr-CA
+    gender: MALE
+  - voiceId: ThihaNeural (my-MM) - Microsoft Azure
+    name: ThihaNeural
+    provider: Microsoft Azure
+    language: my-MM
+    gender: MALE
+  - voiceId: ThiliniNeural (si-LK) - Microsoft Azure
+    name: ThiliniNeural
+    provider: Microsoft Azure
+    language: si-LK
+    gender: FEMALE
+  - voiceId: ThomasNeural (en-GB) - Microsoft Azure
+    name: ThomasNeural
+    provider: Microsoft Azure
+    language: en-GB
+    gender: MALE
+  - voiceId: TimNeural (en-AU) - Microsoft Azure
+    name: TimNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: MALE
+  - voiceId: TinaNeural (en-AU) - Microsoft Azure
+    name: TinaNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: FEMALE
+  - voiceId: TomasNeural (es-AR) - Microsoft Azure
+    name: TomasNeural
+    provider: Microsoft Azure
+    language: es-AR
+    gender: MALE
+  - voiceId: TonyNeural (en-US) - Microsoft Azure
+    name: TonyNeural
+    provider: Microsoft Azure
+    language: en-US
+    gender: MALE
+  - voiceId: TrianaNeural (es-ES) - Microsoft Azure
+    name: TrianaNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: TristanMultilingualNeural (es-ES) - Microsoft Azure
+    name: TristanMultilingualNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: MALE
+  - voiceId: TutiNeural (su-ID) - Microsoft Azure
+    name: TutiNeural
+    provider: Microsoft Azure
+    language: su-ID
+    gender: FEMALE
+  - voiceId: UbaxNeural (so-SO) - Microsoft Azure
+    name: UbaxNeural
+    provider: Microsoft Azure
+    language: so-SO
+    gender: FEMALE
+  - voiceId: UzmaNeural (ur-PK) - Microsoft Azure
+    name: UzmaNeural
+    provider: Microsoft Azure
+    language: ur-PK
+    gender: FEMALE
+  - voiceId: VaaniNeural (pa-IN) - Microsoft Azure
+    name: VaaniNeural
+    provider: Microsoft Azure
+    language: pa-IN
+    gender: FEMALE
+  - voiceId: ValentinaNeural (es-UY) - Microsoft Azure
+    name: ValentinaNeural
+    provider: Microsoft Azure
+    language: es-UY
+    gender: FEMALE
+  - voiceId: ValerioNeural (pt-BR) - Microsoft Azure
+    name: ValerioNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: MALE
+  - voiceId: ValluvarNeural (ta-IN) - Microsoft Azure
+    name: ValluvarNeural
+    provider: Microsoft Azure
+    language: ta-IN
+    gender: MALE
+  - voiceId: VenbaNeural (ta-SG) - Microsoft Azure
+    name: VenbaNeural
+    provider: Microsoft Azure
+    language: ta-SG
+    gender: FEMALE
+  - voiceId: VeraNeural (es-ES) - Microsoft Azure
+    name: VeraNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: VesnaNeural (bs-BA) - Microsoft Azure
+    name: VesnaNeural
+    provider: Microsoft Azure
+    language: bs-BA
+    gender: FEMALE
+  - voiceId: VictorNeural (es-PR) - Microsoft Azure
+    name: VictorNeural
+    provider: Microsoft Azure
+    language: es-PR
+    gender: MALE
+  - voiceId: ViktoriaNeural (sk-SK) - Microsoft Azure
+    name: ViktoriaNeural
+    provider: Microsoft Azure
+    language: sk-SK
+    gender: FEMALE
+  - voiceId: VivienneMultilingualNeural (fr-FR) - Microsoft Azure
+    name: VivienneMultilingualNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: FEMALE
+  - voiceId: VlastaNeural (cs-CZ) - Microsoft Azure
+    name: VlastaNeural
+    provider: Microsoft Azure
+    language: cs-CZ
+    gender: FEMALE
+  - voiceId: WanLungNeural (zh-HK) - Microsoft Azure
+    name: WanLungNeural
+    provider: Microsoft Azure
+    language: zh-HK
+    gender: MALE
+  - voiceId: WayneNeural (en-SG) - Microsoft Azure
+    name: WayneNeural
+    provider: Microsoft Azure
+    language: en-SG
+    gender: MALE
+  - voiceId: WillemNeural (af-ZA) - Microsoft Azure
+    name: WillemNeural
+    provider: Microsoft Azure
+    language: af-ZA
+    gender: MALE
+  - voiceId: WilliamMultilingualNeural (en-AU) - Microsoft Azure
+    name: WilliamMultilingualNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: MALE
+  - voiceId: WilliamNeural (en-AU) - Microsoft Azure
+    name: WilliamNeural
+    provider: Microsoft Azure
+    language: en-AU
+    gender: MALE
+  - voiceId: XiaobeiNeural (zh-CN-liaoning) - Microsoft Azure
+    name: XiaobeiNeural
+    provider: Microsoft Azure
+    language: zh-CN-liaoning
+    gender: FEMALE
+  - voiceId: XiaochenMultilingualNeural (zh-CN) - Microsoft Azure
+    name: XiaochenMultilingualNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaochenNeural (zh-CN) - Microsoft Azure
+    name: XiaochenNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaohanNeural (zh-CN) - Microsoft Azure
+    name: XiaohanNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaomengNeural (zh-CN) - Microsoft Azure
+    name: XiaomengNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoMinNeural (yue-CN) - Microsoft Azure
+    name: XiaoMinNeural
+    provider: Microsoft Azure
+    language: yue-CN
+    gender: FEMALE
+  - voiceId: XiaomoNeural (zh-CN) - Microsoft Azure
+    name: XiaomoNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoniNeural (zh-CN-shaanxi) - Microsoft Azure
+    name: XiaoniNeural
+    provider: Microsoft Azure
+    language: zh-CN-shaanxi
+    gender: FEMALE
+  - voiceId: XiaoqiuNeural (zh-CN) - Microsoft Azure
+    name: XiaoqiuNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaorouNeural (zh-CN) - Microsoft Azure
+    name: XiaorouNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoruiNeural (zh-CN) - Microsoft Azure
+    name: XiaoruiNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoshuangMultilingualNeural (zh-CN) - Microsoft Azure
+    name: XiaoshuangMultilingualNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoshuangNeural (zh-CN) - Microsoft Azure
+    name: XiaoshuangNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaotongNeural (wuu-CN) - Microsoft Azure
+    name: XiaotongNeural
+    provider: Microsoft Azure
+    language: wuu-CN
+    gender: FEMALE
+  - voiceId: XiaoxiaoDialectsNeural (zh-CN) - Microsoft Azure
+    name: XiaoxiaoDialectsNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoxiaoMultilingualNeural (zh-CN) - Microsoft Azure
+    name: XiaoxiaoMultilingualNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoxiaoNeural (zh-CN) - Microsoft Azure
+    name: XiaoxiaoNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoyanNeural (zh-CN) - Microsoft Azure
+    name: XiaoyanNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoyiNeural (zh-CN) - Microsoft Azure
+    name: XiaoyiNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoyouMultilingualNeural (zh-CN) - Microsoft Azure
+    name: XiaoyouMultilingualNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoyouNeural (zh-CN) - Microsoft Azure
+    name: XiaoyouNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaoyuMultilingualNeural (zh-CN) - Microsoft Azure
+    name: XiaoyuMultilingualNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XiaozhenNeural (zh-CN) - Microsoft Azure
+    name: XiaozhenNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: FEMALE
+  - voiceId: XimenaMultilingualNeural (es-ES) - Microsoft Azure
+    name: XimenaMultilingualNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: XimenaNeural (es-ES) - Microsoft Azure
+    name: XimenaNeural
+    provider: Microsoft Azure
+    language: es-ES
+    gender: FEMALE
+  - voiceId: YagoNeural (es-MX) - Microsoft Azure
+    name: YagoNeural
+    provider: Microsoft Azure
+    language: es-MX
+    gender: MALE
+  - voiceId: YanNeural (en-HK) - Microsoft Azure
+    name: YanNeural
+    provider: Microsoft Azure
+    language: en-HK
+    gender: FEMALE
+  - voiceId: YaraNeural (pt-BR) - Microsoft Azure
+    name: YaraNeural
+    provider: Microsoft Azure
+    language: pt-BR
+    gender: FEMALE
+  - voiceId: YashicaNeural (as-IN) - Microsoft Azure
+    name: YashicaNeural
+    provider: Microsoft Azure
+    language: as-IN
+    gender: FEMALE
+  - voiceId: YasminNeural (ms-MY) - Microsoft Azure
+    name: YasminNeural
+    provider: Microsoft Azure
+    language: ms-MY
+    gender: FEMALE
+  - voiceId: YesuiNeural (mn-MN) - Microsoft Azure
+    name: YesuiNeural
+    provider: Microsoft Azure
+    language: mn-MN
+    gender: FEMALE
+  - voiceId: YolandaNeural (es-NI) - Microsoft Azure
+    name: YolandaNeural
+    provider: Microsoft Azure
+    language: es-NI
+    gender: FEMALE
+  - voiceId: YuJinNeural (ko-KR) - Microsoft Azure
+    name: YuJinNeural
+    provider: Microsoft Azure
+    language: ko-KR
+    gender: FEMALE
+  - voiceId: YundengNeural (zh-CN-henan) - Microsoft Azure
+    name: YundengNeural
+    provider: Microsoft Azure
+    language: zh-CN-henan
+    gender: MALE
+  - voiceId: YunfanMultilingualNeural (zh-CN) - Microsoft Azure
+    name: YunfanMultilingualNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunfengNeural (zh-CN) - Microsoft Azure
+    name: YunfengNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunhaoNeural (zh-CN) - Microsoft Azure
+    name: YunhaoNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunJheNeural (zh-TW) - Microsoft Azure
+    name: YunJheNeural
+    provider: Microsoft Azure
+    language: zh-TW
+    gender: MALE
+  - voiceId: YunjianNeural (zh-CN) - Microsoft Azure
+    name: YunjianNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunjieNeural (zh-CN) - Microsoft Azure
+    name: YunjieNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunSongNeural (yue-CN) - Microsoft Azure
+    name: YunSongNeural
+    provider: Microsoft Azure
+    language: yue-CN
+    gender: MALE
+  - voiceId: YunxiaNeural (zh-CN) - Microsoft Azure
+    name: YunxiaNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunxiangNeural (zh-CN-shandong) - Microsoft Azure
+    name: YunxiangNeural
+    provider: Microsoft Azure
+    language: zh-CN-shandong
+    gender: MALE
+  - voiceId: YunxiaoMultilingualNeural (zh-CN) - Microsoft Azure
+    name: YunxiaoMultilingualNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunxiNeural (zh-CN) - Microsoft Azure
+    name: YunxiNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunxiNeural (zh-CN-sichuan) - Microsoft Azure
+    name: YunxiNeural
+    provider: Microsoft Azure
+    language: zh-CN-sichuan
+    gender: MALE
+  - voiceId: YunyangNeural (zh-CN) - Microsoft Azure
+    name: YunyangNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunyeNeural (zh-CN) - Microsoft Azure
+    name: YunyeNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunyiMultilingualNeural (zh-CN) - Microsoft Azure
+    name: YunyiMultilingualNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunzeNeural (zh-CN) - Microsoft Azure
+    name: YunzeNeural
+    provider: Microsoft Azure
+    language: zh-CN
+    gender: MALE
+  - voiceId: YunzheNeural (wuu-CN) - Microsoft Azure
+    name: YunzheNeural
+    provider: Microsoft Azure
+    language: wuu-CN
+    gender: MALE
+  - voiceId: YvesNeural (fr-FR) - Microsoft Azure
+    name: YvesNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: MALE
+  - voiceId: YvetteNeural (fr-FR) - Microsoft Azure
+    name: YvetteNeural
+    provider: Microsoft Azure
+    language: fr-FR
+    gender: FEMALE
+  - voiceId: ZariyahNeural (ar-SA) - Microsoft Azure
+    name: ZariyahNeural
+    provider: Microsoft Azure
+    language: ar-SA
+    gender: FEMALE
+  - voiceId: ZofiaNeural (pl-PL) - Microsoft Azure
+    name: ZofiaNeural
+    provider: Microsoft Azure
+    language: pl-PL
+    gender: FEMALE
+  - voiceId: ZuriNeural (sw-KE) - Microsoft Azure
+    name: ZuriNeural
+    provider: Microsoft Azure
+    language: sw-KE
+    gender: FEMALE
+  availableFaceModels:
+  - adult - Alex
+  - adult - Brooklyn
+  - adult - Chen
+  - adult - default
+  - adult - Dorothy
+  - adult - Expresivo
+  - adult - Fedora
+  - adult - Fernando
+  - adult - Gyeong
+  - adult - Hayden
+  - adult - Isabel
+  - adult - James
+  - adult - Jamie
+  - adult - Jane
+  - adult - Kione
+  - adult - Lamin
+  - adult - Marty
+  - adult - Maurice
+  - adult - Nazar
+  - adult - Omar
+  - adult - Patricia
+  - adult - Rania
+  - adult - Samuel
+  - adult - Titan
+  - adult - Vinnie
+  - adult - Yi
+  - adult - Yumi
+  - adult - Zhen
+  - adult [legacy] - default
+  - adult [legacy] - Elsa
+  - adult [legacy] - Fedora
+  - adult [legacy] - Fred
+  - adult [legacy] - Geremy
+  - adult [legacy] - Ivan
+  - adult [legacy] - Marty
+  - adult [legacy] - Ted
+  - adult [legacy] - Ursula
+  - anime [legacy] - AnimePink
+  - child - Billy
+  - child - Devan
+  - dog - default
+--- !u!82 &257090713
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257090710}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!1 &695261629
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 695261630}
+  - component: {fileID: 695261631}
+  m_Layer: 0
+  m_Name: BoardView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &695261630
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695261629}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 967433245}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &695261631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695261629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c4345dd3718140479a5ed3f18f5026b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NewAssembly::ChessBoardView
+  boardRoot: {fileID: 1048009199}
+  squarePrefab: {fileID: 5262905963868939337, guid: 35b992fe62fee8b4f89430f03b1d4b25, type: 3}
+  lightSquare: {r: 0.94, g: 0.85, b: 0.71, a: 1}
+  darkSquare: {r: 0.71, g: 0.53, b: 0.39, a: 1}
+  whiteKing: {fileID: 21300000, guid: d980f791c87769540a066f876ba4f3d2, type: 3}
+  whiteQueen: {fileID: 21300000, guid: 395b107680a49d4449bbad4d772aec33, type: 3}
+  whiteRook: {fileID: 21300000, guid: 73b2fe04c31c4ac4390b0177347af416, type: 3}
+  whiteBishop: {fileID: 21300000, guid: cf3b50c3ef7d1c64388241acc10641ca, type: 3}
+  whiteKnight: {fileID: 21300000, guid: 197ce6a69b35e0249aeb19c0ffb433d3, type: 3}
+  whitePawn: {fileID: 21300000, guid: f54872a5c435f1341a5c3a3f4bba5c6b, type: 3}
+  blackKing: {fileID: 21300000, guid: 9a9194b542066184590c38b99e8ebf46, type: 3}
+  blackQueen: {fileID: 21300000, guid: 8e3f13d7d6c529d41948b7a044c2e255, type: 3}
+  blackRook: {fileID: 21300000, guid: a7a01a0ca84be784585fb1c032560a45, type: 3}
+  blackBishop: {fileID: 21300000, guid: 0ba2c01c0dc0b3f41aaf2e367350895a, type: 3}
+  blackKnight: {fileID: 21300000, guid: 378d50b43e152c84ca7c758b69f4cfd0, type: 3}
+  blackPawn: {fileID: 21300000, guid: f5a90dd4fc2b005458be8003de63ba0d, type: 3}
+  selectedSprite: {fileID: 21300000, guid: c1ed54569ae3d1f49bb23d014f6292ed, type: 3}
+  moveSprite: {fileID: 21300000, guid: 0a57b1c3906a8ae4d950b02a8cd8c902, type: 3}
+  captureSprite: {fileID: 21300000, guid: 075e8299debe88642bec7535ef12d020, type: 3}
+--- !u!1 &967433244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 967433245}
+  - component: {fileID: 967433246}
+  m_Layer: 0
+  m_Name: Game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &967433245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967433244}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 695261630}
+  - {fileID: 2131349027}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &967433246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967433244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ba52a9df9f3cf241ba489b06514fa9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NewAssembly::ChessGameManager
+  boardView: {fileID: 695261631}
+  uiController: {fileID: 2131349028}
+--- !u!1 &1048009198
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1048009199}
+  - component: {fileID: 1048009201}
+  - component: {fileID: 1048009200}
+  - component: {fileID: 1048009202}
+  m_Layer: 5
+  m_Name: BoardRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1048009199
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048009198}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1392033688}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 800, y: 800}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1048009200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048009198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 4a669c7e392def949931d198fcc4e959, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1048009201
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048009198}
+  m_CullTransparentMesh: 1
+--- !u!114 &1048009202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048009198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 100, y: 100}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 1
+  m_ConstraintCount: 8
+--- !u!1 &1074754392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1074754394}
+  - component: {fileID: 1074754393}
+  - component: {fileID: 1074754396}
+  m_Layer: 5
+  m_Name: ConsoleUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1074754393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074754392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 07709f3d157b942439c2833b1a214709, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 0e1b97deb44467041a38ed6efd42c58d, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!4 &1074754394
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074754392}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 257090711}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1074754396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074754392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94ef291234c3de4d8558818b56605fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NewAssembly::FurhatTestController
+  useDefaultTildeKey: 1
+  toggleInputMode: 0
+  customToggleKey: 273
+  _robot: {fileID: 257090712}
+  _sensorAudioSource: {fileID: 257090713}
+--- !u!1 &1163592383
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1163592384}
+  - component: {fileID: 1163592387}
+  - component: {fileID: 1163592386}
+  - component: {fileID: 1163592385}
+  m_Layer: 5
+  m_Name: RestartButton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1163592384
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163592383}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1297282008}
+  m_Father: {fileID: 1392033688}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -460}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1163592385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163592383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1163592386}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1163592386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163592383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1163592387
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163592383}
+  m_CullTransparentMesh: 1
+--- !u!1 &1297282007
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1297282008}
+  - component: {fileID: 1297282010}
+  - component: {fileID: 1297282009}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1297282008
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297282007}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1163592384}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1297282009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297282007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Restart
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4281479730
+  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 24
+  m_fontSizeBase: 24
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1297282010
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297282007}
+  m_CullTransparentMesh: 1
+--- !u!1 &1392033684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1392033688}
+  - component: {fileID: 1392033687}
+  - component: {fileID: 1392033686}
+  - component: {fileID: 1392033685}
+  m_Layer: 5
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1392033685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392033684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1392033686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392033684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &1392033687
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392033684}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!224 &1392033688
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392033684}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1048009199}
+  - {fileID: 1163592384}
+  - {fileID: 1526082030}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!1 &1526082029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1526082030}
+  - component: {fileID: 1526082032}
+  - component: {fileID: 1526082031}
+  m_Layer: 5
+  m_Name: StatusText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1526082030
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526082029}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1392033688}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 460}
+  m_SizeDelta: {x: 800, y: 60}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1526082031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526082029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Your Turn
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1526082032
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526082029}
+  m_CullTransparentMesh: 1
+--- !u!1 &1850319330
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1850319333}
+  - component: {fileID: 1850319332}
+  - component: {fileID: 1850319331}
+  - component: {fileID: 1850319334}
+  m_Layer: 0
+  m_Name: Main Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!81 &1850319331
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850319330}
+  m_Enabled: 1
+--- !u!20 &1850319332
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850319330}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 1
+  orthographic size: 5
+  m_Depth: -1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!4 &1850319333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850319330}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1850319334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850319330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
+--- !u!1 &2131349026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2131349027}
+  - component: {fileID: 2131349028}
+  m_Layer: 0
+  m_Name: UIController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2131349027
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131349026}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 967433245}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2131349028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131349026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e94add10316ac8741a15397df26ec8e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NewAssembly::ChessUIController
+  statusText: {fileID: 1526082031}
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 967433245}
+  - {fileID: 1392033688}
+  - {fileID: 179122281}
+  - {fileID: 1850319333}
+  - {fileID: 257090711}
