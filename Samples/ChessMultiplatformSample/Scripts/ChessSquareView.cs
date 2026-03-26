@@ -5,21 +5,23 @@ public class ChessSquareView : MonoBehaviour
 {
     [SerializeField] private Button button;
     [SerializeField] private Image backgroundImage;
+    [SerializeField] private Image squareOverlayImage;
     [SerializeField] private Image pieceImage;
-    [SerializeField] private Image highlightImage;
+    [SerializeField] private Image markerOverlayImage;
 
-    private PieceCoord coord;
+    private Color baseColor = Color.white;
 
     public void Initialize(PieceCoord pieceCoord, UnityEngine.Events.UnityAction onClick)
     {
-        coord = pieceCoord;
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(onClick);
-        ClearHighlight();
+        ClearAllOverlays();
+        SetSelectedVisual(false);
     }
 
     public void SetBackgroundColor(Color color)
     {
+        baseColor = color;
         if (backgroundImage != null)
             backgroundImage.color = color;
     }
@@ -30,15 +32,45 @@ public class ChessSquareView : MonoBehaviour
         pieceImage.enabled = sprite != null;
     }
 
-    public void SetHighlight(Sprite sprite)
+    public void SetSquareOverlay(Sprite sprite)
     {
-        highlightImage.sprite = sprite;
-        highlightImage.enabled = sprite != null;
+        if (squareOverlayImage == null) return;
+        squareOverlayImage.sprite = sprite;
+        squareOverlayImage.color = Color.white;
+        squareOverlayImage.enabled = sprite != null;
     }
 
-    public void ClearHighlight()
+    public void SetMarkerOverlay(Sprite sprite)
     {
-        highlightImage.sprite = null;
-        highlightImage.enabled = false;
+        if (markerOverlayImage == null) return;
+        markerOverlayImage.sprite = sprite;
+        markerOverlayImage.color = Color.white;
+        markerOverlayImage.enabled = sprite != null;
+    }
+
+    public void ClearSquareOverlay()
+    {
+        if (squareOverlayImage == null) return;
+        squareOverlayImage.sprite = null;
+        squareOverlayImage.enabled = false;
+    }
+
+    public void ClearMarkerOverlay()
+    {
+        if (markerOverlayImage == null) return;
+        markerOverlayImage.sprite = null;
+        markerOverlayImage.enabled = false;
+    }
+
+    public void ClearAllOverlays()
+    {
+        ClearSquareOverlay();
+        ClearMarkerOverlay();
+    }
+
+    public void SetSelectedVisual(bool selected)
+    {
+        if (pieceImage == null) return;
+        pieceImage.transform.localScale = selected ? Vector3.one * 1.12f : Vector3.one;
     }
 }

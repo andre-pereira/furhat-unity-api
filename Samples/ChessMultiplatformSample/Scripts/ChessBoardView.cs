@@ -25,10 +25,10 @@ public class ChessBoardView : MonoBehaviour
     [SerializeField] private Sprite blackKnight;
     [SerializeField] private Sprite blackPawn;
 
-    [Header("Highlight Sprites")]
-    [SerializeField] private Sprite selectedSprite;
-    [SerializeField] private Sprite moveSprite;
-    [SerializeField] private Sprite captureSprite;
+    [Header("Overlay Sprites")]
+    [SerializeField] private Sprite yellowSquareOverlay;
+    [SerializeField] private Sprite moveMarkerSprite;
+    [SerializeField] private Sprite captureMarkerSprite;
 
     private readonly Dictionary<(int, int), ChessSquareView> squares = new();
 
@@ -59,28 +59,12 @@ public class ChessBoardView : MonoBehaviour
         foreach (var kvp in squares)
         {
             var coord = new PieceCoord(kvp.Key.Item1, kvp.Key.Item2);
-            kvp.Value.SetPieceSprite(GetPieceSprite(boardState.GetPiece(coord)));
-            kvp.Value.ClearHighlight();
+        kvp.Value.SetPieceSprite(GetPieceSprite(boardState.GetPiece(coord)));
+        kvp.Value.ClearMarkerOverlay();
+        kvp.Value.SetSelectedVisual(false);
         }
     }
 
-    public void ClearHighlights()
-    {
-        foreach (var view in squares.Values)
-            view.ClearHighlight();
-    }
-
-    public void ShowSelected(PieceCoord coord)
-    {
-        if (squares.TryGetValue((coord.x, coord.y), out var view))
-            view.SetHighlight(selectedSprite);
-    }
-
-    public void ShowMove(PieceCoord coord, bool isCapture)
-    {
-        if (squares.TryGetValue((coord.x, coord.y), out var view))
-            view.SetHighlight(isCapture ? captureSprite : moveSprite);
-    }
 
     private Sprite GetPieceSprite(Piece? piece)
     {
@@ -103,4 +87,52 @@ public class ChessBoardView : MonoBehaviour
             _ => null
         };
     }
+
+
+
+    public void ClearAllMarkers()
+    {
+        foreach (var view in squares.Values)
+            view.ClearMarkerOverlay();
+    }
+
+    public void ClearAllSquareOverlays()
+    {
+        foreach (var view in squares.Values)
+            view.ClearSquareOverlay();
+    }
+
+    public void ShowSelected(PieceCoord coord)
+    {
+        if (squares.TryGetValue((coord.x, coord.y), out var view))
+            view.SetSquareOverlay(yellowSquareOverlay);
+    }
+
+    public void ShowLastMove(PieceCoord from, PieceCoord to)
+    {
+        if (squares.TryGetValue((from.x, from.y), out var fromView))
+            fromView.SetSquareOverlay(yellowSquareOverlay);
+
+        if (squares.TryGetValue((to.x, to.y), out var toView))
+            toView.SetSquareOverlay(yellowSquareOverlay);
+    }
+
+    public void ShowMove(PieceCoord coord, bool isCapture)
+    {
+        if (squares.TryGetValue((coord.x, coord.y), out var view))
+            view.SetMarkerOverlay(isCapture ? captureMarkerSprite : moveMarkerSprite);
+    }
+
+    public void ClearAllSelectionVisuals()
+    {
+        foreach (var view in squares.Values)
+            view.SetSelectedVisual(false);
+    }
+
+    public void SetSelectedVisual(PieceCoord coord, bool selected)
+    {
+        if (squares.TryGetValue((coord.x, coord.y), out var view))
+            view.SetSelectedVisual(selected);
+    }
+    
 }

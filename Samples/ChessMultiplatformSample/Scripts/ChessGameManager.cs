@@ -7,6 +7,7 @@ public class ChessGameManager : MonoBehaviour
     [Header("Scene References")]
     [SerializeField] private ChessBoardView boardView;
     [SerializeField] private ChessUIController uiController;
+    [SerializeField] private AudioManager audioManager;
 
     private BoardState boardState;
     private MoveGenerator moveGenerator;
@@ -14,6 +15,7 @@ public class ChessGameManager : MonoBehaviour
 
     private PieceCoord? selectedSquare;
     private bool isBusy;
+    private Move? lastAiMove;
 
     private void Start()
     {
@@ -39,6 +41,7 @@ public class ChessGameManager : MonoBehaviour
             {
                 selectedSquare = square;
                 ShowSelection(square);
+                audioManager?.PlaySelect();
             }
             return;
         }
@@ -51,7 +54,7 @@ public class ChessGameManager : MonoBehaviour
             {
                 StartCoroutine(PlayHumanMoveThenAi(move));
                 selectedSquare = null;
-                boardView.ClearHighlights();
+                boardView.ClearAllMarkers();
                 return;
             }
         }
@@ -60,18 +63,27 @@ public class ChessGameManager : MonoBehaviour
         {
             selectedSquare = square;
             ShowSelection(square);
+            audioManager?.PlaySelect();
         }
         else
         {
             selectedSquare = null;
-            boardView.ClearHighlights();
+            boardView.ClearAllMarkers();
+            boardView.ClearAllSelectionVisuals();
         }
     }
 
     private void ShowSelection(PieceCoord from)
     {
-        boardView.ClearHighlights();
+        boardView.ClearAllMarkers();
+        boardView.ClearAllSquareOverlays();
+        boardView.ClearAllSelectionVisuals();
+
+        if (lastAiMove.HasValue)
+            boardView.ShowLastMove(lastAiMove.Value.From, lastAiMove.Value.To);
+
         boardView.ShowSelected(from);
+        boardView.SetSelectedVisual(from, true);
 
         var legalMoves = moveGenerator.GenerateLegalMoves(boardState, PieceSide.White);
         foreach (var move in legalMoves)
@@ -87,8 +99,12 @@ public class ChessGameManager : MonoBehaviour
     {
         isBusy = true;
 
+        bool humanIsCapture = boardState.GetPiece(humanMove.To).HasValue;
         boardState.ApplyMove(humanMove);
         boardView.Refresh(boardState);
+        if (humanIsCapture) audioManager?.PlayCapture();
+        else audioManager?.PlayMove();
+
         yield return new WaitForSeconds(0.15f);
 
         if (CheckGameEnd())
@@ -103,9 +119,22 @@ public class ChessGameManager : MonoBehaviour
         var aiMove = randomAi.ChooseMove(boardState, moveGenerator, PieceSide.Black);
         if (aiMove.HasValue)
         {
+            bool aiIsCapture = boardState.GetPiece(aiMove.Value.To).HasValue;
             boardState.ApplyMove(aiMove.Value);
+            lastAiMove = aiMove.Value;
             boardView.Refresh(boardState);
+
+            if (aiIsCapture) audioManager?.PlayCapture();
+            else audioManager?.PlayMove();
+
         }
+
+        if (lastAiMove.HasValue)
+        {
+            boardView.ClearAllSquareOverlays();
+            boardView.ShowLastMove(lastAiMove.Value.From, lastAiMove.Value.To);
+        }
+
 
         if (!CheckGameEnd())
         {
