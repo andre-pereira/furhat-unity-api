@@ -25,7 +25,7 @@ public class ChessGameManager : MonoBehaviour
 
         boardState.SetupStartingPosition();
         boardView.BuildBoard(boardState, OnSquareClicked);
-        uiController.SetStatus("Your turn (White)");
+        uiController.SetStatus(GetTurnStatus(PieceSide.White));
     }
 
     private void OnSquareClicked(PieceCoord square)
@@ -90,7 +90,7 @@ public class ChessGameManager : MonoBehaviour
         {
             if (move.From.Equals(from))
             {
-                boardView.ShowMove(move.To, boardState.GetPiece(move.To).HasValue);
+                boardView.ShowMove(move.To, move.IsCapture);
             }
         }
     }
@@ -99,7 +99,7 @@ public class ChessGameManager : MonoBehaviour
     {
         isBusy = true;
 
-        bool humanIsCapture = boardState.GetPiece(humanMove.To).HasValue;
+        bool humanIsCapture = humanMove.IsCapture;
         boardState.ApplyMove(humanMove);
         boardView.Refresh(boardState);
         if (humanIsCapture) audioManager?.PlayCapture();
@@ -113,13 +113,13 @@ public class ChessGameManager : MonoBehaviour
             yield break;
         }
 
-        uiController.SetStatus("AI thinking randomly...");
+        uiController.SetStatus(GetAiThinkingStatus());
         yield return new WaitForSeconds(0.35f);
 
         var aiMove = randomAi.ChooseMove(boardState, moveGenerator, PieceSide.Black);
         if (aiMove.HasValue)
         {
-            bool aiIsCapture = boardState.GetPiece(aiMove.Value.To).HasValue;
+            bool aiIsCapture = aiMove.Value.IsCapture;
             boardState.ApplyMove(aiMove.Value);
             lastAiMove = aiMove.Value;
             boardView.Refresh(boardState);
@@ -138,7 +138,7 @@ public class ChessGameManager : MonoBehaviour
 
         if (!CheckGameEnd())
         {
-            uiController.SetStatus("Your turn (White)");
+            uiController.SetStatus(GetTurnStatus(PieceSide.White));
         }
 
         isBusy = false;
@@ -146,15 +146,37 @@ public class ChessGameManager : MonoBehaviour
 
     private bool CheckGameEnd()
     {
-        var whiteMoves = moveGenerator.GenerateLegalMoves(boardState, PieceSide.White);
-        var blackMoves = moveGenerator.GenerateLegalMoves(boardState, PieceSide.Black);
-
-        if (whiteMoves.Count == 0 || blackMoves.Count == 0)
+        var sideToMove = boardState.SideToMove;
+        var legalMoves = moveGenerator.GenerateLegalMoves(boardState, sideToMove);
+        if (legalMoves.Count == 0)
         {
-            uiController.SetStatus("Game over");
+            bool inCheck = moveGenerator.IsKingInCheck(boardState, sideToMove);
+            if (inCheck)
+            {
+                var winner = sideToMove == PieceSide.White ? "Black" : "White";
+                uiController.SetStatus($"Checkmate. {winner} wins.");
+            }
+            else
+            {
+                uiController.SetStatus("Stalemate.");
+            }
+
             return true;
         }
 
         return false;
+    }
+
+    private string GetTurnStatus(PieceSide side)
+    {
+        string player = side == PieceSide.White ? "Your turn (White)" : "Black to move";
+        return moveGenerator.IsKingInCheck(boardState, side) ? $"{player} - Check!" : player;
+    }
+
+    private string GetAiThinkingStatus()
+    {
+        return moveGenerator.IsKingInCheck(boardState, PieceSide.Black)
+            ? "AI thinking... Black is in check."
+            : "AI thinking randomly...";
     }
 }
