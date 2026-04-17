@@ -44,7 +44,7 @@ public class ChessBoardView : MonoBehaviour
 
                 view.Initialize(coord, () => onClick?.Invoke(coord));
 
-                bool isLight = (x + y) % 2 == 0;
+                bool isLight = (x + y) % 2 != 0;
                 view.SetBackgroundColor(isLight ? lightSquare : darkSquare);
 
                 squares[(x, y)] = view;
